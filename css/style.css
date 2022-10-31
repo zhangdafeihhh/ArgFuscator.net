@@ -1,0 +1,108 @@
+html {
+    font-family: Arial;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+.container>div {
+    width: 100%;
+    padding: 10px;
+}
+
+#input_command {
+    width: 100%;
+    height: 80px;
+}
+
+div.option {
+    background: rgb(245, 245, 245);
+    color: #999;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: smaller;
+    border-radius: 5px;
+}
+
+div.option.selected {
+    color: black;
+}
+
+div.suboptions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    padding-left: 22px;
+    font-weight: normal;
+    font-size: smaller;
+}
+
+div.suboptions>div {
+    flex: calc(50%-10px);
+    display: flex;
+    flex-direction: column;
+    padding: 3px;
+}
+
+div.suboptions>div.flex-row {
+    flex-direction: row;
+    align-items: center;
+    flex: 100%;
+}
+
+div.suboptions>div.flex-row label {
+    margin-right: 5px;
+}
+
+a.explain {
+    border-bottom: 1px dotted black;
+}
+
+a.explain::after {
+    content: ' 🯄';
+    font-size: small;
+    color: #aaa;
+}
+
+#tokens {
+    display: flex;
+    flex-wrap: wrap;
+    counter-reset: token-counter 0;
+    font-family: monospace;
+}
+
+#tokens>div.token {
+    background: orange;
+    border-radius: 5px;
+    margin-right: 4px;
+    margin-bottom: 2px;
+    margin-top: 2px;
+    padding: 2px;
+    counter-increment: token-counter 1;
+}
+
+#tokens>div.token.enabled {
+    background: #bbb;
+    color: #666;
+}
+
+#tokens>div.token::before {
+    background: white;
+    color: red;
+    padding: 0 3px;
+    font-size: 10px;
+    margin-right: 5px;
+    content: counter(token-counter);
+}
+
+#tokens>div.token.enabled::before {
+    color: #333;
+}
+
+@media screen and (max-width: 700px) {
+    .container {
+        flex-wrap: wrap;
+    }
+}

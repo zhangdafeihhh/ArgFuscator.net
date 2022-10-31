@@ -1,20 +1,29 @@
-type Char = String & { read_only: boolean };
+type Char = String;
+enum TokenType { ProgramName, Generic, FilePath }
+type Token = Char[] & { ReadOnly: boolean; Type: TokenType };
+
+
+function TokenEquals(array1: Token, array2: Token): boolean {
+    return array1.length === array2.length && array1.every(function (value, index) { return CharEquals(value, array2[index]); })
+}
+
+function CharEquals(char1: Char, char2: Char): boolean {
+    return char1.toString() == char2.toString();
+}
 
 abstract class Modifier {
-    private InputCommand: string;
-    protected InputCommandChars: Char[] = [];
-    protected SeparationChar: Char = ' ' as String as Char;
+    protected InputCommandTokens: Token[] = [];
 
-    constructor(InputCommand: string, IgnoreTokens: string) {
-        this.InputCommand = InputCommand;
+    private static SeparationChar: Char = ' ' as String as Char;
+    private static QuoteChars: Char[] = ['"' as String as Char, "'" as String as Char];
 
-        let IgnoredTokens: number[] = IgnoreTokens.split(',').map(TokenNumber => Number(TokenNumber));
-        let Tokens = this.InputCommandTokenise();
-        for (var i = 0; i < Tokens.length; i++) {
-            let Chars = Tokens[i].split('').map(function (x) { let y = new String(x) as Char; y.read_only = IgnoredTokens.indexOf(i) >= 0; return y }) as Char[];
-            this.InputCommandChars.push(...Chars);
-            if (i + 1 < Tokens.length) this.InputCommandChars.push(this.SeparationChar);
-        }
+    constructor(InputCommand: Token[], IgnoredTokens: number[]) {
+        // Parse inputs
+        this.InputCommandTokens = InputCommand
+
+        // Mark ignored tokens as read-only
+        var i = 0;
+        this.InputCommandTokens.forEach(token => { token.ReadOnly = IgnoredTokens.indexOf(i) >= 0; i++; });
     }
 
     protected CoinFlip(probability: number): boolean {
@@ -25,8 +34,28 @@ abstract class Modifier {
         return options[Math.floor(Math.random() * options.length)];
     }
 
-    private InputCommandTokenise(): string[] {
-        return this.InputCommand.split(this.SeparationChar.toString());
+    public static CommandTokenise(InputCommand: string): Token[] {
+        var InQuote: Char | null = null;
+        var Tokens: Token[] = [];
+        var Token: Token = [] as Char[] as Token;
+        for (var i = 0; i < InputCommand.length; i++) {
+            let Char: Char = new String(InputCommand[i]) as Char;
+            if (InQuote == null && Char == this.SeparationChar) {
+                if (Token.length > 0)
+                    Tokens.push(Token);
+                Token = [] as Char[] as Token;
+            } else {
+                if (InQuote != null && Char.toString() == InQuote?.toString())
+                    InQuote = null;
+                else if (InQuote == null && this.QuoteChars.some(x => x == Char))
+                    InQuote = Char;
+
+                Token.push(Char);
+            }
+        }
+        if (Token?.length > 0)
+            Tokens.push(Token);
+        return Tokens;
     }
 
     protected static ParseProbability(Probability: string): number {
@@ -39,5 +68,9 @@ abstract class Modifier {
         return ReturnProbability;
     }
 
-    abstract GenerateOutput(): string;
+    abstract GenerateOutput(): Token[];
+
+    public static TokensToString(Tokens: Token[]): string {
+        return Tokens.map(x => x.join('')).join(Modifier.SeparationChar.toString());
+    }
 }
