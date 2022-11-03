@@ -1,1 +1,4 @@
 *.js
+*.js.map
+*.yml
+node_modules/*

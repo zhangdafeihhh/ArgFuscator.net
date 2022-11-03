@@ -1,0 +1,16 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "noImplicitAny": true,
+        "outFile": "./code.js",
+        "preserveConstEnums": true,
+        "removeComments": true,
+        "sourceMap": true,
+        "suppressImplicitAnyIndexErrors": true,
+        "target": "ES5",
+    },
+    "files": ["code.ts", "modifiers/Modifier.ts"],
+    "include": [
+        "modifiers/*"
+    ],
+}

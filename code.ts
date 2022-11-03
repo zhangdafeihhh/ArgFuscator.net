@@ -69,7 +69,7 @@ function ApplyObfuscation(): string | null {
     SelectedOptions.forEach(Element => {
         if (Element.checked) {
             let ClassName = Element.dataset.function as string;
-            let ClassInstance: Modifier = Object.create(window[ClassName].prototype);
+            let ClassInstance: Modifier = Object.create((window as any)[ClassName].prototype);
 
             let ClassInstanceArguments: any[] = [InputCommandTokens, TokensExcluded.map(x => x[1])];
             let SelectedOptionArguments = document.querySelectorAll("input[id^=\"" + Element.id + "_arg\"]") as NodeListOf<HTMLInputElement>;
