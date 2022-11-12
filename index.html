@@ -13,12 +13,24 @@
 
 <script src="code.js"></script>
 
+<menu class="context-menu">
+    <li data-type="disabled">Ignore</li>
+    <li data-type="command">Program Name</li>
+    <li data-type="argument">Regular Argument</li>
+    <li data-type="path">File Path</li>
+    <!-- <li>Add...</li> -->
+</menu>
+
+<h1>Command-Line Obfuscator</h1>
 <div class="container">
     <div>
         <fieldset>
-            <legend>Command</legend><textarea
+            <legend>Input</legend>
+            Enter a command below, or load a configuration from disk: <input type="file" id="JsonFile" accept=".json" />
+            <textarea
                 id="input_command">certutil -f -urlcache -split https://wietze.github.io/robots.txt output.txt</textarea>
             <div id="tokens"></div>
+
         </fieldset>
         <fieldset>
             <legend>Options</legend>
@@ -28,8 +40,12 @@
                 <label for="option_randomcase">Enable <a class="explain">RaNdomCasE</a></label>
                 <div class="suboptions">
                     <div class="flex-row">
-                        <label for="option_randomcase_arg0">Probability</label>
-                        <input type="range" id="option_randomcase_arg0" class="probability" min="0" max="1"
+                        <label for="option_randomcase_arg0">Apply to</label>
+                        <div class="option_target button" id="option_randomcase_arg0" data-excluded_types="[]"></div>
+                    </div>
+                    <div class="flex-row">
+                        <label for="option_randomcase_arg1">Probability</label>
+                        <input type="range" id="option_randomcase_arg1" class="probability" min="0" max="1"
                             step="0.01"><span></span>
                     </div>
                 </div>
@@ -39,6 +55,10 @@
                 <input type="checkbox" id="option_optionchars" data-function="OptionChars" />
                 <label for="option_optionchars">Enable <a class="explain">Option Char Substitution</a></label>
                 <div class="suboptions">
+                    <div class="flex-row">
+                        <label for="option_optionchars_arg0">Apply to</label>
+                        <div class="option_target button" id="option_optionchars_arg0" data-excluded_types="[&quot;command&quot;,&quot;path&quot;]"></div>
+                    </div>
                     <div><label for="option_optionchars_arg1">Used Option Char</label><input type="text"
                             id="option_optionchars_arg1" placeholder="-" value="-" maxlength="1" /></div>
                     <div><label for="option_optionchars_arg2">Possible option chars</label><input type="text"
@@ -50,12 +70,16 @@
                 <input type="checkbox" id="option_characterinsertion" data-function="CharacterInsertion" />
                 <label for="option_characterinsertion">Enable <a class="explain">Character Insertion</a></label>
                 <div class="suboptions">
-                    <div class="flex-row"><label for="option_characterinsertion_arg0">Probability</label><input
-                            type="range" id="option_characterinsertion_arg0" class="probability" min="0" max="1"
+                    <div class="flex-row">
+                        <label for="option_characterinsertion_arg0">Apply to</label>
+                        <div class="option_target button" id="option_characterinsertion_arg0" data-excluded_types="[&quot;command&quot;,&quot;path&quot;]"></div>
+                    </div>
+                    <div class="flex-row"><label for="option_characterinsertion_arg1">Probability</label><input
+                            type="range" id="option_characterinsertion_arg1" class="probability" min="0" max="1"
                             step="0.01"><span></span>
                     </div>
-                    <div class="flex-row"><label for="option_characterinsertion_arg1">Accepted characters</label><input
-                            type="text" id="option_characterinsertion_arg1" placeholder="ຎຏຐ"
+                    <div class="flex-row"><label for="option_characterinsertion_arg2">Accepted characters</label><input
+                            type="text" id="option_characterinsertion_arg2" placeholder="ຎຏຐ"
                             value="͸͹Ϳ΀΁΂΃΋΍΢ԤԥԨԩԪԫԬԭԮԯ԰՗՘ՠֈ֋֌֍֎֏֐׈׉׊׋׌׍׎׏׫׬׭׮ׯ׵׶׷׸׹׺׻׼׽׾׿؄؅؜؝ـ܎݋݌޲޳޴޵޶޷޸޹޺޻޼޽޾޿߻߼߽߾߿࠮࠯࠿࡜࡝࡟ࡠࡡࡢࡣࡤࡥࡦࡧࡨࡩࡪ࡫࡬࡭࡮࡯ࡰࡱࡲࡳࡴࡵࡶࡷࡸࡹࡺࡻࡼࡽࡾࡿࢀࢁࢂࢃࢄࢅࢆࢇ࢈ࢉࢊࢋࢌࢍࢎ࢏࢐࢑࢒࢓࢔࢕࢖࢙࢚࢛ࢗ࢘࢜࢝࢞࢟ࢠࢡࢢࢣࢤࢥࢦࢧࢨࢩࢪࢫࢬࢭࢮࢯࢰࢱࢲࢳࢴࢵࢶࢷࢸࢹࢺࢻࢼࢽࢾࢿࣀࣁࣂࣃࣄࣅࣆࣇࣈࣉ࣏࣐࣑࣒࣓࣊࣋࣌࣍࣎ࣔࣕࣖࣗࣘࣙࣚࣛࣜࣝࣞࣟ࣠࣡࣢ࣰࣱࣲࣣࣦࣩ࣭࣮࣯ࣶࣹࣺࣤࣥࣧࣨ࣪࣫࣬ࣳࣴࣵࣷࣸࣻࣼࣽࣾࣿऀॸঀ঄঍঎঑঒঩঱঳঴঵঺঻৅৆৉৊৏৐৑৒৓৔৕৖৘৙৚৛৞৤৥৻ৼ৽৾৿਀਄਋਌਍਎਑਒਩਱਴਷਺਻਽੃੄੅੆੉੊੎੏੐੒੓੔੕੖੗੘੝੟੠੡੢੣੤੥੶੷੸੹੺੻੼੽੾੿઀઄઎઒઩઱઴઺઻૆૊૎૏૑૒૓૔૕૖૗૘૙૚૛૜૝૞૟૤૥૰૲૳૴૵૶૷૸ૹૺૻૼ૽૾૿଀଄଍଎଑଒଩଱଴଺଻୅୆୉୊୎୏୐୑୒୓୔୕୘୙୚୛୞୤୥୸୹୺୻୼୽୾୿஀஁஄஋஌஍஑஖஗஘஛஝஠஡஢஥஦஧஫஬஭஺஻஼஽௃௄௅௉௎௏௑௒௓௔௕௖௘௙௚௛௜௝௞௟௠௡௢௣௤௥௻௼௽௾௿ఀఄ఍఑఩ఴ఺఻఼౅౉౎౏౐౑౒౓౔౗ౚ౛౜ౝ౞౟౤౥౰౱౲౳౴౵౶౷ಀಁ಄಍಑಩಴಺಻೅೉೎೏೐೑೒೓೔೗೘೙೚೛೜ೝ೟೤೥೰ೳ೴೵೶೷೸೹೺೻೼೽೾೿ഀഁഄ഍഑഻഼൅൉൏൐൑൒൓ൔൕൖ൘൙൚൛൜൝൞ൟ൤൥൶൷൸඀ඁ඄඗඘඙඲඼඾඿෇෈෉෋෌෍෎෕෗෠෡෢෣෤෥෦෧෨෩෪෫෬෭෮෯෰෱෵෶෷෸෹෺෻෼෽෾෿฻๝๞๟๠๡๢๣๤๥๦๧๨๩๪๫๬๭๮๯๰๱๲๳๴๵๶๷๸๹๺๻๼๽๾๿຀຃຅ຆຉ຋ຌຎຏຐຑຒຓຘຠ຤຦ຨຩຬ຺຾຿໅໇໌໎໏໚໛ໞໟ໠໡໢໣໤໥໦໧໨໩໪໫໬໭໮໯໰໱໲໳໴໵໶໷໸໹໺໻໼໽໾໿཈཭཮཯཰྘྽࿍࿛࿜࿝࿞࿟࿠࿡࿣࿤࿥࿦࿧࿨࿩࿪࿫࿬࿭࿮࿯࿰࿱࿲࿳࿴࿵࿶࿷࿸࿹࿺࿻࿼࿽჆Ⴧ჈჉჊჋჌Ⴭ჎჏ჽჾჿ቎቏቗቙቞቟኉኎኏኱኶኷኿዁዆዇዗጑጖጗፛፜፽፾፿᎚᎛᎜᎝᎞᎟Ᏽ᏶᏷ᏸᏹᏺᏻᏼᏽ᏾᏿ᛱᛲᛳᛴᛵᛶᛷᛸ᛹᛺᛻᛼᛽᛾᛿ᜍ᜕᜖᜗᜘᜙᜚᜛᜜᜝᜞ᜟ᜷᜸᜹᜺᜻᜼᜽᜾᜿᝔᝕᝖᝗᝘᝙᝚᝛᝜᝝᝞᝟᝭᝴᝵᝶᝷᝸᝹᝺᝻᝼᝽᝾᝿៞៟៪៫៬៭៮៯៺៻៼៽៾៿᠆᠋᠌᠍᠏᠚᠛᠜᠝᠞᠟ᡸ᡹᡺᡻᡼᡽᡾᡿᢫᢬᢭᢮᢯᣶᣷᣸᣹᣺᣻᣼᣽᣾᣿ᤝᤞ᤟᤬᤭᤮᤯᤼᤽᤾᤿᥁᥂᥃᥵᥶᥷᥸᥹᥺᥻᥼᥽᥾᥿᦬᦭᦮᦯᧊᧋᧌᧍᧎᧏᧛᧜᧝᨜᨝᩟᩽᩾᪊᪋᪌᪍᪎᪏᪚᪛᪜᪝᪞᪟᪮᪯᪵᪶᪷᪸᪹᪺᪽᪰᪱᪲᪳᪴᪻᪼᪾ᪿ᫃᫄᫊᫁᫂᫅᫈᫋ᫌᫍᫎ᫐᫑᫒᫔᫕᫙᫚᫛᫜᫝᫞᫟᫠᫢᫣᫤᫥᫦᫧᫩᫪᫫᫬᫭᫮᫯᫰᫱᫲᫳᫴᫵᫶᫷᫸᫹᫺᫻᫼᫽᫾᫿ᭌ᭍᭎᭏᭽᭾᭿᮫ᮬᮭᮺᮻᮼᮽᮾᮿ᯴᯵᯷᯸᯹᯺᯻᰸᰹᰺᱊᱋᱌ᲀᲁᲂᲃᲄᲇᲈᲉᲊ᲋᲌᲍᲎᲏ᲐᲑᲒᲓᲔᲕᲖᲗᲘᲙᲚᲛᲜᲝᲞᲟᲠᲡᲢᲣᲤᲥᲦᲧᲨᲩᲪᲫᲬᲭᲮᲯᲰᲱᲲᲳᲴᲵᲶᲷᲸᲹᲺ᲻᲼ᲾᲿ᳀᳁᳂᳃᳅᳆᳇᳈᳉᳊᳋᳌᳍᳎᳏ᳳ᳴ᳵᳶ᳷ᳺ᳻᳼᳽᳾᳿᷺᷹᷷᷸ᷧᷨᷩᷪᷫᷬᷭᷮᷯᷰᷱᷲᷳᷴ᷵᷻᷶἖἗἞἟὆὇὎὏὜὞὾὿᾵῅῔῕῜῰῱῵῿‌‍‎‏‪‫‬‭‮⁠⁡⁢⁣⁤⁥⁦⁧⁨⁩⁪⁫⁬⁭⁮⁯⁲⁳₏₝₞₟₶₷₸₻₼₽₾₿⃀⃁⃂⃃⃄⃅⃆⃇⃈⃉⃊⃋⃌⃍⃎⃏⃱⃲⃳⃴⃵⃶⃷⃸⃹⃺⃻⃼⃽⃾⃿↊↋↌↍↎↏⏴⏵⏶⏷⏸⏹⏺⏻⏼⏽⏾⏿␧␨␩␪␫␬␭␮␯␰␱␲␳␴␵␶␷␸␹␺␻␼␽␾␿⑋⑌⑍⑎⑏⑐⑑⑒⑓⑔⑕⑖⑗⑘⑙⑚⑛⑜⑝⑞⑟⚽⚾⚿✀➕➖➗➰➿⟋⟍⭍⭎⭏⭚⭛⭜⭝⭞⭟⭠⭡⭢⭣⭤⭥⭦⭧⭨⭩⭪⭫⭬⭭⭮⭯⭰⭱⭲⭳⭴⭵⭶⭷⭸⭹⭺⭻⭼⭽⭾⭿⮀⮁⮂⮃⮄⮅⮆⮇⮈⮉⮊⮋⮌⮍⮎⮏⮐⮑⮒⮓⮔⮕⮖⮗⮘⮙⮚⮛⮜⮝⮞⮟⮠⮡⮢⮣⮤⮥⮦⮧⮨⮩⮪⮫⮬⮭⮮⮯⮰⮱⮲⮳⮴⮵⮶⮷⮸⮹⮺⮻⮼⮽⮾⮿⯀⯁⯂⯃⯄⯅⯆⯇⯈⯉⯊⯋⯌⯍⯎⯏⯐⯑⯒⯓⯕⯖⯗⯘⯙⯚⯛⯜⯝⯞⯟⯠⯡⯢⯣⯤⯥⯦⯧⯨⯩⯪⯫⯬⯭⯮⯯⯰⯱⯲⯳⯴⯵⯶⯷⯸⯹⯺⯻⯼⯽⯾⯿ⰯⱟⳲⳳ⳴⳵⳶⳷⳸⴦ⴧ⴨⴩⴪⴫⴬ⴭ⴮⴯ⵦⵧ⵨⵩⵪⵫⵬⵭⵮⵱⵲⵳⵴⵵⵶⵷⵸⵹⵺⵻⵼⵽⵾⶗⶘⶙⶚⶛⶜⶝⶞⶟⶧⶯⶷⶿⷇⷏⷗⷟⸲⸳⸴⸵⸶⸷⸸⸹⸺⸻⸼⸽⸾⸿⹀⹁⹂⹃⹄⹅⹆⹇⹈⹉⹊⹋⹌⹍⹎⹏⹐⹑⹒⹓⹔⹕⹖⹗⹘⹙⹚⹛⹜⹝⹞⹟⹠⹡⹢⹣⹤⹥⹦⹧⹨⹩⹪⹫⹬⹭⹮⹯⹰⹱⹲⹳⹴⹵⹶⹷⹸⹹⹺⹻⹼⹽⹾⹿⺚⻴⻵⻶⻷⻸⻹⻺⻻⻼⻽⻾⻿⿖⿗⿘⿙⿚⿛⿜⿝⿞⿟⿠⿡⿢⿣⿤⿥⿦⿧⿨⿩⿪⿫⿬⿭⿮⿯⿼⿽⿾⿿぀゗゘㄀㄁㄂㄃㄄ㄮㄯ㄰㆏㆐㆑ㆻㆼㆽㆾㆿ㇤㇥㇦㇧㇨㇩㇪㇫㇬㇭㇮㇯㈟㋿䶶䶷䶸䶹䶺䶻䶼䶽䶾" />
                     </div>
                 </div>
@@ -66,16 +90,23 @@
                 <label for="option_quoteinsertion">Enable <a class="explain">Quote Insertion</a></label>
                 <div class="suboptions">
                     <div class="flex-row">
-                        <label for="option_quoteinsertion_arg0">Probability</label>
-                        <input type="range" id="option_quoteinsertion_arg0" class="probability" min="0" max="1"
+                        <label for="option_quoteinsertion_arg0">Apply to</label>
+                        <div class="option_target button" id="option_quoteinsertion_arg0" data-excluded_types="[&quot;command&quot;]"></div>
+                    </div>
+                    <div class="flex-row">
+                        <label for="option_quoteinsertion_arg1">Probability</label>
+                        <input type="range" id="option_quoteinsertion_arg1" class="probability" min="0" max="1"
                             step="0.01"><span></span>
                     </div>
                 </div>
             </div>
         </fieldset>
-        <input type="button" value="Run!" id="obfuscation_run" />
     </div>
-    <div id="output_command">The obfuscated result will appear here.</div>
+    <fieldset>
+        <legend>Output</legend>
+        <div id="output_command"></div>
+    </fieldset>
 </div>
+<div class="button" id="obfuscation_run">Apply obfuscation</div>
 
 </html>

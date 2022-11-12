@@ -8,9 +8,11 @@
         "sourceMap": true,
         "suppressImplicitAnyIndexErrors": true,
         "target": "ES5",
+        "lib": ["dom", "es2017"]
     },
-    "files": ["code.ts", "modifiers/Modifier.ts"],
+    "files": ["code.ts"],
     "include": [
-        "modifiers/*"
+        "Types/*",
+        "Modifiers/*"
     ],
 }

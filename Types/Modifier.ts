@@ -1,10 +1,5 @@
-type Char = String;
-enum TokenType { ProgramName, Generic, FilePath }
-type Token = Char[] & { ReadOnly: boolean; Type: TokenType };
-
-
 function TokenEquals(array1: Token, array2: Token): boolean {
-    return array1.length === array2.length && array1.every(function (value, index) { return CharEquals(value, array2[index]); })
+    return array1.GetContent().length === array1.GetContent().length && array1.GetContent().every(function (value, index) { return CharEquals(value, array1.GetContent()[index]); })
 }
 
 function CharEquals(char1: Char, char2: Char): boolean {
@@ -13,17 +8,19 @@ function CharEquals(char1: Char, char2: Char): boolean {
 
 abstract class Modifier {
     protected InputCommandTokens: Token[] = [];
+    protected ExcludedTypes: string[];
 
     private static SeparationChar: Char = ' ' as String as Char;
     private static QuoteChars: Char[] = ['"' as String as Char, "'" as String as Char];
 
-    constructor(InputCommand: Token[], IgnoredTokens: number[]) {
+    constructor(InputCommand: Token[], ExcludedTypes: string[]) {
         // Parse inputs
         this.InputCommandTokens = InputCommand
+        this.ExcludedTypes = ExcludedTypes;
 
         // Mark ignored tokens as read-only
-        var i = 0;
-        this.InputCommandTokens.forEach(token => { token.ReadOnly = IgnoredTokens.indexOf(i) >= 0; i++; });
+        //var i = 0;
+        //this.InputCommandTokens.forEach(token => { token.ReadOnly = IgnoredTokens.indexOf(i) >= 0; i++; });
     }
 
     protected CoinFlip(probability: number): boolean {
@@ -37,24 +34,26 @@ abstract class Modifier {
     public static CommandTokenise(InputCommand: string): Token[] {
         var InQuote: Char | null = null;
         var Tokens: Token[] = [];
-        var Token: Token = [] as Char[] as Token;
+        var TokenContent: Char[] = [];
         for (var i = 0; i < InputCommand.length; i++) {
             let Char: Char = new String(InputCommand[i]) as Char;
             if (InQuote == null && Char == this.SeparationChar) {
                 if (Token.length > 0)
-                    Tokens.push(Token);
-                Token = [] as Char[] as Token;
+                    Tokens.push(new Token(TokenContent));
+                TokenContent = [] as Char[];
             } else {
                 if (InQuote != null && Char.toString() == InQuote?.toString())
                     InQuote = null;
                 else if (InQuote == null && this.QuoteChars.some(x => x == Char))
                     InQuote = Char;
 
-                Token.push(Char);
+                TokenContent.push(Char);
             }
         }
         if (Token?.length > 0)
-            Tokens.push(Token);
+            Tokens.push(new Token(TokenContent));
+
+        Tokens[0].SetType("command");
         return Tokens;
     }
 
@@ -68,9 +67,9 @@ abstract class Modifier {
         return ReturnProbability;
     }
 
-    abstract GenerateOutput(): Token[];
+    abstract GenerateOutput(): void;
 
-    public static TokensToString(Tokens: Token[]): string {
-        return Tokens.map(x => x.join('')).join(Modifier.SeparationChar.toString());
-    }
+    // public static TokensToString(Tokens: Token[]): string {
+    //     return Tokens.map(x => x.join('')).join(Modifier.SeparationChar.toString());
+    // }
 }

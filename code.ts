@@ -1,5 +1,13 @@
 var LastTokenised: Token[] = []
-var LastIgnoredTokens: [Token, number][] = [];
+var LastIgnoredTokens: [number, number][] = [];
+var OutputTokenHTML: HTMLElement;
+var ConfigTokenHTML: HTMLElement;
+
+interface FileFormat {
+    command: Array<[string, string]>;
+    modifiers: object;
+}
+
 
 function GetInputCommand(): string | null {
     // Obtain input command
@@ -9,60 +17,67 @@ function GetInputCommand(): string | null {
     return InputCommand;
 }
 
-function GetIgnoredTokens(Tokens: Token[]): [Token, number][] {
-    let Result: [Token, number][] = [];
+// function GetIgnoredTokens(Tokens: Token[]): [Token, number][] {
+//     let Result: [Token, number][] = [];
 
-    // Obtain input command
-    let TokenObjects: NodeListOf<HTMLDivElement> = document.querySelectorAll("#tokens > div.token");
-    if (TokenObjects == null || TokenObjects.length == 0) { console.error("No input was provided"); }
-    var i = 0;
-    TokenObjects.forEach(x => { if (x.dataset.dont_process === 'true') Result.push([Tokens[i], i]); i++ });
-    return Result;
+//     // Obtain input command
+//     let TokenObjects: NodeListOf<HTMLDivElement> = document.querySelectorAll("#tokens > div.token");
+//     if (TokenObjects == null || TokenObjects.length == 0) { console.error("No input was provided"); }
+//     var i = 0;
+//     TokenObjects.forEach(x => { if (x.dataset.dont_process === 'true') Result.push([Tokens[i], i]); i++ });
+//     return Result;
+// }
+
+// function ToggleToken(this: HTMLElement, ev: Event) {
+//     if (this.dataset.dont_process === 'true') {
+//         this.dataset.dont_process = 'false';
+//         this.classList.remove('enabled');
+//     } else {
+//         this.dataset.dont_process = 'true';
+//         this.classList.add('enabled');
+//     }
+
+//     LastIgnoredTokens = GetIgnoredTokens(LastTokenised);
+// }
+
+function UpdateTokens(): void {
+    ConfigTokenHTML = document.querySelector("div#tokens");
+    OutputTokenHTML = document.querySelector('div#output_command');
+    LastTokenised = Modifier.CommandTokenise(GetInputCommand());
+
+    UpdateUITokens(LastTokenised);
 }
 
-function ToggleToken(this: HTMLElement, ev: Event) {
-    if (this.dataset.dont_process === 'true') {
-        this.dataset.dont_process = 'false';
-        this.classList.remove('enabled');
-    } else {
-        this.dataset.dont_process = 'true';
-        this.classList.add('enabled');
-    }
-
-    LastIgnoredTokens = GetIgnoredTokens(LastTokenised);
-}
-
-function UpdateTokens() {
-    let InputCommand = GetInputCommand();
-    var OutputTokenHTML = document.querySelector("div#tokens") as HTMLInputElement | null;
-    if (InputCommand == null || OutputTokenHTML == null) return;
-    LastTokenised = Modifier.CommandTokenise(InputCommand);
+function UpdateUITokens(Tokenised: Token[]): void {
+    ConfigTokenHTML.innerHTML = "";
     OutputTokenHTML.innerHTML = "";
-
-    var IsFirst = true;
-
-    let LatestIgnoredTokens = LastIgnoredTokens.map(x => x[0]);
-    LastTokenised.forEach(Token => {
-        LatestIgnoredTokens.forEach(x => { if (TokenEquals(x, Token)) Token.ReadOnly = true });
+    Tokenised.forEach(Token => {
+        //     LatestIgnoredTokens.forEach(x => { if (TokenEquals(x, Token)) Token.ReadOnly = true });
         var OutputTokenElement = document.createElement('div');
-        OutputTokenElement.textContent = Token.join('');
-        OutputTokenElement.classList.add("token");
-        OutputTokenElement.addEventListener("click", ToggleToken)
-        OutputTokenHTML?.appendChild(OutputTokenElement);
-        if ((LatestIgnoredTokens.length == 0 && IsFirst) || Token.ReadOnly) OutputTokenElement.click();
-        IsFirst = false;
+        var ConfigTokenElement = document.createElement('div');
+
+        ConfigTokenElement.classList.add("token");
+        //     OutputTokenElement.addEventListener("click", ToggleToken)
+        ConfigTokenHTML.appendChild(ConfigTokenElement);
+        OutputTokenHTML.appendChild(OutputTokenElement);
+
+        Token.SetElements(ConfigTokenElement, OutputTokenElement);
+        //     if ((LatestIgnoredTokens.length == 0 && IsFirst) || Token.ReadOnly) OutputTokenElement.click();
+        //     IsFirst = false;
     });
 }
 
-function ApplyObfuscation(): string | null {
-    // Obtain input command
-    let InputCommand = GetInputCommand()
+function ApplyObfuscation(): void {
+    // // Obtain input command
+    // let InputCommand = GetInputCommand()
 
-    if (InputCommand == null) return null;
-    let InputCommandTokens = Modifier.CommandTokenise(InputCommand);
+    // if (InputCommand == null) return null;
+    // let InputCommandTokens = Modifier.CommandTokenise(InputCommand);
 
+    let InputCommandTokens = LastTokenised;
+    LastTokenised.forEach(Token => Token.Reset());
     // Obtain any excluded tokens
-    let TokensExcluded = GetIgnoredTokens(InputCommandTokens);
+    //let TokensExcluded: [string, string][] = []; // GetIgnoredTokens(InputCommandTokens);
 
     // Obtain selected options
     let SelectedOptions = document.querySelectorAll("input[id^=\"option_\"]") as NodeListOf<HTMLInputElement>;
@@ -71,28 +86,92 @@ function ApplyObfuscation(): string | null {
             let ClassName = Element.dataset.function as string;
             let ClassInstance: Modifier = Object.create((window as any)[ClassName].prototype);
 
-            let ClassInstanceArguments: any[] = [InputCommandTokens, TokensExcluded.map(x => x[1])];
+            let ExcludedTypes = JSON.parse(document.getElementById(Element.id + "_arg0").dataset.excluded_types);
+            let ClassInstanceArguments: any[] = [InputCommandTokens, ExcludedTypes];
+
             let SelectedOptionArguments = document.querySelectorAll("input[id^=\"" + Element.id + "_arg\"]") as NodeListOf<HTMLInputElement>;
             SelectedOptionArguments.forEach(OptionElement => {
                 ClassInstanceArguments.push(OptionElement.value);
             });
 
             ClassInstance.constructor.apply(ClassInstance, ClassInstanceArguments);
-            InputCommandTokens = ClassInstance.GenerateOutput();
+            ClassInstance.GenerateOutput();
         }
     });
-
-    return Modifier.TokensToString(InputCommandTokens);
 }
+
+function ReadJsonFile(this: HTMLInputElement): void {
+    let file = this.files[0];
+    if (file) {
+        var reader = new FileReader();
+        reader.readAsText(file, "UTF-8");
+        reader.onload = function (evt) {
+            ParseJson(JSON.parse(evt.target.result as string));
+        }
+        reader.onerror = function (evt) {
+            document.getElementById("fileContents").innerHTML = "error reading file";
+        }
+    }
+}
+
+function ParseJson(Input: FileFormat) {
+    var CommandOutput: HTMLTextAreaElement = document.getElementById("input_command") as HTMLTextAreaElement;
+    // Reset all currently enabled modifiers
+    document.querySelectorAll<HTMLInputElement>("input[id^=\"option_\"]:checked").forEach(p => p.click());
+    try {
+        // Construct command
+        CommandOutput.textContent = '';
+        CommandOutput.value = Input.command.map(Token => Object.entries(Token)[0][1]).join(" ");
+
+        LastTokenised = [];
+        Input.command.forEach(Entry => {
+            let TokenContent = Object.entries(Entry)[0][1];
+            let Type = Object.entries(Entry)[0][0]
+            var t = new Token(TokenContent.split(''));
+            t.SetType(Type);
+            LastTokenised.push(t);
+        });
+
+        UpdateUITokens(LastTokenised);
+
+        // Set options
+        Object.entries(Input.modifiers).forEach(([ModifierName, y]) => document.getElementById("option_" + ModifierName.toLowerCase()).click());
+    } catch {
+        console.error("Error");
+    }
+}
+
+
 
 document.addEventListener("DOMContentLoaded", UpdateTokens);
 document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("JsonFile")?.addEventListener("change", ReadJsonFile);
     document.getElementById("input_command")?.addEventListener("keyup", UpdateTokens);
     document.getElementById("obfuscation_run")?.addEventListener("click", () => {
-        var output = document.querySelector('div#output_command') as HTMLDivElement;
-        output.textContent = ApplyObfuscation();
-        output.style.fontFamily = 'Monospace';
+        ApplyObfuscation();
     });
+    //document.querySelectorAll<HTMLInputElement>("#context-menu>li").forEach(p => { p.addEventListener("click", x); });
+
     document.querySelectorAll<HTMLInputElement>("input[type=range].probability").forEach(p => { p.addEventListener("input", _ => { if (p.nextElementSibling) p.nextElementSibling.innerHTML = 'p = ' + p.value; }); p.dispatchEvent(new Event("input")) });
-    document.querySelectorAll<HTMLInputElement>("input[id^=\"option_\"]").forEach(p => { p.addEventListener("input", _ => { if (p.parentElement) if (!p.checked) p.parentElement.classList.remove('selected'); else p.parentElement.classList.add('selected') }); p.dispatchEvent(new Event("input")) });
+
+    document.querySelectorAll<HTMLInputElement>(".option_target").forEach((ContextMenuButton: HTMLDivElement) => {
+        // Create new Context Menu
+        var ContextMenu = document.getElementsByClassName("context-menu")[0].cloneNode(true) as HTMLMenuElement;
+        ContextMenu.removeChild(ContextMenu.children[0]);
+        ContextMenuButton.parentNode.insertBefore(ContextMenu, ContextMenuButton.nextSibling);
+
+        Array.from(ContextMenu.children).forEach((ContextMenuItem: HTMLElement) => {
+            ContextMenuItem.addEventListener("click", e => {
+                ContextMenuItem.dataset.active = (ContextMenuItem.dataset.active == "true" ? "" : "true");
+                var ExcludedTypes = JSON.parse(ContextMenuButton.dataset.excluded_types) as string[];
+                if (ContextMenuItem.dataset.active != "true") ExcludedTypes.push(ContextMenuItem.dataset.type); else ExcludedTypes = ExcludedTypes.filter(item => item !== ContextMenuItem.dataset.type);
+                ContextMenuButton.dataset.excluded_types = JSON.stringify(ExcludedTypes);
+                ContextMenuButton.innerText = UpdateExcludeText(ContextMenuButton, ContextMenu);
+            })
+        });
+        ContextMenuButton.innerText = UpdateExcludeText(ContextMenuButton, ContextMenu);
+        ContextMenuButton.addEventListener("click", _ => ShowContextMenu(ContextMenu, ContextMenuButton))
+    });
+
+    document.querySelectorAll<HTMLInputElement>("input[id^=\"option_\"]").forEach(p => { p.addEventListener("change", _ => { if (p.parentElement) if (!p.checked) p.parentElement.classList.remove('selected'); else p.parentElement.classList.add('selected') }); p.dispatchEvent(new Event("change")) });
 });

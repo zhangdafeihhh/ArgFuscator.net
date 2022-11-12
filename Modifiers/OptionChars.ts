@@ -2,8 +2,8 @@ class OptionChars extends Modifier {
     private ProvidedOptionChar: Char;
     private OutputOptionChars: Char[];
 
-    constructor(InputCommand: Token[], IgnoreTokens: number[], ProvidedOptionChar: string | null, OutputOptionChars: string | null) {
-        super(InputCommand, IgnoreTokens);
+    constructor(InputCommand: Token[], ExcludedTypes: string[], ProvidedOptionChar: string | null, OutputOptionChars: string | null) {
+        super(InputCommand, ExcludedTypes);
         if (ProvidedOptionChar?.length != 1)
             throw Error(`Unexpected ProvidedOptionChar length (expecting 1, found ${ProvidedOptionChar?.length})`);
         if (OutputOptionChars == null || OutputOptionChars.length == 0)
@@ -13,18 +13,16 @@ class OptionChars extends Modifier {
         this.OutputOptionChars = OutputOptionChars.split('').map(x => x as String as Char);
     }
 
-    GenerateOutput(): Token[] {
-        let result: Token[] = [];
+    GenerateOutput(): void {
         var This = this;
-        this.InputCommandTokens.forEach(chars => {
-            var Token: Token = [] as Char[] as Token;
-            chars.forEach(char => {
-                if (!chars.ReadOnly && char == This.ProvidedOptionChar)
-                    char = Modifier.ChooseRandom(This.OutputOptionChars);
-                Token.push(char);
-            });
-            result.push(Token);
+        this.InputCommandTokens.forEach(Token => {
+             var NewTokenContent: Char[] = Token.GetContent();
+
+            if (!This.ExcludedTypes.includes(Token.GetType()) && NewTokenContent[0] == This.ProvidedOptionChar){
+
+                NewTokenContent[0] = Modifier.ChooseRandom(This.OutputOptionChars);
+                Token.SetContent(NewTokenContent);
+            }
         });
-        return result;
     }
 }

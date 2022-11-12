@@ -2,36 +2,34 @@ class QuoteInsertion extends Modifier {
     private static readonly QuoteCharacter: Char = new String("\"") as Char;
     private Probability: number;
 
-    constructor(InputCommand: Token[], IgnoreTokens: number[], Probability: string) {
-        super(InputCommand, IgnoreTokens);
+    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string) {
+        super(InputCommand, ExcludedTypes);
 
         this.Probability = Modifier.ParseProbability(Probability);
     }
 
-    GenerateOutput(): Token[] {
-        let result: Token[] = [];
+    GenerateOutput(): void {
         var This = this;
-        this.InputCommandTokens.forEach(function (chars) {
-            var Token: Token = [] as Char[] as Token;
+        this.InputCommandTokens.forEach(function (Token) {
+            var NewTokenContent: Char[] = [];
             var i = 0;
-            chars.forEach(char => {
+            Token.GetContent().forEach(char => {
                 // Add current char to result string
-                Token.push(char);
+                NewTokenContent.push(char);
 
                 // Ensure (a) char is not read-only
                 //        (b) probability tells us we will insert a char from the range
-                if (!chars.ReadOnly && This.CoinFlip(This.Probability)) {
+                if (!This.ExcludedTypes.includes(Token.GetType()) && This.CoinFlip(This.Probability)) {
                     do {
-                        Token.push(QuoteInsertion.QuoteCharacter);
+                        NewTokenContent.push(QuoteInsertion.QuoteCharacter);
                         i++;
                     } while (This.CoinFlip(This.Probability * (0.9 ** i)));
                 }
             });
             if (i % 2 != 0)
-                Token.push(QuoteInsertion.QuoteCharacter);
+                NewTokenContent.push(QuoteInsertion.QuoteCharacter);
 
-            result.push(Token);
+            Token.SetContent(NewTokenContent);
         });
-        return result;
     }
 }

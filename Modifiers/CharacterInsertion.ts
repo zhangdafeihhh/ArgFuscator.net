@@ -2,8 +2,8 @@ class CharacterInsertion extends Modifier {
     private CharacterInsertRange: Char[];
     private Probability: number;
 
-    constructor(InputCommand: Token[], IgnoreTokens: number[], Probability: string, Characters: string) {
-        super(InputCommand, IgnoreTokens);
+    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, Characters: string) {
+        super(InputCommand, ExcludedTypes);
 
         this.Probability = Modifier.ParseProbability(Probability);
 
@@ -14,26 +14,25 @@ class CharacterInsertion extends Modifier {
         this.CharacterInsertRange = Characters.split('').map(x => x as String as Char);
     }
 
-    GenerateOutput(): Token[] {
-        let result: Token[] = [];
+    GenerateOutput(): void {
         var This = this;
-        this.InputCommandTokens.forEach(function (chars) {
-            var Token: Token = [] as Char[] as Token;
-            chars.forEach(char => {
+        this.InputCommandTokens.forEach(function (Token: Token) {
+            var NewTokenContent: Char[] = [];
+            Token.GetContent().forEach(char => {
                 // Add current char to result string
-                Token.push(char);
+                NewTokenContent.push(char);
 
                 // Ensure (a) char is not read-only
                 //        (b) probability tells us we will insert a char from the range
                 var i = 0;
-                if (!chars.ReadOnly && This.CoinFlip(This.Probability))
+                if (!This.ExcludedTypes.includes(Token.GetType()) && This.CoinFlip(This.Probability))
                     do {
-                        Token.push(Modifier.ChooseRandom(This.CharacterInsertRange));
+                        NewTokenContent.push(Modifier.ChooseRandom(This.CharacterInsertRange));
                         i++;
                     } while (This.CoinFlip(This.Probability * (0.9 ** i)));
             });
-            result.push(Token);
+
+            Token.SetContent(NewTokenContent);
         });
-        return result;
     }
 }
