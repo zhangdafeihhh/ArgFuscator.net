@@ -12,48 +12,44 @@ html {
 }
 
 #input_command {
-    width: 100%;
     height: 80px;
+    width: 100%;
 }
 
 legend {
-    font-weight: bold;
     font-size: larger;
+    font-weight: bold;
 }
 
 div.option {
     background: rgb(245, 245, 245);
-    color: #999;
-    margin-bottom: 5px;
-    font-weight: bold;
-    font-size: smaller;
     border-radius: 5px;
-}
-
-div.option.selected {
     color: black;
+    font-size: smaller;
+    font-weight: bold;
+    margin-bottom: 5px;
 }
 
 div.suboptions {
+    align-items: center;
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
-    padding-left: 22px;
-    font-weight: normal;
     font-size: smaller;
+    font-weight: normal;
+    padding-left: 22px;
 }
 
 div.suboptions>div {
-    flex: calc(50%-10px);
     display: flex;
+    flex: calc(50%-10px);
     flex-direction: column;
     padding: 3px;
 }
 
 div.suboptions>div.flex-row {
-    flex-direction: row;
     align-items: center;
     flex: 100%;
+    flex-direction: row;
 }
 
 div.suboptions>div.flex-row label {
@@ -65,17 +61,17 @@ a.explain {
 }
 
 a.explain::after {
+    color: #aaa;
     content: ' 🯄';
     font-size: small;
-    color: #aaa;
 }
 
 #tokens, #output_command {
+    align-content: flex-start;
+    counter-reset: token-counter 0;
     display: flex;
     flex-wrap: wrap;
-    counter-reset: token-counter 0;
     font-family: monospace;
-    align-content: flex-start;
 }
 
 #output_command {
@@ -83,6 +79,7 @@ a.explain::after {
     color: white;
     padding: 5px;
 }
+
 #output_command>div {
     padding: 2px;
 }
@@ -93,12 +90,12 @@ a.explain::after {
     border: 1px solid orange; */
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-right: 4px;
-    margin-bottom: 2px;
-    margin-top: 2px;
-    padding: 2px;
     counter-increment: token-counter 1;
     cursor: pointer;
+    margin-bottom: 2px;
+    margin-right: 4px;
+    margin-top: 2px;
+    padding: 2px;
 }
 
 #tokens>div.token[data-type="disabled"] {
@@ -107,8 +104,8 @@ a.explain::after {
 }
 
 #tokens>div.token[data-type="disabled"]::before {
-    color: #bbb;
     background: #666;
+    color: #bbb;
 }
 
 /* #tokens>div.token[data-type="command"] {
@@ -116,7 +113,6 @@ a.explain::after {
     color: red;
     border: 1px solid red;
 } */
-
 #tokens>div.token[data-type="command"]::before {
     background: red;
     color: white;
@@ -132,13 +128,18 @@ a.explain::after {
     color: white;
 }
 
+#tokens>div.token[data-type="url"]::before {
+    background: rgb(0, 146, 44);
+    color: white;
+}
+
 #tokens>div.token::before {
     background: rgb(4, 88, 133);
     color: white;
-    padding: 0 3px;
+    content: counter(token-counter);
     font-size: 10px;
     margin-right: 5px;
-    content: counter(token-counter);
+    padding: 0 3px;
 }
 
 #tokens>div.token[data-type="disabled"]::before {
@@ -152,55 +153,57 @@ a.explain::after {
 }
 
 .context-menu {
-    display: none;
-    position: absolute;
     background: white;
-    padding: 1px;
     border: 1px solid grey;
+    display: none;
     font-family: 'Arial';
+    padding: 1px;
+    position: absolute;
 }
-.context-menu > li {
-    padding: 2px 10px;
-    list-style-type: none;
+
+.context-menu>li {
     cursor: pointer;
+    list-style-type: none;
+    padding: 2px 10px;
 }
-.context-menu > li[data-active="true"] {
+
+.context-menu>li[data-active="true"] {
     background: rgb(19, 75, 163);
     color: white;
 }
 
 fieldset {
+    background: rgb(244, 239, 239);
     border: 0;
-    background: rgb(244, 239, 239);;
+    border: 1px solid #ddd;
     border-radius: 3px;
     margin-bottom: 5px;
-    border: 1px solid #ddd;
 }
 
-fieldset > legend {
+fieldset>legend {
     background: white;
-    color: brown;
     border-radius: 5px;
+    color: brown;
     padding: 0 5px;
 }
 
-
-div.button {
+.button {
+    border: 1px solid #b64913;
     color: #b64913;
+    cursor: pointer;
     display: inline-block;
     padding: 5px;
-    border: 1px solid #b64913;
+    text-decoration: none;
     user-select: none;
-    cursor: pointer;
 }
 
-div.button:hover {
+.button:hover {
     background: #b64913;
     color: white;
     transition: all .2s ease-in;
 }
 
-div.button:hover a {
+.button:hover a {
     color: white;
     transition: all .2s ease-in;
 }

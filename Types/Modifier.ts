@@ -23,7 +23,7 @@ abstract class Modifier {
         //this.InputCommandTokens.forEach(token => { token.ReadOnly = IgnoredTokens.indexOf(i) >= 0; i++; });
     }
 
-    protected CoinFlip(probability: number): boolean {
+    protected static CoinFlip(probability: number): boolean {
         return Math.random() > 1 - probability;
     }
 
@@ -32,6 +32,7 @@ abstract class Modifier {
     }
 
     public static CommandTokenise(InputCommand: string): Token[] {
+        if(InputCommand == null) return null;
         var InQuote: Char | null = null;
         var Tokens: Token[] = [];
         var TokenContent: Char[] = [];

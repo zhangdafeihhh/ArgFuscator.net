@@ -25,11 +25,11 @@ class CharacterInsertion extends Modifier {
                 // Ensure (a) char is not read-only
                 //        (b) probability tells us we will insert a char from the range
                 var i = 0;
-                if (!This.ExcludedTypes.includes(Token.GetType()) && This.CoinFlip(This.Probability))
+                if (!This.ExcludedTypes.includes(Token.GetType()) && Modifier.CoinFlip(This.Probability))
                     do {
                         NewTokenContent.push(Modifier.ChooseRandom(This.CharacterInsertRange));
                         i++;
-                    } while (This.CoinFlip(This.Probability * (0.9 ** i)));
+                    } while (Modifier.CoinFlip(This.Probability * (0.9 ** i)));
             });
 
             Token.SetContent(NewTokenContent);

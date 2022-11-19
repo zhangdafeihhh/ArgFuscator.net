@@ -1,4 +1,4 @@
-class OptionChars extends Modifier {
+class OptionCharSubstitution extends Modifier {
     private ProvidedOptionChar: Char;
     private OutputOptionChars: Char[];
 
