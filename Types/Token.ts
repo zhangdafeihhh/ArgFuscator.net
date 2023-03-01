@@ -9,10 +9,6 @@ class Token {
     private ContextMenu: HTMLMenuElement;
     private ClickHandler: (evt:Event) => void;
 
-    // constructor(TokenContent: string) {
-    //     this.TokenContent = TokenContent.split('') as Char[];
-    // }
-
     constructor(TokenContent: Char[]) {
         this.TokenContent = this.TokenContentOriginal = TokenContent;
         this.Type = "argument";
@@ -38,6 +34,10 @@ class Token {
 
     public GetContent(): Char[] {
         return this.TokenContent;
+    }
+
+    public GetStringContent(): string {
+        return this.TokenContent.join("");
     }
 
     public SetContent(Content: Char[], OutputOnly: boolean = true): void {

@@ -19,7 +19,6 @@ class OptionCharSubstitution extends Modifier {
              var NewTokenContent: Char[] = Token.GetContent();
 
             if (!This.ExcludedTypes.includes(Token.GetType()) && NewTokenContent[0] == This.ProvidedOptionChar){
-
                 NewTokenContent[0] = Modifier.ChooseRandom(This.OutputOptionChars);
                 Token.SetContent(NewTokenContent);
             }

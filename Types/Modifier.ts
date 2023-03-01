@@ -54,7 +54,13 @@ abstract class Modifier {
         if (Token?.length > 0)
             Tokens.push(new Token(TokenContent));
 
+        // Guess some command types
         Tokens[0].SetType("command");
+        Tokens.forEach(x => { let TokenText = x.GetStringContent();
+            if(TokenText.match(/^(?:\\\\[^\\]+|[a-zA-Z]:)((?:\\[^\\]+)+\\)?([^<>:]*)$/) || TokenText.match(/^[^<>:]+\.[a-zA-Z0-9]{2,4}$/)) x.SetType('path');
+
+            if(TokenText.startsWith('http:') ||TokenText.startsWith('https:')) x.SetType('url');
+        });
         return Tokens;
     }
 
@@ -70,7 +76,4 @@ abstract class Modifier {
 
     abstract GenerateOutput(): void;
 
-    // public static TokensToString(Tokens: Token[]): string {
-    //     return Tokens.map(x => x.join('')).join(Modifier.SeparationChar.toString());
-    // }
 }

@@ -83,7 +83,7 @@ function ApplyObfuscation(): void {
     //let TokensExcluded: [string, string][] = []; // GetIgnoredTokens(InputCommandTokens);
 
     // Obtain selected options
-    let SelectedOptions = document.querySelectorAll("input[id^=\"option_\"]:checked") as NodeListOf<HTMLInputElement>;
+    let SelectedOptions = document.querySelectorAll("input[data-function][id^=\"option_\"]:checked") as NodeListOf<HTMLInputElement>;
     if (SelectedOptions?.length <= 0) console.warn("No enabled modififiers.")
     SelectedOptions.forEach(Element => {
         let ClassName = Element.dataset.function as string;
@@ -94,7 +94,8 @@ function ApplyObfuscation(): void {
 
         let SelectedOptionArguments = document.querySelectorAll("input[id^=\"" + Element.id + "_arg\"]") as NodeListOf<HTMLInputElement>;
         SelectedOptionArguments.forEach(OptionElement => {
-            ClassInstanceArguments.push(OptionElement.value);
+
+            ClassInstanceArguments.push(OptionElement.type == 'checkbox' ? OptionElement.checked : OptionElement.value);
         });
 
         ClassInstance.constructor.apply(ClassInstance, ClassInstanceArguments);
@@ -140,7 +141,12 @@ function ParseJson(Input: FileFormat) {
         document.querySelectorAll<HTMLInputElement>("input[id^=\"option_\"]:checked").forEach(x => x.click())
         document.querySelectorAll<HTMLInputElement>("div[data-excluded_types]").forEach(ContextMenuButton => { ContextMenuButton.dataset.excluded_types = "[]"; ContextMenuButton.innerText = UpdateExcludeText(ContextMenuButton, ContextMenuButton.nextSibling as HTMLElement); })
         Object.entries(Input.modifiers).forEach(([ModifierName, _]) => {
-            document.getElementById("option_" + ModifierName.toLowerCase()).click();
+            let ModifierObject = document.getElementById("option_" + ModifierName.toLowerCase())
+            if(ModifierObject == null){
+                console.warn(`Could not find modifier "${ModifierName}"`)
+                return;
+            }
+            ModifierObject.click();
             Object.entries(Input.modifiers[ModifierName]).forEach(([Option, _]) => {
                 var value = Input.modifiers[ModifierName][Option];
                 if (Option == "ExcludedTypes") {
@@ -151,7 +157,9 @@ function ParseJson(Input: FileFormat) {
                 } else {
                     var SettingObject = document.querySelector<HTMLInputElement>("#" + ModifierName + " input[data-field='" + Option + "']");
 
-                    if (Array.isArray(value))
+                    if (SettingObject.type == 'checkbox')
+                        SettingObject.checked = value;
+                    else if (Array.isArray(value))
                         SettingObject.value = value.join('');
                     else
                         SettingObject.value = value;
@@ -177,12 +185,14 @@ function GenerateConfig(this: HTMLAnchorElement) {
         settings['ExcludedTypes'] = JSON.parse(x.parentNode.querySelector<HTMLInputElement>("div[data-excluded_types]").dataset.excluded_types);
         x.parentNode.querySelectorAll<HTMLInputElement>("input[data-field]").forEach(y => {
             var result = undefined;
-            if (y.type == "range")
+            if(y.type == "checkbox")
+                result = y.checked;
+            else if (y.type == "range")
                 result = Number(y.value);
             else if (y.dataset.type == "array")
-                result = y.value.split('')
+                result = y.value.split('');
             else
-                result = y.value
+                result = y.value;
 
             settings[y.dataset.field] = result;
         })

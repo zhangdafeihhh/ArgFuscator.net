@@ -101,6 +101,58 @@
                     </div>
                 </div>
             </div>
+
+            <div class="option" id="UrlTransformer">
+                <input type="checkbox" id="option_urltransformer" data-function="UrlTransformer" />
+                <label for="option_urltransformer">Enable <a class="explain">URL Transformer</a></label>
+                <div class="suboptions">
+                    <div class="flex-row">
+                        <label for="option_urltransformer_arg0">Apply to</label>
+                        <div class="option_target button" id="option_urltransformer_arg0" data-excluded_types="[&quot;command&quot;,&quot;argument&quot;,&quot;path&quot;]"></div>
+                    </div>
+                    <div class="flex-row">
+                        <label for="option_urltransformer_arg1">Probability</label>
+                        <input type="range" id="option_urltransformer_arg1" data-field="Probability" class="probability" min="0" max="1"
+                            step="0.01"><span></span>
+                    </div>
+                    <div class="flex-row">
+                        <input data-field="OmitProtocol" type="checkbox" id="option_urltransformer_arg2"></input>
+                        <label for="option_urltransformer_arg2">Omit protocol</label>
+
+                        <input data-field="TransformSlashes" type="checkbox" id="option_urltransformer_arg3"></input>
+                        <label for="option_urltransformer_arg3">Transform slashes</label>
+
+                        <input data-field="AlternateIPForm" type="checkbox" id="option_urltransformer_arg4" checked></input>
+                        <label for="option_urltransformer_arg4">Alternate IP form</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="option" id="FilePathTransformer">
+                <input type="checkbox" id="option_filepathtransformer" data-function="FilePathTransformer" />
+                <label for="option_filepathtransformer">Enable <a class="explain">File Path Transformer</a></label>
+                <div class="suboptions">
+                    <div class="flex-row">
+                        <label for="option_filepathtransformer_arg0">Apply to</label>
+                        <div class="option_target button" id="option_filepathtransformer_arg0" data-excluded_types="[&quot;command&quot;,&quot;argument&quot;,&quot;url&quot;]"></div>
+                    </div>
+                    <div class="flex-row">
+                        <label for="option_filepathtransformer_arg1">Probability</label>
+                        <input type="range" id="option_filepathtransformer_arg1" data-field="Probability" class="probability" min="0" max="1"
+                            step="0.01"><span></span>
+                    </div>
+                    <div class="flex-row">
+                        <input data-field="PathTraversal" type="checkbox" id="option_filepathtransformer_arg2" checked></input>
+                        <label for="option_filepathtransformer_arg2">Path traversal</label>
+
+                        <input data-field="TransformSlashes" type="checkbox" id="option_filepathtransformer_arg3" checked></input>
+                        <label for="option_filepathtransformer_arg3">Transform slashes</label>
+
+                        <input data-field="ExtraSlashes" type="checkbox" id="option_filepathtransformer_arg4" checked></input>
+                        <label for="option_filepathtransformer_arg4">Add extra slashes</label>
+                    </div>
+                </div>
+            </div>
         </fieldset>
     </div>
     <fieldset>
