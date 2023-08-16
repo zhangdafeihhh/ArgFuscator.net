@@ -2,7 +2,7 @@
     "compileOnSave": true,
     "compilerOptions": {
         "noImplicitAny": true,
-        "outFile": "./code.js",
+        "outFile": "gui/assets/js/code.js",
         "preserveConstEnums": true,
         "removeComments": true,
         "sourceMap": true,
@@ -10,9 +10,9 @@
         "target": "ES5",
         "lib": ["dom", "es2017"]
     },
-    "files": ["code.ts"],
+    "files": ["src/code.ts"],
     "include": [
-        "Types/*",
-        "Modifiers/*"
+        "src/Types/*",
+        "src/Modifiers/*"
     ],
 }

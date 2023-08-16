@@ -1,11 +1,8 @@
 class CharacterInsertion extends Modifier {
     private CharacterInsertRange: Char[];
-    private Probability: number;
 
     constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, Characters: string) {
-        super(InputCommand, ExcludedTypes);
-
-        this.Probability = Modifier.ParseProbability(Probability);
+        super(InputCommand, ExcludedTypes, Probability);
 
         // Parse character ranges
         if (Characters == null || Characters.length == 0)

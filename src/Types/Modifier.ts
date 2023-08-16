@@ -8,15 +8,17 @@ function CharEquals(char1: Char, char2: Char): boolean {
 
 abstract class Modifier {
     protected InputCommandTokens: Token[] = [];
-    protected ExcludedTypes: string[];
+    protected ExcludedTypes: string[] = ['disabled'];
+    protected Probability: number;
 
     private static SeparationChar: Char = ' ' as String as Char;
     private static QuoteChars: Char[] = ['"' as String as Char, "'" as String as Char];
 
-    constructor(InputCommand: Token[], ExcludedTypes: string[]) {
+    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string) {
         // Parse inputs
         this.InputCommandTokens = InputCommand
-        this.ExcludedTypes = ExcludedTypes;
+        this.ExcludedTypes.push(...ExcludedTypes);
+        this.Probability = Modifier.ParseProbability(Probability);
 
         // Mark ignored tokens as read-only
         //var i = 0;
@@ -57,9 +59,10 @@ abstract class Modifier {
         // Guess some command types
         Tokens[0].SetType("command");
         Tokens.forEach(x => { let TokenText = x.GetStringContent();
-            if(TokenText.match(/^(?:\\\\[^\\]+|[a-zA-Z]:)((?:\\[^\\]+)+\\)?([^<>:]*)$/) || TokenText.match(/^[^<>:]+\.[a-zA-Z0-9]{2,4}$/)) x.SetType('path');
+            let _TokenText = TokenText.replace(/(['"])(.*?)\1/g, '$2') //Remove any surrounding quotes
+            if(_TokenText.match(/^(?:\\\\[^\\]+|[a-zA-Z]:)((?:\\[^\\]+)+\\)?([^<>:]*)$/) || _TokenText.match(/^[^<>:]+\.[a-zA-Z0-9]{2,4}$/)) x.SetType('path');
 
-            if(TokenText.startsWith('http:') ||TokenText.startsWith('https:')) x.SetType('url');
+            if(_TokenText.startsWith('http:') || _TokenText.startsWith('https:')) x.SetType('url');
         });
         return Tokens;
     }

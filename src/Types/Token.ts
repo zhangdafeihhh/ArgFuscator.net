@@ -33,7 +33,7 @@ class Token {
     }
 
     public GetContent(): Char[] {
-        return this.TokenContent;
+        return this.TokenContent.slice();
     }
 
     public GetStringContent(): string {

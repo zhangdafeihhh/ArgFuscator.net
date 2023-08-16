@@ -51,10 +51,12 @@ function UpdateTokens(): void {
 function UpdateUITokens(Tokenised: Token[]): void {
     ConfigTokenHTML.innerHTML = "";
     OutputTokenHTML.innerHTML = "";
-    Tokenised?.forEach(Token => {
+    Tokenised?.forEach((Token, Index, Array) => {
         //     LatestIgnoredTokens.forEach(x => { if (TokenEquals(x, Token)) Token.ReadOnly = true });
-        var OutputTokenElement = document.createElement('div');
+        var OutputTokenElement = document.createElement('span');
         var ConfigTokenElement = document.createElement('div');
+        let SpaceElement = document.createElement('span');
+        SpaceElement.innerHTML = "&nbsp;";
 
         ConfigTokenElement.classList.add("token");
         //     OutputTokenElement.addEventListener("click", ToggleToken)
@@ -62,6 +64,9 @@ function UpdateUITokens(Tokenised: Token[]): void {
         OutputTokenHTML.appendChild(OutputTokenElement);
 
         Token.SetElements(ConfigTokenElement, OutputTokenElement);
+        if(Index < Array.length - 1){
+            OutputTokenHTML.appendChild(SpaceElement);
+        }
         //     if ((LatestIgnoredTokens.length == 0 && IsFirst) || Token.ReadOnly) OutputTokenElement.click();
         //     IsFirst = false;
     });
@@ -123,23 +128,28 @@ function ParseJson(Input: FileFormat) {
     document.querySelectorAll<HTMLInputElement>("input[id^=\"option_\"]:checked").forEach(p => p.click());
     try {
         // Construct command
-        CommandOutput.textContent = '';
-        CommandOutput.value = Input.command.map(Token => Object.entries(Token)[0][1]).join(" ");
+        let CurrentCommand = GetInputCommand()
+        let NewCommand = Input.command.map(Token => Object.entries(Token)[0][1]).join(" ")
+        if(Input.command && (CurrentCommand == null || CurrentCommand == '' || CurrentCommand == NewCommand || confirm('Would you like to replace the existing command with the command that is embedded in the provided config file?\n(Clicking "Cancel" will still apply all obfuscation options)'))){
+            CommandOutput.textContent = '';
+            CommandOutput.value = NewCommand;
 
-        LastTokenised = [];
-        Input.command.forEach(Entry => {
-            let TokenContent = Object.entries(Entry)[0][1];
-            let Type = Object.entries(Entry)[0][0]
-            var t = new Token(TokenContent.split(''));
-            t.SetType(Type);
-            LastTokenised.push(t);
-        });
+            LastTokenised = [];
+            Input.command.forEach(Entry => {
+                let TokenContent = Object.entries(Entry)[0][1];
+                let Type = Object.entries(Entry)[0][0]
+                var t = new Token(TokenContent.split(''));
+                t.SetType(Type);
+                LastTokenised.push(t);
+            });
 
-        UpdateUITokens(LastTokenised);
+            UpdateUITokens(LastTokenised);
+     }
 
         // Set options
         document.querySelectorAll<HTMLInputElement>("input[id^=\"option_\"]:checked").forEach(x => x.click())
         document.querySelectorAll<HTMLInputElement>("div[data-excluded_types]").forEach(ContextMenuButton => { ContextMenuButton.dataset.excluded_types = "[]"; ContextMenuButton.innerText = UpdateExcludeText(ContextMenuButton, ContextMenuButton.nextSibling as HTMLElement); })
+        var i = 0;
         Object.entries(Input.modifiers).forEach(([ModifierName, _]) => {
             let ModifierObject = document.getElementById("option_" + ModifierName.toLowerCase())
             if(ModifierObject == null){
@@ -147,6 +157,7 @@ function ParseJson(Input: FileFormat) {
                 return;
             }
             ModifierObject.click();
+            moveItem(ModifierObject.parentElement.parentElement, i++);
             Object.entries(Input.modifiers[ModifierName]).forEach(([Option, _]) => {
                 var value = Input.modifiers[ModifierName][Option];
                 if (Option == "ExcludedTypes") {
@@ -244,4 +255,75 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }); p.dispatchEvent(new Event("change"))
     });
+    slist(document.getElementById("options-panel"));
 });
+
+
+function slist (target:HTMLElement) {
+    // (A) SET CSS + GET ALL LIST ITEMS
+    target.classList.add("slist");
+    function getOptionItems(){ return target.querySelectorAll(".slist>div>.drag") }
+    let items: any = getOptionItems(), current:any = null, eventTarget:any = null;
+
+    // (B) MAKE ITEMS DRAGGABLE + SORTABLE
+    for (let i of items) {
+      // (B1) ATTACH DRAGGABLE
+      i.draggable = true;
+
+      // (B2) DRAG START - YELLOW HIGHLIGHT DROPZONES
+      i.ondragstart = () => {
+        current = i.parentElement;
+        for (let it of items) {
+          if (it.parentElement != current) { it.parentElement.classList.add("hint"); }
+        }
+      };
+
+      // (B3) DRAG ENTER - RED HIGHLIGHT DROPZONE
+      i.ondragenter = (event:Event) => {
+        eventTarget = event.target;
+        event.stopPropagation();
+        event.preventDefault();
+        if (i.parentElement != current) { i.parentElement.classList.add("active"); }
+      };
+
+      // (B4) DRAG LEAVE - REMOVE RED HIGHLIGHT
+      i.ondragleave = (event:Event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        if(eventTarget == event.target)
+            i.parentElement.classList.remove("active");
+      }
+
+      // (B5) DRAG END - REMOVE ALL HIGHLIGHTS
+      i.ondragend = () => { for (let it of items) {
+          it.parentElement.classList.remove("hint");
+          it.parentElement.classList.remove("active");
+      }};
+
+      // (B6) DRAG OVER - PREVENT THE DEFAULT "DROP", SO WE CAN DO OUR OWN
+      i.ondragover = (event:Event) => event.preventDefault();
+
+      // (B7) ON DROP - DO SOMETHING
+      i.ondrop = (event:Event) => {
+        event.stopPropagation();
+        event.preventDefault();
+        if (i.parentElement != current) {
+          let currentpos = 0, droppedpos = 0, items=getOptionItems();
+          for (let it=0; it<items.length; it++) {
+            if (current == items[it].parentElement) { currentpos = it; }
+            if (i.parentElement == items[it].parentElement) { droppedpos = it; }
+          }
+          if (currentpos < droppedpos) {
+            i.parentElement.parentNode.insertBefore(current, i.parentElement.nextSibling);
+          } else {
+            i.parentElement.parentNode.insertBefore(current, i.parentElement);
+          }
+        }
+      };
+    }
+  }
+
+function moveItem(current:Element, newPosition: number){
+    let items = Array.from(current.parentElement.childNodes).filter(x => x.nodeType == 1)
+    current.parentNode.insertBefore(current, items[newPosition])
+}

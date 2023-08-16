@@ -1,11 +1,8 @@
 class QuoteInsertion extends Modifier {
     private static readonly QuoteCharacter: Char = new String("\"") as Char;
-    private Probability: number;
 
     constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string) {
-        super(InputCommand, ExcludedTypes);
-
-        this.Probability = Modifier.ParseProbability(Probability);
+        super(InputCommand, ExcludedTypes, Probability);
     }
 
     GenerateOutput(): void {

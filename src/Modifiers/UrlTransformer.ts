@@ -1,11 +1,10 @@
 class UrlTransformer extends Modifier {
-    private Probability: number;
     private LeaveOutProtocol: boolean;
     private SubstituteSlashes: boolean;
     private IpToHex: boolean;
 
     constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, LeaveOutProtocol: boolean, SubstituteSlashes: boolean, IpToHex: boolean) {
-        super(InputCommand, ExcludedTypes);
+        super(InputCommand, ExcludedTypes, Probability);
 
         this.Probability = Modifier.ParseProbability(Probability);
 

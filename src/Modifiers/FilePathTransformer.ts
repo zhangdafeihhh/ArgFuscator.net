@@ -1,12 +1,10 @@
 class FilePathTransformer extends Modifier {
-    private Probability: number;
     private PathTraversal: boolean;
     private SubstituteSlashes: boolean;
     private ExtraSlashes: boolean;
 
     constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, PathTraversal: boolean, SubstituteSlashes: boolean, ExtraSlashes: boolean) {
-        super(InputCommand, ExcludedTypes);
-        this.Probability = Modifier.ParseProbability(Probability);
+        super(InputCommand, ExcludedTypes, Probability);
 
         this.PathTraversal = PathTraversal;
         this.SubstituteSlashes = SubstituteSlashes;

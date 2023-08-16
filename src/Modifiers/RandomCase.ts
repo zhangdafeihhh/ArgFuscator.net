@@ -1,9 +1,6 @@
 class RandomCase extends Modifier {
-    private Probability: number;
-
     constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string) {
-        super(InputCommand, ExcludedTypes);
-        this.Probability = Modifier.ParseProbability(Probability);
+        super(InputCommand, ExcludedTypes, Probability);
     }
 
     GenerateOutput(): void {
