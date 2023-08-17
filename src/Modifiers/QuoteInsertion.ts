@@ -1,5 +1,6 @@
+@Modifier.Register("Quote Insertion", "Add pairs of quotes to command-line arguments.", ['command'])
 class QuoteInsertion extends Modifier {
-    private static readonly QuoteCharacter: Char = new String("\"") as Char;
+    private static QuoteCharacter: Char = new String("\"") as Char;
 
     constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string) {
         super(InputCommand, ExcludedTypes, Probability);
@@ -14,8 +15,8 @@ class QuoteInsertion extends Modifier {
                 // Add current char to result string
                 NewTokenContent.push(char);
 
-                // Ensure (a) char is not read-only
-                //        (b) probability tells us we will insert a char from the range
+                // Ensure (a) char is not excluded
+                //        (b) probability tells us we will insert quotes
                 if (!This.ExcludedTypes.includes(Token.GetType()) && Modifier.CoinFlip(This.Probability)) {
                     do {
                         NewTokenContent.push(QuoteInsertion.QuoteCharacter);

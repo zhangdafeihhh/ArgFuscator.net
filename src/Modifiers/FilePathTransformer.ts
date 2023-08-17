@@ -1,4 +1,10 @@
+
+@Modifier.AddArgument("PathTraversal", "checkbox", "Path traversal", "")
+@Modifier.AddArgument("SubstituteSlashes", "checkbox", "Transform slashes", "")
+@Modifier.AddArgument("ExtraSlashes", "checkbox", "Extra slashes", "")
+@Modifier.Register("File Path Transformer", "Change the format in which file paths are represented.", ['command', 'argument', 'url'])
 class FilePathTransformer extends Modifier {
+
     private PathTraversal: boolean;
     private SubstituteSlashes: boolean;
     private ExtraSlashes: boolean;

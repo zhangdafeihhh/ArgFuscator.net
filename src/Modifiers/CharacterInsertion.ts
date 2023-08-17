@@ -1,3 +1,6 @@
+
+@Modifier.AddArgument("Characters", "text", "Accepted Characters", "Paste all characters, without separators, here")
+@Modifier.Register("Character Insertion", "Add arbitrary characters to command-line arguments.", ['command', 'path', 'url'])
 class CharacterInsertion extends Modifier {
     private CharacterInsertRange: Char[];
 
@@ -19,7 +22,7 @@ class CharacterInsertion extends Modifier {
                 // Add current char to result string
                 NewTokenContent.push(char);
 
-                // Ensure (a) char is not read-only
+                // Ensure (a) char is not excluded
                 //        (b) probability tells us we will insert a char from the range
                 var i = 0;
                 if (!This.ExcludedTypes.includes(Token.GetType()) && Modifier.CoinFlip(This.Probability))

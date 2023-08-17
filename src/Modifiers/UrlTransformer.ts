@@ -1,3 +1,7 @@
+@Modifier.AddArgument("LeaveOutProtocol", "checkbox", "Omit Protocol", "")
+@Modifier.AddArgument("SubstituteSlashes", "checkbox", "Transform Slashes", "")
+@Modifier.AddArgument("IpToHex", "checkbox", "Alternate IP Form", "")
+@Modifier.Register("URL Transformer", "Change the format in which URLs are represented.", ['command', 'argument', 'path'])
 class UrlTransformer extends Modifier {
     private LeaveOutProtocol: boolean;
     private SubstituteSlashes: boolean;

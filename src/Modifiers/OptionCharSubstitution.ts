@@ -1,3 +1,6 @@
+@Modifier.AddArgument("ProvidedOptionChar", "text", "Used Option Char", "Single option char here")
+@Modifier.AddArgument("OutputOptionChars", "text", "Possible option chars", "All alternative option chars here, without separator")
+@Modifier.Register("Option Char Substitution","Replace option characters, such as '/' or '-' with acceptable alternatives.",  ['command', 'path', 'url'])
 class OptionCharSubstitution extends Modifier {
     private ProvidedOptionChar: Char;
     private OutputOptionChars: Char[];

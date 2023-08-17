@@ -1,21 +1,33 @@
+:root {
+    --theme-colour: #b64913;
+}
+
 html {
     font-family: Arial;
+}
+
+body {
+    background-color: white;
+    margin-bottom: calc(20px + 2.5em);
 }
 
 header {
     display: flex;
     gap: 10px;
     align-items: center;
+    padding-left: 10px;
     /* background-color: #bfbfbf;
     color: #000; */
 }
+
 header img.site-logo {
-    height: 4em;
+    height: 3em;
 }
 
 .container {
     display: flex;
     width: 100%;
+    gap: 5px;
 }
 
 .container>* {
@@ -38,8 +50,9 @@ div.option {
     color: black;
     font-size: smaller;
     font-weight: bold;
-    margin-bottom: 5px;
     display: flex;
+    gap: 5px;
+    padding: 2px;
 }
 
 div.option>div.title {
@@ -53,10 +66,11 @@ div.body {
 .probs-container {
     float: right;
 }
+
 .probs-slider {
     width: 40px;
-    border: 1px solid #b64913;
-    color: #b64913;
+    border: 1px solid var(--theme-colour);
+    color: var(--theme-colour);
 }
 
 
@@ -69,7 +83,7 @@ div.option>div.drag {
 }
 
 div.body input {
-    accent-color: #b64913;
+    accent-color: var(--theme-colour);
 }
 
 div.body input[type=text] {
@@ -77,13 +91,14 @@ div.body input[type=text] {
 }
 
 div.body input[type=text]:placeholder-shown {
-    accent-color: red;
-    border: 1px solid red;
+    accent-color: rgb(202, 8, 8);
+    border: 2px dotted rgb(202, 8, 8);
 }
 
 div.suboptions {
     align-items: center;
     display: flex;
+    gap: 5px;
     flex-wrap: wrap;
     font-size: smaller;
     font-weight: normal;
@@ -92,9 +107,17 @@ div.suboptions {
 
 div.suboptions>div {
     display: flex;
-    flex: calc(50%-10px);
+    gap: 5px;
+    /* flex: calc(50%-10px); */
     flex-direction: column;
-    padding: 3px;
+    flex-wrap: wrap;
+}
+
+div.suboptions>div>div.suboption {
+    flex: 1;
+    display: flex;
+    gap: 5px;
+    align-items: center;
 }
 
 div.suboptions>div.flex-row {
@@ -117,19 +140,25 @@ a.explain::after {
     font-size: small;
 }
 
-#tokens, #output_command {
+#tokens,
+#output_command {
+    font-family: monospace;
+    min-height: 1.5em;
+}
+
+#tokens {
     align-content: flex-start;
     counter-reset: token-counter 0;
     display: flex;
     flex-wrap: wrap;
-    font-family: monospace;
-    min-height: 1em;
+    gap: 2px 4px;
 }
 
 #output_command {
     background: rgb(53, 52, 52);
     color: white;
     padding: 5px;
+    overflow-wrap: anywhere;
 }
 
 #output_command>div {
@@ -144,9 +173,6 @@ a.explain::after {
     border-radius: 5px;
     counter-increment: token-counter 1;
     cursor: pointer;
-    margin-bottom: 2px;
-    margin-right: 4px;
-    margin-top: 2px;
     padding: 2px;
 }
 
@@ -225,23 +251,25 @@ a.explain::after {
 }
 
 fieldset {
-    background: rgb(244, 239, 239);
+    background: color-mix(in srgb, var(--theme-colour) 5%, white); /*  rgb(244, 239, 239); */
     border: 0;
     border: 1px solid #ddd;
     border-radius: 3px;
-    margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px 0px;
 }
 
 fieldset>legend {
     background: white;
     border-radius: 5px;
-    color: brown;
+    color: color-mix(in srgb, var(--theme-colour) 80%, black);
     padding: 0 5px;
 }
 
 .button {
-    border: 1px solid #b64913;
-    color: #b64913;
+    border: 1px solid var(--theme-colour);
+    color: var(--theme-colour);
     cursor: pointer;
     display: inline-block;
     padding: 5px;
@@ -250,7 +278,7 @@ fieldset>legend {
 }
 
 .button:hover {
-    background: #b64913;
+    background: var(--theme-colour);
     color: white;
     transition: all .2s ease-in;
 }
@@ -275,4 +303,23 @@ fieldset>legend {
     border: 1px dotted #ffa5a5;
     background: #DB682E;
     color: white;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background-color: inherit;
+}
+
+#obfuscation-bar {
+    position: relative;
+    margin: 10px auto;
+    padding: 0 10px;
+}
+
+.inbetween {
+    height: 5px;
+    background: grey;
 }

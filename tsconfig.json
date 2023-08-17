@@ -1,6 +1,7 @@
 {
     "compileOnSave": true,
     "compilerOptions": {
+        "experimentalDecorators": true,
         "noImplicitAny": true,
         "outFile": "gui/assets/js/code.js",
         "preserveConstEnums": true,

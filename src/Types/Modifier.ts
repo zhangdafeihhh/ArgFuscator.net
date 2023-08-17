@@ -6,6 +6,27 @@ function CharEquals(char1: Char, char2: Char): boolean {
     return char1.toString() == char2.toString();
 }
 
+class ModifierDefinition {
+    public Name: string;
+    public Description: string;
+    public DefaultExcludedTypes: string[];
+    public Arguments: ModifierArgumentsDefinition[] = [];
+    public Function: Function;
+    public constructor(init?:Partial<ModifierDefinition>) {
+        Object.assign(this, init);
+    }
+}
+
+class ModifierArgumentsDefinition {
+    public InternalName: string;
+    public PublicName: string;
+    public Description: string;
+    public Type: string;
+    public constructor(init?:Partial<ModifierArgumentsDefinition>) {
+        Object.assign(this, init);
+    }
+}
+
 abstract class Modifier {
     protected InputCommandTokens: Token[] = [];
     protected ExcludedTypes: string[] = ['disabled'];
@@ -19,6 +40,8 @@ abstract class Modifier {
         this.InputCommandTokens = InputCommand
         this.ExcludedTypes.push(...ExcludedTypes);
         this.Probability = Modifier.ParseProbability(Probability);
+
+        // this.Arguments = [];
 
         // Mark ignored tokens as read-only
         //var i = 0;
@@ -79,4 +102,35 @@ abstract class Modifier {
 
     abstract GenerateOutput(): void;
 
+    private static Implementations: Record<string, ModifierDefinition> = {};
+
+    public static Register = (Name: string, Description: string, DefaultExcludedTypes: string[]) => {
+        return (target: Function) => {
+            Modifier.Implementations[target.name] = new ModifierDefinition({ Name:Name, Description: Description, DefaultExcludedTypes: DefaultExcludedTypes, Function:target});
+        }
+      }
+
+    public static AddArgument = (name: string, type: string, readableName: string, description: string) => {
+        return (target: Function) => {
+            if(!(target.name in Modifier.Implementations))
+                throw Error(`Unexpected argument declaration for modifier ${target.name}`)
+            let obj = Modifier.Implementations[target.name]
+            if(obj.Function.toString().split('\n')[0].indexOf(name) <= -1){
+                console.warn(obj.Function.toString().split('\n')[0])
+                throw Error(`Unexpected argument declaration for non-existing property ${name} on modifier ${target.name}`)
+            }
+
+            obj.Arguments.unshift(new ModifierArgumentsDefinition({InternalName:name, Type:type, PublicName:readableName, Description:description}));
+        }
+      }
+
+    public static GetAllModifiers(): Record<string, ModifierDefinition> {
+        return Modifier.Implementations;
+    }
+}
+
+type Constructor<T> = {
+    new(...args: any[]): T;
+    readonly prototype: T;
+    name: string;
 }

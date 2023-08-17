@@ -1,3 +1,4 @@
+@Modifier.Register("RaNdOmCaSe", "Flip UPPERCASE characters to their lowercase equivalent, and vice versa.", ['url'])
 class RandomCase extends Modifier {
     constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string) {
         super(InputCommand, ExcludedTypes, Probability);
@@ -15,7 +16,6 @@ class RandomCase extends Modifier {
                     } else {
                         NewTokenContent.push(char);
                     }
-                    //Token.push(Modifier.CoinFlip(this.Probability) === true ? (char.toLowerCase() as String == char ? new String(char.toUpperCase()) : new String(char.toLowerCase())) : char) as Char;
                     Token.SetContent(NewTokenContent);
                 }
             });
