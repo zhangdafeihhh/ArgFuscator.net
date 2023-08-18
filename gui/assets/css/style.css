@@ -1,5 +1,16 @@
 :root {
     --theme-colour: #b64913;
+
+    --colour-1: #295498;
+    --colour-2: #db4437;
+    --colour-3: #f4b400;
+    --colour-4: #0f9d58;
+    --colour-5: #ab47bc;
+    --colour-6: #00acc1;
+    --colour-7: #ff7043;
+    --colour-8: #9e9d24;
+    --colour-9: #5c6bc0;
+    --colour-10: #f06292;
 }
 
 html {
@@ -72,7 +83,6 @@ div.body {
     border: 1px solid var(--theme-colour);
     color: var(--theme-colour);
 }
-
 
 div.option>div.drag {
     width: 30px;
@@ -167,8 +177,6 @@ a.explain::after {
 
 #tokens>div.token {
     background: white;
-    /* color: orange;
-    border: 1px solid orange; */
     border: 1px solid #ccc;
     border-radius: 5px;
     counter-increment: token-counter 1;
@@ -186,33 +194,23 @@ a.explain::after {
     color: #bbb;
 }
 
-/* #tokens>div.token[data-type="command"] {
-    background: white;
-    color: red;
-    border: 1px solid red;
-} */
 #tokens>div.token[data-type="command"]::before {
-    background: red;
+    background: var(--colour-2);
     color: white;
 }
 
-/* #tokens>div.token[data-type="path"] {
-    background: white;
-    color: rgb(25, 66, 132);
-    border: 1px solid rgb(25, 66, 132);
-} */
 #tokens>div.token[data-type="path"]::before {
-    background: rgb(111, 4, 111);
+    background: var(--colour-3);
     color: white;
 }
 
 #tokens>div.token[data-type="url"]::before {
-    background: rgb(0, 146, 44);
+    background: var(--colour-4);
     color: white;
 }
 
 #tokens>div.token::before {
-    background: rgb(4, 88, 133);
+    background: var(--colour-1);
     color: white;
     content: counter(token-counter);
     font-size: 10px;
@@ -251,7 +249,8 @@ a.explain::after {
 }
 
 fieldset {
-    background: color-mix(in srgb, var(--theme-colour) 5%, white); /*  rgb(244, 239, 239); */
+    background: color-mix(in srgb, var(--theme-colour) 5%, white);
+    /*  rgb(244, 239, 239); */
     border: 0;
     border: 1px solid #ddd;
     border-radius: 3px;

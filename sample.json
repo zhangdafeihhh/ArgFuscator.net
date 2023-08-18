@@ -1,0 +1,1 @@
+{"command": [{"command": "cerutil"}, {"argument": "-f"}, {"argument": "-urlcache"}, {"argument": "-split"}, {"path": "https://google.com/robots.txt"}, {"path": "output.txt"}], "modifiers": {"RandomCase":{"Probability": 0.5}, "OptionChars":{}, "CharacterInsertion":{}}}

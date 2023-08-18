@@ -8,10 +8,13 @@ class Token {
     private TokenContent: Char[];
     private ContextMenu: HTMLMenuElement;
     private ClickHandler: (evt:Event) => void;
+    private TokenTypes: Record<string, string>;
 
     constructor(TokenContent: Char[]) {
         this.TokenContent = this.TokenContentOriginal = TokenContent;
         this.Type = "argument";
+        this.TokenTypes = {}
+        Array.from(document.querySelector('menu').children).forEach((x: HTMLLIElement) => this.TokenTypes[x.dataset.type] = x.innerText);
     }
 
     public SetElements(ConfigElement: HTMLElement, OutputElement: HTMLElement) {
@@ -53,8 +56,10 @@ class Token {
 
     public SetType(Type: string): void {
         this.Type = Type;
-        if (this.ConfigElement)
+        if (this.ConfigElement){
             this.ConfigElement.dataset.type = Type;
+            this.ConfigElement.title = `This token is currently marked as '${this.TokenTypes[this.Type]}'.`;
+        }
         if (this.ContextMenu)
             Array.from(this.ContextMenu.children).forEach(x => { var element = x as HTMLElement; element.dataset.active = element.dataset.type == Type ? 'true' : ''; })
     }

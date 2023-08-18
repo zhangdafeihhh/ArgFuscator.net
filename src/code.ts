@@ -35,7 +35,6 @@ function UpdateUITokens(Tokenised: Token[]): void {
         SpaceElement.innerHTML = "&nbsp;";
 
         ConfigTokenElement.classList.add("token");
-        //     OutputTokenElement.addEventListener("click", ToggleToken)
         ConfigTokenHTML.appendChild(ConfigTokenElement);
         OutputTokenHTML.appendChild(OutputTokenElement);
 
