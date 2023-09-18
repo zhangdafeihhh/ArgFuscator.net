@@ -81,7 +81,7 @@ abstract class Modifier {
 
         // Guess some command types
         Tokens[0].SetType("command");
-        Tokens.forEach(x => { let TokenText = x.GetStringContent();
+        Tokens.slice(1).forEach(x => { let TokenText = x.GetStringContent();
             let _TokenText = TokenText.replace(/(['"])(.*?)\1/g, '$2') //Remove any surrounding quotes
             if(_TokenText.match(/^(?:\\\\[^\\]+|[a-zA-Z]:)((?:\\[^\\]+)+\\)?([^<>:]*)$/) || _TokenText.match(/^[^<>:]+\.[a-zA-Z0-9]{2,4}$/)) x.SetType('path');
 
