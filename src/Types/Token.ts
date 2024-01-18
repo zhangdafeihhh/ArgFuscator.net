@@ -28,7 +28,7 @@ class Token {
         this.ConfigElement.parentNode.insertBefore(this.ContextMenu, ConfigElement.nextSibling);
 
         // Add event listeners to Context Menu children
-        Array.from(this.ContextMenu.children).forEach(x => { x.addEventListener("click", e => this.HandleContextClick(e)); });
+        this.ContextMenu.childNodes.forEach(x => { x.addEventListener("click", e => this.HandleContextClick(e)); });
 
         // Finally, (re)set this token's content and type, so it gets reflected in the Config/Output Elements
         this.SetContent(this.TokenContent, false);

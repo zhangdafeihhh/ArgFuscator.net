@@ -1,5 +1,5 @@
 :root {
-    --theme-colour: #b64913;
+    --theme-colour: #EF6351; /*b64913;*/
 
     --colour-1: #295498;
     --colour-2: #db4437;
@@ -13,13 +13,17 @@
     --colour-10: #f06292;
 }
 
-html {
+html,
+#obfuscation-bar {
     font-family: Arial;
+    margin: 0 auto;
+    max-width: 1200px;
 }
 
 body {
     background-color: white;
     margin-bottom: calc(20px + 2.5em);
+
 }
 
 header {
@@ -37,16 +41,13 @@ header img.site-logo {
 
 .container {
     display: flex;
+    flex-direction: column;
     width: 100%;
     gap: 5px;
 }
 
-.container>* {
-    width: 100%;
-}
-
 #input_command {
-    height: 80px;
+    height: 2.5em;
     width: 100%;
 }
 
@@ -243,6 +244,10 @@ a.explain::after {
     padding: 2px 10px;
 }
 
+.context-menu>li:hover {
+    background-color: #ddd;
+}
+
 .context-menu>li[data-active="true"] {
     background: rgb(19, 75, 163);
     color: white;
@@ -254,10 +259,25 @@ fieldset {
     border: 0;
     border: 1px solid #ddd;
     border-radius: 3px;
+}
+
+fieldset,
+#options-panel-options {
     display: flex;
     flex-direction: column;
     gap: 5px 0px;
 }
+
+#options-panel-options {
+    margin-top: 10px;
+}
+
+fieldset[disabled] {
+    background: lightgray;
+    color: gray;
+    /*  rgb(244, 239, 239); */
+}
+
 
 fieldset>legend {
     background: white;
@@ -266,9 +286,8 @@ fieldset>legend {
     padding: 0 5px;
 }
 
-.button {
-    border: 1px solid var(--theme-colour);
-    color: var(--theme-colour);
+.button,
+.button-inverted {
     cursor: pointer;
     display: inline-block;
     padding: 5px;
@@ -276,15 +295,44 @@ fieldset>legend {
     user-select: none;
 }
 
+.button {
+    border: 1px solid var(--theme-colour);
+    color: var(--theme-colour);
+}
+
+.button-inverted {
+    border: 1px solid white;
+    color: white;
+}
+
+.button-primary {
+    background: white;
+}
+
+.button:hover,
+.button-inverted:hover,
+.button:hover a,
+.button-inverted:hover a {
+    transition: all .2s ease-in;
+}
+
 .button:hover {
     background: var(--theme-colour);
     color: white;
-    transition: all .2s ease-in;
+    border-color: white;
+}
+
+.button-inverted:hover {
+    background: white;
+    color: var(--theme-colour);
 }
 
 .button:hover a {
     color: white;
-    transition: all .2s ease-in;
+}
+
+.button-inverted:hover a {
+    color: var(--theme-colour);
 }
 
 /*** Drag & drop ***/
@@ -309,16 +357,78 @@ footer {
     bottom: 0;
     right: 0;
     left: 0;
-    background-color: inherit;
+    background: var(--theme-colour);
+    color: white;
+    border-top: 3px solid white;
 }
 
 #obfuscation-bar {
     position: relative;
-    margin: 10px auto;
-    padding: 0 10px;
+    margin: 0px auto;
+    padding: 10px 10px;
+    display: flex;
+    gap: 3px;
+}
+
+#obfuscation-bar span>a {
+    color: black;
+}
+
+#obfuscation-bar>div.fill {
+    flex-grow: 1;
+}
+
+#obfuscation-bar>* {
+    align-self: center;
 }
 
 .inbetween {
     height: 5px;
     background: grey;
+}
+
+#JsonFile {
+    display: none;
+}
+
+#error-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 100%;
+}
+
+#error-messages>* {
+    border: 1px solid rgb(240, 163, 48);
+    border-radius: 0.2em;
+    background: #ffedb3;
+    padding: 10px;
+    line-height: 1.4em;
+    flex-grow: 1;
+}
+
+#error-messages code {
+    word-break: break-all;
+}
+
+
+.drag-list {
+    list-style: none;
+    padding: 0;
+}
+
+.drag-item {
+    background-color: #CC56FF;
+    padding: 10px;
+    margin-bottom: 5px;
+    cursor: move;
+}
+
+.collapsed {
+    display: none !important;
+}
+
+.button-selection {
+    display: flex;
+    gap: 5px;
 }

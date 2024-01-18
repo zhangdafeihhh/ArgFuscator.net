@@ -12,7 +12,7 @@ class ModifierDefinition {
     public DefaultExcludedTypes: string[];
     public Arguments: ModifierArgumentsDefinition[] = [];
     public Function: Function;
-    public constructor(init?:Partial<ModifierDefinition>) {
+    public constructor(init?: Partial<ModifierDefinition>) {
         Object.assign(this, init);
     }
 }
@@ -22,7 +22,7 @@ class ModifierArgumentsDefinition {
     public PublicName: string;
     public Description: string;
     public Type: string;
-    public constructor(init?:Partial<ModifierArgumentsDefinition>) {
+    public constructor(init?: Partial<ModifierArgumentsDefinition>) {
         Object.assign(this, init);
     }
 }
@@ -40,12 +40,6 @@ abstract class Modifier {
         this.InputCommandTokens = InputCommand
         this.ExcludedTypes.push(...ExcludedTypes);
         this.Probability = Modifier.ParseProbability(Probability);
-
-        // this.Arguments = [];
-
-        // Mark ignored tokens as read-only
-        //var i = 0;
-        //this.InputCommandTokens.forEach(token => { token.ReadOnly = IgnoredTokens.indexOf(i) >= 0; i++; });
     }
 
     protected static CoinFlip(probability: number): boolean {
@@ -56,8 +50,8 @@ abstract class Modifier {
         return options[Math.floor(Math.random() * options.length)];
     }
 
-    public static CommandTokenise(InputCommand: string): Token[] {
-        if(InputCommand == null) return null;
+    public static CommandTokenise(InputCommand: string, FormatPicker: HTMLMenuElement): Token[] {
+        if (InputCommand == null) return null;
         var InQuote: Char | null = null;
         var Tokens: Token[] = [];
         var TokenContent: Char[] = [];
@@ -79,13 +73,55 @@ abstract class Modifier {
         if (Token?.length > 0)
             Tokens.push(new Token(TokenContent));
 
-        // Guess some command types
+        // Find matching template, if available
         Tokens[0].SetType("command");
-        Tokens.slice(1).forEach(x => { let TokenText = x.GetStringContent();
-            let _TokenText = TokenText.replace(/(['"])(.*?)\1/g, '$2') //Remove any surrounding quotes
-            if(_TokenText.match(/^(?:\\\\[^\\]+|[a-zA-Z]:)((?:\\[^\\]+)+\\)?([^<>:]*)$/) || _TokenText.match(/^[^<>:]+\.[a-zA-Z0-9]{2,4}$/)) x.SetType('path');
+        //if (FormatPicker && FormatPicker.children[1].dataset['active'] != 'true')
+        {
+            let i = 0;
+            let found = false;
+            let token = Tokens[0].GetStringContent();
 
-            if(_TokenText.startsWith('http:') || _TokenText.startsWith('https:')) x.SetType('url');
+            if (token.toLowerCase() == 'cmd.exe' || token.toLowerCase() == 'cmd') {
+                let tokenIndex = 0;
+                Tokens.forEach(x => { if (x.GetStringContent().match(/^\/c$/i)) tokenIndex = i++; else tokenIndex++; })
+                if (tokenIndex > 0 && tokenIndex + 1 < Tokens.length) {
+                    logUserError("pattern-cmd", '`cmd.exe` requires special obfuscation - please checkout the Invoke-Dosfuscation project for this! Below are the results for obfuscating the \'inner\' command.');
+                    if (Tokens[tokenIndex + 1].GetContent()[0] == '"') { // Argument is quoted
+                        let command = Tokens[tokenIndex + 1].GetStringContent()
+                        return Modifier.CommandTokenise(command.slice(1, command.length - 1), FormatPicker)
+                    }
+                    else // Argument is unquoted
+                        return Modifier.CommandTokenise(Tokens.slice(tokenIndex + 1).map(x => x.GetStringContent()).join(" "), FormatPicker)
+                } else {
+                    logUserError("pattern-cmd-2", '`cmd.exe` requires special obfuscation - please checkout the Invoke-Dosfuscation project for this!');
+                }
+            }
+
+            FormatPicker.childNodes.forEach(x => {
+                if (x.textContent.toLowerCase() == token.toLowerCase() || x.textContent.toLowerCase() == token.toLowerCase() + ".exe") {
+                    found = true;
+                    x.dispatchEvent(new Event("click"));
+                }
+                i++;
+            });
+            if (!found){
+                // Special cases
+                if (token.toLowerCase() == 'cmd.exe' || token.toLowerCase() == 'cmd')
+                    return;
+                if (token.toLowerCase() == 'powershell.exe' || token.toLowerCase() == 'powershell' || token.toLowerCase() == 'pwsh.exe' || token.toLowerCase() == 'pwsh')
+                    logUserError("pattern-cmd", 'PowerShell requires special obfuscation that goes beyond the scope of this project - please checkout the <a href="https://github.com/danielbohannon/Invoke-DOSfuscation" target="_blank">Invoke-DOSfuscation project</a> for this!', true);
+                else
+                    logUserError("pattern-unknown", `It looks like this project is not aware of obfuscation options for \`${token}\`! Create your own using the options panel below.`);
+            }
+        }
+        Tokens.slice(1).forEach(x => {
+            let TokenText = x.GetStringContent();
+            let _TokenText = TokenText.replace(/(['"])(.*?)\1/g, '$2') //Remove any surrounding quotes
+            if (_TokenText.match(/^(?:\\\\[^\\]+|[a-zA-Z]:|\.[\\/])((?:\\[^\\]+)+\\)?([^<>:]*)$/) || _TokenText.match(/^[^<>:]+\.[a-zA-Z0-9]{2,4}$/)) x.SetType('path'); // Windows file path format
+            if (_TokenText.match(/^(HKLM|HKCC|HKCR|HKCU|HKU|HKEY_(LOCAL_MACHINE|CURRENT_CONFIG|CLASSES_ROOT|CURRENT_USER|USERS))\\?/i)) x.SetType('disabled'); // Windows Registry
+
+
+            if (_TokenText.startsWith('http:') || _TokenText.startsWith('https:')) x.SetType('url');
         });
         return Tokens;
     }
@@ -106,23 +142,22 @@ abstract class Modifier {
 
     public static Register = (Name: string, Description: string, DefaultExcludedTypes: string[]) => {
         return (target: Function) => {
-            Modifier.Implementations[target.name] = new ModifierDefinition({ Name:Name, Description: Description, DefaultExcludedTypes: DefaultExcludedTypes, Function:target});
+            Modifier.Implementations[target.name] = new ModifierDefinition({ Name: Name, Description: Description, DefaultExcludedTypes: DefaultExcludedTypes, Function: target });
         }
-      }
+    }
 
     public static AddArgument = (name: string, type: string, readableName: string, description: string) => {
         return (target: Function) => {
-            if(!(target.name in Modifier.Implementations))
+            if (!(target.name in Modifier.Implementations))
                 throw Error(`Unexpected argument declaration for modifier ${target.name}`)
             let obj = Modifier.Implementations[target.name]
-            if(obj.Function.toString().split('\n')[0].indexOf(name) <= -1){
-                console.warn(obj.Function.toString().split('\n')[0])
+            if (obj.Function.toString().split('\n')[0].indexOf(name) <= -1) {
                 throw Error(`Unexpected argument declaration for non-existing property ${name} on modifier ${target.name}`)
             }
 
-            obj.Arguments.unshift(new ModifierArgumentsDefinition({InternalName:name, Type:type, PublicName:readableName, Description:description}));
+            obj.Arguments.unshift(new ModifierArgumentsDefinition({ InternalName: name, Type: type, PublicName: readableName, Description: description }));
         }
-      }
+    }
 
     public static GetAllModifiers(): Record<string, ModifierDefinition> {
         return Modifier.Implementations;

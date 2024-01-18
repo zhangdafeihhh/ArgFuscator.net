@@ -10,6 +10,7 @@ class QuoteInsertion extends Modifier {
         var This = this;
         this.InputCommandTokens.forEach(function (Token) {
             var NewTokenContent: Char[] = [];
+            var previousQuote = false;
             var i = 0;
             Token.GetContent().forEach(char => {
                 // Add current char to result string
@@ -17,15 +18,23 @@ class QuoteInsertion extends Modifier {
 
                 // Ensure (a) char is not excluded
                 //        (b) probability tells us we will insert quotes
-                if (!This.ExcludedTypes.includes(Token.GetType()) && Modifier.CoinFlip(This.Probability)) {
-                    do {
+                if (!This.ExcludedTypes.includes(Token.GetType()) && Modifier.CoinFlip(This.Probability) && previousQuote == false) {
+                    // let previousQuote = false;
+                    // do {
                         NewTokenContent.push(QuoteInsertion.QuoteCharacter);
+                        previousQuote = true;
                         i++;
-                    } while (Modifier.CoinFlip(This.Probability * (0.9 ** i)));
+                    //} while (Modifier.CoinFlip(This.Probability * (0.9 ** i)));
+                } else {
+                    previousQuote = false;
                 }
             });
+
             if (i % 2 != 0)
-                NewTokenContent.push(QuoteInsertion.QuoteCharacter);
+                if (previousQuote)
+                    NewTokenContent.pop();
+                else
+                    NewTokenContent.push(QuoteInsertion.QuoteCharacter);
 
             Token.SetContent(NewTokenContent);
         });

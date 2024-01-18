@@ -1,10 +1,48 @@
+function FetchJsonFile(this: HTMLSelectElement): void {
+    if (this.selectedIndex == 0)
+        return
+    else if (this.selectedIndex == 1) {
+        document.getElementById("JsonFile").click()
+    }
+    else {
+        let name = this.value.replace('.exe', '.json');
+        fetch("assets/formats/" + name, { headers: { "Content-Type": "application/json; charset=utf-8" } })
+            .then(res => res.text())
+            .then(response => {
+                ParseJson(JSON.parse(response as string), false);
+            })
+            .catch(err => {
+                throw err;
+            });
+    }
+}
+
+function FetchJsonFile2(elem: HTMLLIElement): void {
+    if (elem.dataset['function'] == 'none')
+        return
+    else if (elem.dataset['function'] == 'upload') {
+        document.getElementById("JsonFile").click()
+    }
+    else {
+        let name = elem.textContent.replace('.exe', '.json');
+        fetch("assets/formats/" + name, { headers: { "Content-Type": "application/json; charset=utf-8" } })
+            .then(res => res.text())
+            .then(response => {
+                ParseJson(JSON.parse(response as string), false);
+            })
+            .catch(err => {
+                throw err;
+            });
+    }
+}
+
 function ReadJsonFile(this: HTMLInputElement): void {
     let file = this.files[0];
     if (file) {
         var reader = new FileReader();
         reader.readAsText(file, "UTF-8");
         reader.onload = function (evt) {
-            ParseJson(JSON.parse(evt.target.result as string));
+            ParseJson(JSON.parse(evt.target.result as string), true);
         }
         reader.onerror = function (evt) {
             document.getElementById("fileContents").innerHTML = "error reading file";
@@ -12,15 +50,21 @@ function ReadJsonFile(this: HTMLInputElement): void {
     }
 }
 
-function ParseJson(Input: FileFormat) {
+function ParseJson(Input: FileFormat, Interactive: Boolean) {
     var CommandOutput: HTMLTextAreaElement = document.getElementById("input_command") as HTMLTextAreaElement;
     // Reset all currently enabled modifiers
     document.querySelectorAll<HTMLInputElement>("input[id^=\"option_\"]:checked").forEach(p => p.click());
     try {
         // Construct command
         let CurrentCommand = GetInputCommand()
-        let NewCommand = Input.command.map(Token => Object.entries(Token)[0][1]).join(" ")
-        if(Input.command && (CurrentCommand == null || CurrentCommand == '' || CurrentCommand == NewCommand || confirm('Would you like to replace the existing command with the command that is embedded in the provided config file?\n(Clicking "Cancel" will still apply all obfuscation options)'))){
+
+        if (Object.keys(Input.modifiers).length == 0)
+            logUserError("pattern-no-options", "Bummer! It looks like this executable does not have any known obfuscation options.", true)
+
+        let NewCommand = null;
+        if (Input.command)
+            NewCommand = Input.command.map(Token => Object.entries(Token)[0][1]).join(" ");
+        if (Interactive && NewCommand && (CurrentCommand == null || CurrentCommand == '' || CurrentCommand == NewCommand || confirm('Would you like to replace the existing command with the command that is embedded in the provided config file?\n(Clicking "Cancel" will still apply all obfuscation options)'))) {
             CommandOutput.textContent = '';
             CommandOutput.value = NewCommand;
 
@@ -34,7 +78,7 @@ function ParseJson(Input: FileFormat) {
             });
 
             UpdateUITokens(LastTokenised);
-     }
+        }
 
         // Set options
         document.querySelectorAll<HTMLInputElement>("input[id^=\"option_\"]:checked").forEach(x => x.click())
@@ -42,7 +86,7 @@ function ParseJson(Input: FileFormat) {
         var i = 0;
         Object.entries(Input.modifiers).forEach(([ModifierName, _]) => {
             let ModifierObject = document.getElementById("option_" + ModifierName.toLowerCase())
-            if(ModifierObject == null){
+            if (ModifierObject == null) {
                 console.warn(`Could not find modifier "${ModifierName}"`)
                 return;
             }
@@ -56,12 +100,14 @@ function ParseJson(Input: FileFormat) {
                     ContextMenuButton.dataset.excluded_types = JSON.stringify(value);
                     ContextMenuButton.innerText = UpdateExcludeText(ContextMenuButton, ContextMenu);
                 } else {
-                    var SettingObject = document.querySelector<HTMLInputElement>("#" + ModifierName + " input[data-field='" + Option + "']");
-                    if(!SettingObject)
+                    var SettingObject = document.querySelector<HTMLInputElement | HTMLTextAreaElement>("#" + ModifierName + " input[data-field='" + Option + "'], textarea[data-field='" + Option + "']");
+                    if (!SettingObject)
                         console.warn(`Could not apply option ${Option} on modifier ${ModifierName}`)
                     else {
-                        if (SettingObject.type == 'checkbox')
+                        if (SettingObject instanceof HTMLInputElement && SettingObject.type == 'checkbox')
                             SettingObject.checked = value;
+                        else if (SettingObject.type == 'textarea')
+                            SettingObject.value = value;
                         else if (Array.isArray(value))
                             SettingObject.value = value.join('');
                         else
@@ -79,7 +125,10 @@ function ParseJson(Input: FileFormat) {
 }
 
 function GenerateConfigJsonFile(this: HTMLAnchorElement) {
-    if (LastTokenised?.length <= 0) return;
+    removeUserErrors();
+    if (LastTokenised == null || LastTokenised?.length <= 0)
+        LastTokenised = [];
+
     LastTokenised.forEach(Token => Token.Reset());
     let tokens = LastTokenised.map(x => { let result = {}; result[x.GetType()] = x.GetContent().join(''); return result; });
 
@@ -87,9 +136,9 @@ function GenerateConfigJsonFile(this: HTMLAnchorElement) {
     document.querySelectorAll<HTMLInputElement>("input[type=checkbox][data-function]:checked").forEach(x => {
         var settings = {};
         settings['ExcludedTypes'] = JSON.parse(x.parentNode.querySelector<HTMLInputElement>("div[data-excluded_types]").dataset.excluded_types);
-        x.parentNode.querySelectorAll<HTMLInputElement>("input[data-field]").forEach(y => {
+        x.parentNode.querySelectorAll<HTMLInputElement>("input[data-field], textarea[data-field]").forEach(y => {
             var result = undefined;
-            if(y.type == "checkbox")
+            if (y.type == "checkbox")
                 result = y.checked;
             else if (y.type == "range")
                 result = Number(y.value);
@@ -102,6 +151,11 @@ function GenerateConfigJsonFile(this: HTMLAnchorElement) {
         })
         modifiers[x.dataset.function] = settings;
     });
-    this.download = LastTokenised[0].GetContent().join("") + "_config.json";
+
+    if (Object.keys(modifiers).length == 0) {
+        alert("You haven't specified any output options, so there is nothing to download at this stage. Specify some obfuscation options first.");
+        return;
+    }
+    this.download = ((LastTokenised && LastTokenised.length > 0) ? LastTokenised[0].GetContent().join("") : "unspecified") + "_config.json";
     this.href = 'data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify({ "command": tokens, "modifiers": modifiers }))));
 }

@@ -17,9 +17,10 @@ function GetInputCommand(): string | null {
 }
 
 function UpdateTokens(): void {
+    removeUserErrors();
     ConfigTokenHTML = document.querySelector("div#tokens");
     OutputTokenHTML = document.querySelector('div#output_command');
-    LastTokenised = Modifier.CommandTokenise(GetInputCommand());
+    LastTokenised = Modifier.CommandTokenise(GetInputCommand(), document.getElementById("menu-templates") as HTMLMenuElement);
 
     UpdateUITokens(LastTokenised);
 }
@@ -49,22 +50,15 @@ function UpdateUITokens(Tokenised: Token[]): void {
 
 function ApplyObfuscation(): void {
     if (LastTokenised == null || LastTokenised?.length <= 0) {
-        console.warn("No input to apply obfuscation to.");
+        logUserError("empty-input", "No input to apply obfuscation to. Provide a command in the above box to get started.", true);
         return;
     }
-    // // Obtain input command
-    // let InputCommand = GetInputCommand()
-
-    // if (InputCommand == null) return null;
-    // let InputCommandTokens = Modifier.CommandTokenise(InputCommand);
 
     LastTokenised?.forEach(Token => Token.Reset());
-    // Obtain any excluded tokens
-    //let TokensExcluded: [string, string][] = []; // GetIgnoredTokens(InputCommandTokens);
 
     // Obtain selected options
     let SelectedOptions = document.querySelectorAll("input[data-function][id^=\"option_\"]:checked") as NodeListOf<HTMLInputElement>;
-    if (SelectedOptions?.length <= 0) console.warn("No enabled modififiers.")
+    if (SelectedOptions?.length <= 0) { logUserError("pattern-no-options", "There are no transformations enabled in the options section below; without this, no obfuscation will be applied.", true) }
     SelectedOptions.forEach(Element => {
         let ClassName = Element.dataset.function as string;
         let ClassInstance: Modifier = Object.create((window as any)[ClassName].prototype);
@@ -72,10 +66,9 @@ function ApplyObfuscation(): void {
         let ExcludedTypes = JSON.parse(document.getElementById(Element.id + "_arg0").dataset.excluded_types);
         let ClassInstanceArguments: any[] = [LastTokenised, ExcludedTypes];
 
-        let SelectedOptionArguments = document.querySelectorAll("input[id^=\"" + Element.id + "_arg\"]") as NodeListOf<HTMLInputElement>;
+        let SelectedOptionArguments = document.querySelectorAll("input[id^=\"" + Element.id + "_arg\"], textarea[id^=\"" + Element.id + "_arg\"]") as NodeListOf<HTMLInputElement | HTMLTextAreaElement>;
         SelectedOptionArguments.forEach(OptionElement => {
-
-            ClassInstanceArguments.push(OptionElement.type == 'checkbox' ? OptionElement.checked : OptionElement.value);
+            ClassInstanceArguments.push((OptionElement instanceof HTMLInputElement && OptionElement.type == 'checkbox') ? OptionElement.checked : OptionElement.value);
         });
 
         ClassInstance.constructor.apply(ClassInstance, ClassInstanceArguments);
@@ -85,7 +78,7 @@ function ApplyObfuscation(): void {
 
 function GenerateObfuscationOptionsHTML() {
     let modifiers = Modifier.GetAllModifiers();
-    let target = document.getElementById('options-panel');
+    let target = document.getElementById('options-panel-options');
 
     for (let modifierID in modifiers) {
         let modifier = modifiers[modifierID]
@@ -130,6 +123,8 @@ function GenerateObfuscationOptionsHTML() {
             value="" />`;
             } else if (argument.Type == "checkbox") {
                 modifierBoxBodySubOptionsRow3.innerHTML += `<input data-field="${argument.InternalName}" type="checkbox" id="option_${modifierID}_arg${i}"></input>` + label;
+            } else if (argument.Type == "textarea") {
+                modifierBoxBodySubOptionsRow3.innerHTML += label + `<textarea data-field="${argument.InternalName}" id="option_${modifierID}_arg${i}" placeholder="${argument.Description}"></textarea>`;
             }
             modifierBoxBodySubOptionsRow2.appendChild(modifierBoxBodySubOptionsRow3)
             i++;
@@ -154,16 +149,54 @@ function ResetForm() {
     document.querySelectorAll<HTMLInputElement>('input[type=text], input[type=file]').forEach(x => x.value = x.defaultValue);
     document.querySelectorAll<HTMLInputElement>('input[type=checkbox]').forEach(x => { x.checked = x.defaultChecked; x.dispatchEvent(new Event("change")) });
     document.querySelectorAll<HTMLTextAreaElement>('textarea').forEach(x => { x.value = x.defaultValue; x.dispatchEvent(new Event("keyup")) });
+    document.getElementById("menu-templates").children[0].dispatchEvent(new Event("click"));
 }
 
 document.addEventListener("DOMContentLoaded", UpdateTokens);
 document.addEventListener("DOMContentLoaded", () => {
     GenerateObfuscationOptionsHTML();
+    document.getElementById("format-picker")?.addEventListener("change", FetchJsonFile);
     document.getElementById("JsonFile")?.addEventListener("change", ReadJsonFile);
-    document.getElementById("input_command")?.addEventListener("keyup", UpdateTokens);
+    document.getElementById("input_command")?.addEventListener("keyup", debounce(UpdateTokens, 200));
     document.getElementById("obfuscation_run")?.addEventListener("click", () => ApplyObfuscation());
     document.getElementById("download_config")?.addEventListener("click", GenerateConfigJsonFile);
     document.getElementById("reset_form")?.addEventListener("click", ResetForm);
+
+    document.getElementById("button_template").addEventListener("click", _ => ShowContextMenu(document.getElementById('menu-templates'), document.getElementById('button_template')))
+
+    document.getElementById('menu-templates').childNodes.forEach((ContextMenuItem: HTMLLIElement) => {
+        ContextMenuItem.addEventListener("click", e => {
+            FetchJsonFile2(ContextMenuItem);
+            ContextMenuItem.parentNode.childNodes.forEach((x: HTMLElement) => {if(x.dataset) x.dataset['active'] = ""});
+
+            if(!ContextMenuItem.dataset['function'])
+                ContextMenuItem.dataset['active'] = 'true';
+
+
+            document.getElementById("button_template").innerHTML = `<strong>Selected template</strong>: ${ContextMenuItem.innerText}`
+
+            document.getElementById("menu-templates").style.display = 'none';
+        })
+    });
+
+
+
+    document.querySelectorAll<HTMLFieldSetElement>("fieldset.collapsible").forEach((x) => {
+        let legend = x.querySelector("legend");
+        let span = document.createElement("span");
+        let content = x.children[1] as HTMLElement;
+        span.innerText = content.classList.contains("collapsed") ? "▲" : "▼";
+        legend.appendChild(span);
+        legend.addEventListener("click", () => {
+            if (content.classList.contains("collapsed")) {
+                content.classList.remove("collapsed");
+            } else {
+                content.classList.add("collapsed");
+            }
+            span.innerText = content.classList.contains("collapsed") ? "▲" : "▼";
+        });
+
+    })
 
     document.querySelectorAll<HTMLInputElement>(".option_target").forEach((ContextMenuButton: HTMLDivElement) => {
         // Create new Context Menu
@@ -198,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }); p.dispatchEvent(new Event("change"))
     });
-    slist(document.getElementById("options-panel"));
+    slist(document.getElementById("options-panel-options"));
 });
 
 
@@ -271,4 +304,43 @@ function slist(target: HTMLElement) {
 function moveItem(current: Element, newPosition: number) {
     let items = Array.from(current.parentElement.childNodes).filter(x => x.nodeType == 1)
     current.parentNode.insertBefore(current, items[newPosition])
+}
+
+function debounce(func: Function, wait: number, immediate: boolean = false) {
+    var timeout: number;
+    return function () {
+        var context = this, args = arguments;
+        var later = function () {
+            timeout = null;
+            if (!immediate) func.apply(context, args);
+        };
+        var callNow = immediate && !timeout;
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+        if (callNow) func.apply(context, args);
+    };
+};
+
+function getUserErrors(): Map<string, HTMLElement> {
+    let result = new Map<string, HTMLElement>();
+    let error_messages = document.getElementById("error-messages");
+    error_messages.childNodes.forEach(x => result.set((x as HTMLElement).dataset.error_id, x as HTMLElement));
+    return result;
+}
+
+function logUserError(id: string, message: string, error: boolean = false) {
+    (error ? console.error : console.warn)(message);
+
+    let error_messages = document.getElementById("error-messages");
+    if (!getUserErrors().has(id)) {
+        let error_message = document.createElement("div")
+        error_message.innerText = `${message}`;
+        error_message.innerHTML = `<strong> ${error ? "🚫 Error" : "⚠️ Warning"}:</strong> ` + error_message.innerHTML.replace(/\`(.*?)\`/g, "<code>$1</code>");
+        error_message.dataset.error_id = id;
+        error_messages.append(error_message)
+    }
+}
+
+function removeUserErrors(): void {
+    document.getElementById("error-messages").innerHTML = "";
 }

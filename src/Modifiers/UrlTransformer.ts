@@ -1,18 +1,21 @@
 @Modifier.AddArgument("LeaveOutProtocol", "checkbox", "Omit Protocol", "")
+@Modifier.AddArgument("LeaveOutDoubleSlashes", "checkbox", "Alternative Double Slashes (:// vs :/ vs :)", "")
 @Modifier.AddArgument("SubstituteSlashes", "checkbox", "Transform Slashes", "")
 @Modifier.AddArgument("IpToHex", "checkbox", "Alternate IP Form", "")
 @Modifier.Register("URL Transformer", "Change the format in which URLs are represented.", ['command', 'argument', 'path'])
 class UrlTransformer extends Modifier {
     private LeaveOutProtocol: boolean;
+    private LeaveOutDoubleSlashes: boolean;
     private SubstituteSlashes: boolean;
     private IpToHex: boolean;
 
-    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, LeaveOutProtocol: boolean, SubstituteSlashes: boolean, IpToHex: boolean) {
+    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, LeaveOutProtocol: boolean, LeaveOutDoubleSlashes: boolean, SubstituteSlashes: boolean, IpToHex: boolean) {
         super(InputCommand, ExcludedTypes, Probability);
 
         this.Probability = Modifier.ParseProbability(Probability);
 
         this.LeaveOutProtocol = LeaveOutProtocol;
+        this.LeaveOutDoubleSlashes = LeaveOutDoubleSlashes;
         this.SubstituteSlashes = SubstituteSlashes;
         this.IpToHex = IpToHex;
     }
@@ -26,6 +29,10 @@ class UrlTransformer extends Modifier {
                 // Leave out protocol
                 if (this.LeaveOutProtocol && Modifier.CoinFlip(this.Probability))
                     NewTokenContent = NewTokenContent.replace(/\w+:\/\//, "://");
+
+                // Change double slashes
+                if (this.LeaveOutDoubleSlashes && Modifier.CoinFlip(this.Probability))
+                    NewTokenContent = NewTokenContent.replace(/\:\/\//, Modifier.CoinFlip(0.5) ? ":" : ":/");
 
                 // Substitute Slashes
                 let tmp_tokencontent = NewTokenContent.split('');
@@ -47,7 +54,7 @@ class UrlTransformer extends Modifier {
                         else
                             NewTokenContent = NewTokenContent.replace(IpAddress[0], "0x" + Decimal.toString(16));
                     } else
-                        console.warn("No valid IPv4 IP Address could be found.");
+                        logUserError("ipv4-address", "No valid IPv4 IP address could be found.");
                 }
 
                 Token.SetContent(NewTokenContent.split(""));
