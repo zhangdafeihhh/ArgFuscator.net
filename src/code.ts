@@ -40,7 +40,7 @@ function UpdateUITokens(Tokenised: Token[]): void {
         OutputTokenHTML.appendChild(OutputTokenElement);
 
         Token.SetElements(ConfigTokenElement, OutputTokenElement);
-        if (Index < Array.length - 1) {
+        if (Index < Array.length - 1 && Modifier.ValueChars.some(y => Token.GetContent().reverse()[0] != y)) {
             OutputTokenHTML.appendChild(SpaceElement);
         }
         //     if ((LatestIgnoredTokens.length == 0 && IsFirst) || Token.ReadOnly) OutputTokenElement.click();
@@ -50,8 +50,11 @@ function UpdateUITokens(Tokenised: Token[]): void {
 
 function ApplyObfuscation(): void {
     if (LastTokenised == null || LastTokenised?.length <= 0) {
-        logUserError("empty-input", "No input to apply obfuscation to. Provide a command in the above box to get started.", true);
-        return;
+        UpdateTokens();
+        if (LastTokenised == null || LastTokenised?.length <= 0) {
+            logUserError("empty-input", "No input to apply obfuscation to. Provide a command in the above box to get started.", true);
+            return;
+        }
     }
 
     LastTokenised?.forEach(Token => Token.Reset());
@@ -118,9 +121,9 @@ function GenerateObfuscationOptionsHTML() {
             modifierBoxBodySubOptionsRow3.classList.add("suboption")
             let label = `<label for="option_${modifierID}_arg${i}">${argument.PublicName}</label>`;
             if (argument.Type == "text") {
-                modifierBoxBodySubOptionsRow3.innerHTML += label + `<input type="text" id="option_${modifierID}_arg${i}"
-            data-field="${argument.InternalName}" data-type="array" placeholder="${argument.Description}"
-            value="" />`;
+                modifierBoxBodySubOptionsRow3.innerHTML += label + `<input type="text" id="option_${modifierID}_arg${i}" data-field="${argument.InternalName}" data-type="array" placeholder="${argument.Description}" value="" />`;
+            } else if (argument.Type == "number") {
+                modifierBoxBodySubOptionsRow3.innerHTML += label + `<input type="number" id="option_${modifierID}_arg${i}" data-field="${argument.InternalName}" placeholder="${argument.Description}" title="${argument.Description}" value="" />`;
             } else if (argument.Type == "checkbox") {
                 modifierBoxBodySubOptionsRow3.innerHTML += `<input data-field="${argument.InternalName}" type="checkbox" id="option_${modifierID}_arg${i}"></input>` + label;
             } else if (argument.Type == "textarea") {
@@ -167,13 +170,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('menu-templates').childNodes.forEach((ContextMenuItem: HTMLLIElement) => {
         ContextMenuItem.addEventListener("click", e => {
             FetchJsonFile2(ContextMenuItem);
-            ContextMenuItem.parentNode.childNodes.forEach((x: HTMLElement) => {if(x.dataset) x.dataset['active'] = ""});
+            ContextMenuItem.parentNode.childNodes.forEach((x: HTMLElement) => { if (x.dataset) x.dataset['active'] = "" });
 
-            if(!ContextMenuItem.dataset['function'])
+            if (!ContextMenuItem.dataset['function']) {
                 ContextMenuItem.dataset['active'] = 'true';
 
-
-            document.getElementById("button_template").innerHTML = `<strong>Selected template</strong>: ${ContextMenuItem.innerText}`
+                document.getElementById("button_template").innerHTML = `<strong>Selected template</strong>: ${ContextMenuItem.innerText}`;
+            } else
+                document.getElementById("button_template").innerHTML = `<strong>Selected template</strong>: (none)`;
 
             document.getElementById("menu-templates").style.display = 'none';
         })
@@ -334,8 +338,7 @@ function logUserError(id: string, message: string, error: boolean = false) {
     let error_messages = document.getElementById("error-messages");
     if (!getUserErrors().has(id)) {
         let error_message = document.createElement("div")
-        error_message.innerText = `${message}`;
-        error_message.innerHTML = `<strong> ${error ? "🚫 Error" : "⚠️ Warning"}:</strong> ` + error_message.innerHTML.replace(/\`(.*?)\`/g, "<code>$1</code>");
+        error_message.innerHTML = `<strong> ${error ? "🔴 Error" : "🟠 Warning"}:</strong> ${message}`;
         error_message.dataset.error_id = id;
         error_messages.append(error_message)
     }

@@ -210,6 +210,11 @@ a.explain::after {
     color: white;
 }
 
+#tokens>div.token[data-type="value"]::before {
+    background: var(--colour-5);
+    color: white;
+}
+
 #tokens>div.token::before {
     background: var(--colour-1);
     color: white;

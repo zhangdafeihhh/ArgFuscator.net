@@ -154,8 +154,8 @@ function GenerateConfigJsonFile(this: HTMLAnchorElement) {
 
     if (Object.keys(modifiers).length == 0) {
         alert("You haven't specified any output options, so there is nothing to download at this stage. Specify some obfuscation options first.");
-        return;
+    } else {
+        this.download = ((LastTokenised && LastTokenised.length > 0) ? LastTokenised[0].GetContent().join("") : "unspecified") + "_config.json";
+        this.href = 'data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify({ "command": tokens, "modifiers": modifiers }))));
     }
-    this.download = ((LastTokenised && LastTokenised.length > 0) ? LastTokenised[0].GetContent().join("") : "unspecified") + "_config.json";
-    this.href = 'data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify({ "command": tokens, "modifiers": modifiers }))));
 }

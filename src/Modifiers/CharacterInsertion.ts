@@ -1,15 +1,20 @@
-
 @Modifier.AddArgument("Characters", "text", "Accepted Characters", "Paste all characters, without separators, here")
+@Modifier.AddArgument("Offset", "number", "Offset", "The positions up to this index (zero-based, exclusive) will not be used for character insertion. Default: 0")
 @Modifier.Register("Character Insertion", "Add arbitrary characters to command-line arguments.", ['command', 'path', 'url'])
 class CharacterInsertion extends Modifier {
     private CharacterInsertRange: Char[];
+    private Offset: number;
 
-    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, Characters: string) {
+    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, Characters: string, Offset: number) {
         super(InputCommand, ExcludedTypes, Probability);
 
         // Parse character ranges
         if (Characters == null || Characters.length == 0)
-            throw Error(`Missing CharacterRange`);
+            throw Error("Invalid value passed for 'Characters'");
+
+        if (Offset < 0)
+            throw Error("Cannot use an offset of smaller than 0")
+        this.Offset = Offset || 0;
 
         this.CharacterInsertRange = Characters.split('').map(x => x as String as Char);
     }
@@ -17,8 +22,10 @@ class CharacterInsertion extends Modifier {
     GenerateOutput(): void {
         var This = this;
         this.InputCommandTokens.forEach(function (Token: Token) {
-            var NewTokenContent: Char[] = [];
-            Token.GetContent().forEach(char => {
+            var NewTokenContent: Char[] = Token.GetContent().slice(0, This.Offset);
+            var lastChar = Modifier.ValueChars.some(y => Token.GetContent().reverse()[0] == y) ? Token.GetContent().length - 1 : undefined;
+
+            Token.GetContent().slice(This.Offset, lastChar).forEach(char => {
                 // Add current char to result string
                 NewTokenContent.push(char);
 
@@ -31,6 +38,9 @@ class CharacterInsertion extends Modifier {
                         i++;
                     } while (Modifier.CoinFlip(This.Probability * (0.9 ** i)));
             });
+
+            if(lastChar !== undefined)
+                NewTokenContent.push(...Token.GetContent().slice(lastChar))
 
             Token.SetContent(NewTokenContent);
         });

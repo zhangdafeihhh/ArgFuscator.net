@@ -34,6 +34,7 @@ abstract class Modifier {
 
     private static SeparationChar: Char = ' ' as String as Char;
     private static QuoteChars: Char[] = ['"' as String as Char, "'" as String as Char];
+    public static ValueChars: Char[] = ['=' as String as Char];
 
     constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string) {
         // Parse inputs
@@ -57,7 +58,10 @@ abstract class Modifier {
         var TokenContent: Char[] = [];
         for (var i = 0; i < InputCommand.length; i++) {
             let Char: Char = new String(InputCommand[i]) as Char;
-            if (InQuote == null && Char == this.SeparationChar) {
+            if (InQuote == null && (Char == this.SeparationChar || this.ValueChars.some(x => x == Char))) {
+                if (Char != this.SeparationChar)
+                    TokenContent.push(Char);
+
                 if (Token.length > 0)
                     Tokens.push(new Token(TokenContent));
                 TokenContent = [] as Char[];
@@ -82,18 +86,20 @@ abstract class Modifier {
             let token = Tokens[0].GetStringContent();
 
             if (token.toLowerCase() == 'cmd.exe' || token.toLowerCase() == 'cmd') {
-                let tokenIndex = 0;
-                Tokens.forEach(x => { if (x.GetStringContent().match(/^\/c$/i)) tokenIndex = i++; else tokenIndex++; })
-                if (tokenIndex > 0 && tokenIndex + 1 < Tokens.length) {
-                    logUserError("pattern-cmd", '`cmd.exe` requires special obfuscation - please checkout the Invoke-Dosfuscation project for this! Below are the results for obfuscating the \'inner\' command.');
-                    if (Tokens[tokenIndex + 1].GetContent()[0] == '"') { // Argument is quoted
-                        let command = Tokens[tokenIndex + 1].GetStringContent()
+                let commandIndex = Tokens.findIndex((x) => x.GetStringContent().match(/^\/c$/i));
+
+                if (commandIndex > 0) {
+                    logUserError("pattern-cmd", '<code>cmd.exe</code> requires special obfuscation - please checkout the <a href="https://github.com/danielbohannon/Invoke-DOSfuscation" target="_blank">Invoke-Dosfuscation project</a> for this! Below are the results for obfuscating the \'inner\' command.');
+                    if (Tokens[commandIndex + 1].GetContent()[0] == '"') { // Argument is quoted
+                        let command = Tokens[commandIndex + 1].GetStringContent()
                         return Modifier.CommandTokenise(command.slice(1, command.length - 1), FormatPicker)
                     }
                     else // Argument is unquoted
-                        return Modifier.CommandTokenise(Tokens.slice(tokenIndex + 1).map(x => x.GetStringContent()).join(" "), FormatPicker)
+                    {
+                        return Modifier.CommandTokenise(Tokens.slice(commandIndex + 1).map(y => y.GetStringContent()).join(this.SeparationChar as string), FormatPicker)
+                    }
                 } else {
-                    logUserError("pattern-cmd-2", '`cmd.exe` requires special obfuscation - please checkout the Invoke-Dosfuscation project for this!');
+                    logUserError("pattern-cmd-2", '<code>cmd.exe</code> requires special obfuscation - please checkout the <a href="https://github.com/danielbohannon/Invoke-DOSfuscation" target="_blank">Invoke-Dosfuscation project</a> for this!');
                 }
             }
 
@@ -104,18 +110,27 @@ abstract class Modifier {
                 }
                 i++;
             });
-            if (!found){
+
+            if (!found) {
                 // Special cases
                 if (token.toLowerCase() == 'cmd.exe' || token.toLowerCase() == 'cmd')
                     return;
                 if (token.toLowerCase() == 'powershell.exe' || token.toLowerCase() == 'powershell' || token.toLowerCase() == 'pwsh.exe' || token.toLowerCase() == 'pwsh')
-                    logUserError("pattern-cmd", 'PowerShell requires special obfuscation that goes beyond the scope of this project - please checkout the <a href="https://github.com/danielbohannon/Invoke-DOSfuscation" target="_blank">Invoke-DOSfuscation project</a> for this!', true);
-                else
-                    logUserError("pattern-unknown", `It looks like this project is not aware of obfuscation options for \`${token}\`! Create your own using the options panel below.`);
+                    logUserError("pattern-cmd", 'PowerShell requires special obfuscation that goes beyond the scope of this project - please checkout the <a href="https://github.com/danielbohannon/Invoke-Obfuscation" target="_blank">Invoke-Obfuscation project</a> for this!', true);
+                else {
+                    let token_code = document.createElement("code")
+                    token_code.innerText = token
+                    logUserError("pattern-unknown", `It looks like this project is not aware of obfuscation options for ${token_code.outerHTML}! Create your own using the options panel below.`);
+                }
             }
         }
-        Tokens.slice(1).forEach(x => {
+        Tokens.slice(1).forEach((x, i) => {
             let TokenText = x.GetStringContent();
+
+            // If previous token ends with a ValueChar, assume this token denotes a 'value' type
+            if(this.ValueChars.some(y => Tokens[i].GetContent().reverse()[0] == y))
+                x.SetType('value');
+
             let _TokenText = TokenText.replace(/(['"])(.*?)\1/g, '$2') //Remove any surrounding quotes
             if (_TokenText.match(/^(?:\\\\[^\\]+|[a-zA-Z]:|\.[\\/])((?:\\[^\\]+)+\\)?([^<>:]*)$/) || _TokenText.match(/^[^<>:]+\.[a-zA-Z0-9]{2,4}$/)) x.SetType('path'); // Windows file path format
             if (_TokenText.match(/^(HKLM|HKCC|HKCR|HKCU|HKU|HKEY_(LOCAL_MACHINE|CURRENT_CONFIG|CLASSES_ROOT|CURRENT_USER|USERS))\\?/i)) x.SetType('disabled'); // Windows Registry
