@@ -1,8 +1,8 @@
 @Modifier.AddArgument("LeaveOutProtocol", "checkbox", "Omit Protocol", "")
-@Modifier.AddArgument("LeaveOutDoubleSlashes", "checkbox", "Alternative Double Slashes (:// vs :/ vs :)", "")
+@Modifier.AddArgument("LeaveOutDoubleSlashes", "checkbox", "Alternative Double Slashes (:// vs :/)", "")
 @Modifier.AddArgument("SubstituteSlashes", "checkbox", "Transform Slashes", "")
 @Modifier.AddArgument("IpToHex", "checkbox", "Alternate IP Form", "")
-@Modifier.Register("URL Transformer", "Change the format in which URLs are represented.", ['command', 'argument', 'path'])
+@Modifier.Register("URL Transformer", "Change the format in which URLs are represented.", ['command', 'argument', 'path', 'value'])
 class UrlTransformer extends Modifier {
     private LeaveOutProtocol: boolean;
     private LeaveOutDoubleSlashes: boolean;
@@ -32,7 +32,7 @@ class UrlTransformer extends Modifier {
 
                 // Change double slashes
                 if (this.LeaveOutDoubleSlashes && Modifier.CoinFlip(this.Probability))
-                    NewTokenContent = NewTokenContent.replace(/\:\/\//, Modifier.CoinFlip(0.5) ? ":" : ":/");
+                    NewTokenContent = NewTokenContent.replace(/\:\/\//, ":/");
 
                 // Substitute Slashes
                 let tmp_tokencontent = NewTokenContent.split('');

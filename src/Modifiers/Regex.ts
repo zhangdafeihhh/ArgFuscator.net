@@ -24,15 +24,15 @@ class Regex extends Modifier {
             var NewTokenContent: string = Token.GetStringContent();
 
             if (!This.ExcludedTypes.includes(Token.GetType()) && Modifier.CoinFlip(this.Probability) && NewTokenContent.match(this.RegexMatch)) {
-                let RexReplace = this.RegexReplace.replace(new RegExp('\\$(\\d+)\\[(\\d+):(\\d+(?:-(?:\\d+)?)?)\\]'), (x, a, b, c) => {
-                    let match = NewTokenContent.match(this.RegexMatch)[a];
-                    if (c.indexOf('-') >= 0) {
-                        let ids = c.split('-')
+                let RexReplace = this.RegexReplace.replace(new RegExp('\\$(\\d+)\\[(\\d+):(\\d+(?:-(?:\\d+)?)?)\\]'), (x, rIndex, start, end) => {
+                    let match = NewTokenContent.match(this.RegexMatch)[rIndex];
+                    if (end.indexOf('-') >= 0) {
+                        let ids = end.split('-')
                         if (!ids[1]) ids[1] = match.length;
                         let choices = Array.from(new Array(parseInt(ids[1])), (x, i) => i + parseInt(ids[0]));
-                        c = Modifier.ChooseRandom(choices)
+                        end = Modifier.ChooseRandom(choices)
                     }
-                    return match.substring(b, c)
+                    return match.substring(start, end)
                 })
                 NewTokenContent = NewTokenContent.replace(this.RegexMatch, RexReplace)
             }

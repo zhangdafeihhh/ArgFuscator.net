@@ -13,118 +13,80 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 
-<script src="assets/js/code.js"></script>
+<body>
 
-<menu class="context-menu">
-    <li data-type="disabled">Ignore</li>
-    <li data-type="command">Program Name</li>
-    <li data-type="argument">Regular Argument</li>
-    <li data-type="path">File Path</li>
-    <li data-type="url">URL</li>
-    <li data-type="value">Value</li>
-    <!-- <li>Add...</li> -->
-</menu>
-<header>
-    <img src="assets/img/logo.png" class="site-logo" alt="Logo" />
-    <h1>Command-Line Obfuscator</h1>
-</header>
-<div class="container">
-    <fieldset>
-        <!-- <legend>Input</legend> -->
-        <textarea id="input_command"
-            placeholder="Please paste the command you would like to obfuscate here."></textarea>
-        <div id="tokens"></div>
-        <div id="error-messages"></div>
-    </fieldset>
+    <script src="assets/js/code.js"></script>
 
-    <fieldset>
-        <legend>Output</legend>
-        <div id="output_command"></div>
-    </fieldset>
+    <menu class="context-menu">
+        <li data-type="disabled">Ignore</li>
+        <li data-type="command">Program Name</li>
+        <li data-type="argument">Regular Argument</li>
+        <li data-type="path">File Path</li>
+        <li data-type="url">URL</li>
+        <li data-type="value">Value</li>
+        <!-- <li>Add...</li> -->
+    </menu>
+    <header>
+        <img src="assets/img/logo.png" class="site-logo" alt="Logo" />
+        <h1>Command-Line Obfuscator</h1>
+    </header>
+    <div class="container">
+        <fieldset>
+            <!-- <legend>Input</legend> -->
+            <textarea id="input_command"
+                placeholder="Please paste the command you would like to obfuscate here."></textarea>
+            <div id="tokens"></div>
+            <div id="error-messages"></div>
+        </fieldset>
 
-    <fieldset class="collapsible">
-        <legend>Options</legend>
-        <div class="collapsed">
-            <div id="options-panel">
-                <menu class="context-menu" id="menu-templates">
-                    <li data-function="none">(none)</li>
-                    <li data-function="upload">⇡ Upload file...</li>
-                    <li>arp.exe</li>
-                    <li>bitsadmin.exe</li>
-                    <li>certutil.exe</li>
-                    <li>ipconfig.exe</li>
-                    <li>nslookup.exe</li>
-                    <li>reg.exe</li>
-                    <li>wmic.exe</li>
-                </menu>
-                <label for="JsonFile"><input type="file" id="JsonFile" accept=".json" /></label>
-                <div class="button-selection"><a class="button" id="button_template"><strong>Selected template</strong>:
-                        (none)</a><a class="button" id="download_config" download="config-export.json"><strong>Download
-                            config</strong></a>
-                    <a class="button" id="reset_form"><strong>Reset</strong></a>
+        <fieldset>
+            <legend>Output</legend>
+            <div id="output_command"></div>
+        </fieldset>
+
+        <fieldset class="collapsible">
+            <legend>Options</legend>
+            <div class="collapsed">
+                <div id="options-panel">
+                    <menu class="context-menu" id="menu-templates">
+                        <li data-function="none">(none)</li>
+                        <li data-function="upload">⇡ Upload file...</li>
+                        <li>arp.exe</li>
+                        <li>cacls.exe</li>
+                        <li>csc.exe</li>
+                        <li>curl.exe</li>
+                        <li>bitsadmin.exe</li>
+                        <li>certutil.exe</li>
+                        <li>ipconfig.exe</li>
+                        <li>nslookup.exe</li>
+                        <li>reg.exe</li>
+                        <li>wmic.exe</li>
+                    </menu>
+                    <label for="JsonFile"><input type="file" id="JsonFile" accept=".json" /></label>
+                    <div class="button-selection"><a class="button" id="button_template"><strong>Selected
+                                template</strong>:
+                            (none)</a><a class="button" id="download_config"
+                            download="config-export.json"><strong>Download
+                                config</strong></a>
+                        <a class="button" id="reset_form"><strong>Reset</strong></a>
+                    </div>
+                </div>
+                <div id="options-panel-options">
                 </div>
             </div>
-            <div id="options-panel-options">
-            </div>
+        </fieldset>
+
+        <div>
+            <a class="button button-primary" id="obfuscation_run"><strong>Apply obfuscation</strong></a>
         </div>
-        <!-- <div><label for="format-picker">Selected template:</label><select id="format-picker">
-        <option></option>
-        <option>⇡ Upload file...</option>
-        <option>at.exe</option>
-        <option>bitsadmin.exe</option>
-        <option>cacls.exe</option>
-        <option>certutil.exe</option>
-        <option>cmdkey.exe</option>
-        <option>cmstp.exe</option>
-        <option>csc.exe</option>
-        <option>curl.exe</option>
-        <option>findstr.exe</option>
-        <option>fltmc.exe</option>
-        <option>forfiles.exe</option>
-        <option>icacls.exe</option>
-        <option>ipconfig.exe</option>
-        <option>jsc.exe</option>
-        <option>mpcmdrun.exe</option>
-        <option>msiexec.exe</option>
-        <option>net.exe</option>
-        <option>netsh.exe</option>
-        <option>netstat.exe</option>
-        <option>nslookup.exe</option>
-        <option>ping.exe</option>
-        <option>powershell.exe</option>
-        <option>reg.exe</option>
-        <option>regsrv32.exe</option>
-        <option>robocopy.cmd</option>
-        <option>route.exe</option>
-        <option>sc.exe</option>
-        <option>schtasks.exe</option>
-        <option>systeminfo.exe</option>
-        <option>takeown.exe</option>
-        <option>taskkill.exe</option>
-        <option>tasklist.exe</option>
-        <option>vbc.exe</option>
-        <option>vssadmin.exe</option>
-        <option>wevtutil.exe</option>
-        <option>whoami.exe</option>
-        <option>winrm.cmd</option>
-        <option>winrs.exe</option>
-        <option>wmic.exe</option>
-        </select></div> -->
-
-
-
-    </fieldset>
-
-    <div>
-        <a class="button button-primary" id="obfuscation_run"><strong>Apply obfuscation</strong></a>
     </div>
-</div>
 
-<footer>
-    <div id="obfuscation-bar">
-        <div class="fill"></div>
-        <span>Contribute to this project on <a href="">GitHub</a></span>
-    </div>
-</footer>
+    <footer>
+        <div id="obfuscation-bar">
+            <div class="fill"></div>
+            <span>Contribute to this project on <a href="">GitHub</a></span>
+        </div>
+    </footer>
+</body>
 
 </html>

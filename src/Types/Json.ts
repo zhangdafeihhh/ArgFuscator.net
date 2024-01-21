@@ -26,11 +26,16 @@ function FetchJsonFile2(elem: HTMLLIElement): void {
     else {
         let name = elem.textContent.replace('.exe', '.json');
         fetch("assets/formats/" + name, { headers: { "Content-Type": "application/json; charset=utf-8" } })
-            .then(res => res.text())
+            .then(res => {
+                if (!res.ok)
+                    throw new Error(`Unexpected status code ${res.status}`);
+                return res.text()
+            })
             .then(response => {
                 ParseJson(JSON.parse(response as string), false);
             })
             .catch(err => {
+                logUserError("http-error", `Could not fetch template: ${err}`, true)
                 throw err;
             });
     }

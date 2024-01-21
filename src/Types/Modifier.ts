@@ -34,7 +34,8 @@ abstract class Modifier {
 
     private static SeparationChar: Char = ' ' as String as Char;
     private static QuoteChars: Char[] = ['"' as String as Char, "'" as String as Char];
-    public static ValueChars: Char[] = ['=' as String as Char];
+    public static ValueChars: Char[] = ['=' as String as Char, ':' as String as Char];
+    public static CommonOptionChars: Char[] = ['/' as String as Char, '-' as String as Char];
 
     constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string) {
         // Parse inputs
@@ -54,17 +55,21 @@ abstract class Modifier {
     public static CommandTokenise(InputCommand: string, FormatPicker: HTMLMenuElement): Token[] {
         if (InputCommand == null) return null;
         var InQuote: Char | null = null;
+        var InOptionChar: boolean | null = null;
         var Tokens: Token[] = [];
         var TokenContent: Char[] = [];
         for (var i = 0; i < InputCommand.length; i++) {
             let Char: Char = new String(InputCommand[i]) as Char;
-            if (InQuote == null && (Char == this.SeparationChar || this.ValueChars.some(x => x == Char))) {
+            InOptionChar = (TokenContent.length == 0 && Modifier.CommonOptionChars.some(y => y == Char)) ? true : InOptionChar;
+
+            if (InQuote == null && (Char == this.SeparationChar || (InOptionChar && this.ValueChars.some(x => x == Char)))) {
                 if (Char != this.SeparationChar)
                     TokenContent.push(Char);
 
                 if (Token.length > 0)
                     Tokens.push(new Token(TokenContent));
                 TokenContent = [] as Char[];
+                InOptionChar = false;
             } else {
                 if (InQuote != null && Char.toString() == InQuote?.toString())
                     InQuote = null;
@@ -127,16 +132,18 @@ abstract class Modifier {
         Tokens.slice(1).forEach((x, i) => {
             let TokenText = x.GetStringContent();
 
-            // If previous token ends with a ValueChar, assume this token denotes a 'value' type
-            if(this.ValueChars.some(y => Tokens[i].GetContent().reverse()[0] == y))
+            let _TokenText = TokenText.replace(/(['"])(.*?)\1/g, '$2') //Remove any surrounding quotes
+            // If previous token ends with a ValueChar, assume this token denotes a 'value' type;
+            // or, if no option char present, designate it as 'value', unless overwritten further down
+            if(this.ValueChars.some(y => Tokens[i].GetContent().reverse()[0] == y) || !Modifier.CommonOptionChars.some(x => _TokenText.startsWith(x as string)))
                 x.SetType('value');
 
-            let _TokenText = TokenText.replace(/(['"])(.*?)\1/g, '$2') //Remove any surrounding quotes
             if (_TokenText.match(/^(?:\\\\[^\\]+|[a-zA-Z]:|\.[\\/])((?:\\[^\\]+)+\\)?([^<>:]*)$/) || _TokenText.match(/^[^<>:]+\.[a-zA-Z0-9]{2,4}$/)) x.SetType('path'); // Windows file path format
             if (_TokenText.match(/^(HKLM|HKCC|HKCR|HKCU|HKU|HKEY_(LOCAL_MACHINE|CURRENT_CONFIG|CLASSES_ROOT|CURRENT_USER|USERS))\\?/i)) x.SetType('disabled'); // Windows Registry
 
 
             if (_TokenText.startsWith('http:') || _TokenText.startsWith('https:')) x.SetType('url');
+
         });
         return Tokens;
     }

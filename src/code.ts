@@ -40,7 +40,8 @@ function UpdateUITokens(Tokenised: Token[]): void {
         OutputTokenHTML.appendChild(OutputTokenElement);
 
         Token.SetElements(ConfigTokenElement, OutputTokenElement);
-        if (Index < Array.length - 1 && Modifier.ValueChars.some(y => Token.GetContent().reverse()[0] != y)) {
+
+        if (Index < Array.length - 1 && !Modifier.ValueChars.some(y => Token.GetContent().reverse()[0] == y)) {
             OutputTokenHTML.appendChild(SpaceElement);
         }
         //     if ((LatestIgnoredTokens.length == 0 && IsFirst) || Token.ReadOnly) OutputTokenElement.click();

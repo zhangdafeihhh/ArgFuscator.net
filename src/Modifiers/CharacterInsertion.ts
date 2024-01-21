@@ -23,7 +23,7 @@ class CharacterInsertion extends Modifier {
         var This = this;
         this.InputCommandTokens.forEach(function (Token: Token) {
             var NewTokenContent: Char[] = Token.GetContent().slice(0, This.Offset);
-            var lastChar = Modifier.ValueChars.some(y => Token.GetContent().reverse()[0] == y) ? Token.GetContent().length - 1 : undefined;
+            var lastChar = Modifier.CommonOptionChars.some(y =>  Token.GetContent()[0] == y) && Modifier.ValueChars.some(y => Token.GetContent().reverse()[0] == y) ? Token.GetContent().length - 1 : undefined;
 
             Token.GetContent().slice(This.Offset, lastChar).forEach(char => {
                 // Add current char to result string
