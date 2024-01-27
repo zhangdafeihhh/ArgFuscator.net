@@ -16,9 +16,7 @@ class QuoteInsertion extends Modifier {
                 // Add current char to result string
                 NewTokenContent.push(char);
 
-                // Ensure (a) char is not excluded
-                //        (b) probability tells us we will insert quotes
-                if (!This.ExcludedTypes.includes(Token.GetType()) && Modifier.CoinFlip(This.Probability) && previousQuote == false) {
+                if (!This.ExcludedTypes.includes(Token.GetType()) && !Modifier.QuoteChars.some(x=> x==Token.GetStringContent()[0]) && Modifier.CoinFlip(This.Probability) && previousQuote == false) {
                     // let previousQuote = false;
                     // do {
                         NewTokenContent.push(QuoteInsertion.QuoteCharacter);
@@ -30,11 +28,20 @@ class QuoteInsertion extends Modifier {
                 }
             });
 
-            if (i % 2 != 0)
-                if (previousQuote)
+            // Check if there are unbalanced quotes
+            if (i % 2 != 0){
+                if (previousQuote) // If the last char was a quote, simply remove it
                     NewTokenContent.pop();
-                else
-                    NewTokenContent.push(QuoteInsertion.QuoteCharacter);
+                else // If not:
+                    NewTokenContent.push(QuoteInsertion.QuoteCharacter); // If not, simply add a quote at the end of the string
+            }
+
+            // Edge case: Check if we added a quote after a value char
+            if(NewTokenContent[NewTokenContent.length-1] == QuoteInsertion.QuoteCharacter && Modifier.ValueChars.includes(NewTokenContent[NewTokenContent.length-2].toString()))
+            {
+                NewTokenContent.pop(); // Remove the final quote (leaving it may cause issues)
+                NewTokenContent = NewTokenContent.filter((_, i) => i!=NewTokenContent.lastIndexOf(QuoteInsertion.QuoteCharacter)) //Also remove the right-most quote character to balance the number of quotes out again
+            }
 
             Token.SetContent(NewTokenContent);
         });
