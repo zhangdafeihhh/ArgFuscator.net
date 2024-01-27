@@ -8,6 +8,7 @@ class FilePathTransformer extends Modifier {
     private PathTraversal: boolean;
     private SubstituteSlashes: boolean;
     private ExtraSlashes: boolean;
+    private readonly Keywords: string[] = ["debug", "system32", "compile", "exe", "temp", "find"];
 
     constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, PathTraversal: boolean, SubstituteSlashes: boolean, ExtraSlashes: boolean) {
         super(InputCommand, ExcludedTypes, Probability);
@@ -24,15 +25,17 @@ class FilePathTransformer extends Modifier {
 
             if (!This.ExcludedTypes.includes(Token.GetType())) {
                 // Path Traversal
-                if (this.PathTraversal) {
+                if (This.PathTraversal) {
                     NewTokenContent = NewTokenContent.replace(/([^\\/])([\\/])([^\\/])/g, (match, a, b, c) => {
                         let repeats = b;
                         let i = 0;
+                        let options = This.Keywords.map(x => `${x}${b}..${b}`)
+                        options.push(`.${b}`)
                         do {
-                            repeats += `.${b}`;
+                            repeats += Modifier.ChooseRandom(options);
                             i++;
                         } while (Modifier.CoinFlip(This.Probability * (0.9 ** i)));
-                        return Modifier.CoinFlip(this.Probability) ? `${a}${repeats}${c}` : match;
+                        return Modifier.CoinFlip(This.Probability) ? `${a}${repeats}${c}` : match;
                     });
                 }
 
@@ -40,13 +43,13 @@ class FilePathTransformer extends Modifier {
                 let tmp_tokencontent = NewTokenContent.split('');
                 NewTokenContent = '';
                 tmp_tokencontent.forEach(Char => {
-                    if (this.SubstituteSlashes && Char.match(/[/\\]/) && Modifier.CoinFlip(this.Probability))
+                    if (This.SubstituteSlashes && Char.match(/[/\\]/) && Modifier.CoinFlip(This.Probability))
                         Char = Char == "\\" ? "/" : "\\";
                     NewTokenContent += Char;
                 });
 
                 // Extra Slashes
-                if (this.ExtraSlashes && Modifier.CoinFlip(this.Probability)) {
+                if (This.ExtraSlashes && Modifier.CoinFlip(This.Probability)) {
                     NewTokenContent = NewTokenContent.replace(/([^\\/])([\\/])([^\\/])/g, (match, a, b, c) => {
                         let repeats = b;
                         let i = 0;
@@ -54,7 +57,7 @@ class FilePathTransformer extends Modifier {
                             repeats += b;
                             i++;
                         } while (Modifier.CoinFlip(This.Probability * (0.9 ** i)));
-                        return Modifier.CoinFlip(this.Probability) ? `${a}${repeats}${c}` : match;
+                        return Modifier.CoinFlip(This.Probability) ? `${a}${repeats}${c}` : match;
                     });
                 }
 
