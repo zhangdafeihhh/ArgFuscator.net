@@ -1,4 +1,4 @@
-@Modifier.AddArgument("SedStatements", "textarea", "Sed statements", "Sed replacement statements, one per line")
+@Modifier.AddArgument("SedStatements", "textarea", "Sed statements", "Sed replacement statements, one per line, e.g.:\ns/xx/yy/ to replace xx with yy\ns/xx/yy/i to replace xx with yy, case insensitively\ns/xx/yy|zz/ to replace xx with either yy or zz (at random)")
 @Modifier.Register("Sed replacements", "Apply a sed-style replace operation (on token-level).", ['command', 'path','url'])
 class Sed extends Modifier {
     private readonly SedStatements: SedStatement[];
@@ -9,12 +9,13 @@ class Sed extends Modifier {
         if (!SedStatements)
             throw Error("No sed statements string provided")
 
-
         SedStatements.split('\n').forEach(x => {
             try {
                 if (x) this.SedStatements.push(new SedStatement(x))
             } catch {
-                throw Error(`Sed '${x}' could not be compiled.`)
+                let token_code = document.createElement("code")
+                token_code.innerText = x
+                logUserError("sed-compile-error", `Could not compile sed statement ${token_code.outerHTML}.`, true)
             }
         })
 
