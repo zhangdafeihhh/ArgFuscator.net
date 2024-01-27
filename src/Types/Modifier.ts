@@ -33,7 +33,7 @@ abstract class Modifier {
     protected Probability: number;
 
     private static SeparationChar: Char = ' ' as String as Char;
-    private static QuoteChars: Char[] = ['"' as String as Char, "'" as String as Char];
+    public static QuoteChars: Char[] = ['"' as String as Char, "'" as String as Char];
     public static ValueChars: Char[] = ['=' as String as Char, ':' as String as Char];
     public static CommonOptionChars: Char[] = ['/' as String as Char, '-' as String as Char];
 
@@ -62,7 +62,7 @@ abstract class Modifier {
             let Char: Char = new String(InputCommand[i]) as Char;
             InOptionChar = (TokenContent.length == 0 && Modifier.CommonOptionChars.some(y => y == Char)) ? true : InOptionChar;
 
-            if (InQuote == null && (Char == this.SeparationChar || (InOptionChar && this.ValueChars.some(x => x == Char)))) {
+            if (InQuote == null && (Char == this.SeparationChar || (this.ValueChars.some(x => x == Char)))) {
                 if (Char != this.SeparationChar)
                     TokenContent.push(Char);
 

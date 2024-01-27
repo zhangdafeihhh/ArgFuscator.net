@@ -2,6 +2,7 @@ var LastTokenised: Token[] = []
 var LastIgnoredTokens: [number, number][] = [];
 var OutputTokenHTML: HTMLElement;
 var ConfigTokenHTML: HTMLElement;
+var LoadedConfigModifiers: Map<string, object> = new Map();
 
 interface FileFormat {
     command: Array<[string, string]>;
@@ -50,6 +51,7 @@ function UpdateUITokens(Tokenised: Token[]): void {
 }
 
 function ApplyObfuscation(): void {
+    removeUserErrors();
     if (LastTokenised == null || LastTokenised?.length <= 0) {
         UpdateTokens();
         if (LastTokenised == null || LastTokenised?.length <= 0) {
@@ -161,7 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
     GenerateObfuscationOptionsHTML();
     document.getElementById("format-picker")?.addEventListener("change", FetchJsonFile);
     document.getElementById("JsonFile")?.addEventListener("change", ReadJsonFile);
-    document.getElementById("input_command")?.addEventListener("keyup", debounce(UpdateTokens, 200));
+    document.getElementById("input_command")?.addEventListener("keyup", debounce(UpdateTokens, 1000));
     document.getElementById("obfuscation_run")?.addEventListener("click", () => ApplyObfuscation());
     document.getElementById("download_config")?.addEventListener("click", GenerateConfigJsonFile);
     document.getElementById("reset_form")?.addEventListener("click", ResetForm);
@@ -170,17 +172,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById('menu-templates').childNodes.forEach((ContextMenuItem: HTMLLIElement) => {
         ContextMenuItem.addEventListener("click", e => {
-            FetchJsonFile2(ContextMenuItem);
-            ContextMenuItem.parentNode.childNodes.forEach((x: HTMLElement) => { if (x.dataset) x.dataset['active'] = "" });
+            let currentSelected = document.querySelector<HTMLLIElement>("#menu-templates>li[data-active='true']");
+            FetchJsonFile2(currentSelected).then(oldDefaultModifiers =>
+                FetchJsonFile2(ContextMenuItem).then(newModifiers => {
+                    if (CheckChanged(ContextMenuItem, newModifiers, oldDefaultModifiers)) {
+                        ApplyTemplate({modifiers: newModifiers} as FileFormat, false);
+                        ContextMenuItem.parentNode.childNodes.forEach((x: HTMLElement) => { if (x.dataset) x.dataset['active'] = "" });
 
-            if (!ContextMenuItem.dataset['function']) {
-                ContextMenuItem.dataset['active'] = 'true';
+                        if (!ContextMenuItem.dataset['function']) {
+                            ContextMenuItem.dataset['active'] = 'true';
 
-                document.getElementById("button_template").innerHTML = `<strong>Selected template</strong>: ${ContextMenuItem.innerText}`;
-            } else
-                document.getElementById("button_template").innerHTML = `<strong>Selected template</strong>: (none)`;
+                            document.getElementById("template_selected").innerText = ContextMenuItem.innerText;
+                        } else
+                            document.getElementById("template_selected").innerText = "(none)";
 
-            document.getElementById("menu-templates").style.display = 'none';
+                        document.getElementById("menu-templates").style.display = 'none';
+                    }
+                })
+            );
         })
     });
 

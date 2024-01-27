@@ -10,7 +10,7 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
 </head>
 
 <body>
@@ -24,7 +24,6 @@
         <li data-type="path">File Path</li>
         <li data-type="url">URL</li>
         <li data-type="value">Value</li>
-        <!-- <li>Add...</li> -->
     </menu>
     <header>
         <img src="assets/img/logo.png" class="site-logo" alt="Logo" />
@@ -32,9 +31,7 @@
     </header>
     <div class="container">
         <fieldset>
-            <!-- <legend>Input</legend> -->
-            <textarea id="input_command"
-                placeholder="Please paste the command you would like to obfuscate here."></textarea>
+            <textarea id="input_command" placeholder="Please paste the command you would like to obfuscate here."></textarea>
             <div id="tokens"></div>
             <div id="error-messages"></div>
         </fieldset>
@@ -52,27 +49,31 @@
                         <li data-function="none">(none)</li>
                         <li data-function="upload">⇡ Upload file...</li>
                         <li>arp.exe</li>
-                        <li>cacls.exe</li>
-                        <li>csc.exe</li>
-                        <li>curl.exe</li>
                         <li>bitsadmin.exe</li>
+                        <li>cacls.exe</li>
                         <li>certutil.exe</li>
+                        <li>cmdkey.exe</li>
+                        <li>csc.exe</li>
+                        <li>cscript.exe</li>
+                        <li>curl.exe</li>
+                        <li>findstr.exe</li>
+                        <li>forfiles.exe</li>
                         <li>ipconfig.exe</li>
+                        <li>net.exe</li>
+                        <li>netsh.exe</li>
                         <li>nslookup.exe</li>
                         <li>reg.exe</li>
                         <li>wmic.exe</li>
+                        <li>wscript.exe</li>
                     </menu>
                     <label for="JsonFile"><input type="file" id="JsonFile" accept=".json" /></label>
-                    <div class="button-selection"><a class="button" id="button_template"><strong>Selected
-                                template</strong>:
-                            (none)</a><a class="button" id="download_config"
-                            download="config-export.json"><strong>Download
-                                config</strong></a>
+                    <div class="button-selection">
+                        <a class="button" id="button_template"><strong>Selected template</strong>: <span id="template_selected">(none)</span></a>
+                        <a class="button" id="download_config" download="config-export.json"><strong>Download config</strong></a>
                         <a class="button" id="reset_form"><strong>Reset</strong></a>
                     </div>
                 </div>
-                <div id="options-panel-options">
-                </div>
+                <div id="options-panel-options"></div>
             </div>
         </fieldset>
 
