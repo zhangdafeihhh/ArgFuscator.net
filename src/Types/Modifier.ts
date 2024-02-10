@@ -58,11 +58,13 @@ abstract class Modifier {
         var InOptionChar: boolean | null = null;
         var Tokens: Token[] = [];
         var TokenContent: Char[] = [];
+        var SeenValueChar : boolean = false;
         for (var i = 0; i < InputCommand.length; i++) {
+            if(TokenContent.length == 0) SeenValueChar = false;
             let Char: Char = new String(InputCommand[i]) as Char;
             InOptionChar = (TokenContent.length == 0 && Modifier.CommonOptionChars.some(y => y == Char)) ? true : InOptionChar;
 
-            if (InQuote == null && (Char == this.SeparationChar || (this.ValueChars.some(x => x == Char)))) {
+            if (InQuote == null && (Char == this.SeparationChar || (!SeenValueChar && (i == InputCommand.length || !(['\\', '/'].some(x => x ==InputCommand[i+1]))) && this.ValueChars.some(x => x == Char)))) {
                 if (Char != this.SeparationChar)
                     TokenContent.push(Char);
 
@@ -78,6 +80,8 @@ abstract class Modifier {
 
                 TokenContent.push(Char);
             }
+            SeenValueChar = SeenValueChar || this.ValueChars.some(x => x == Char)
+            console.log(Char, SeenValueChar);
         }
         if (Token?.length > 0)
             Tokens.push(new Token(TokenContent));
@@ -142,7 +146,7 @@ abstract class Modifier {
             if (_TokenText.match(/^(HKLM|HKCC|HKCR|HKCU|HKU|HKEY_(LOCAL_MACHINE|CURRENT_CONFIG|CLASSES_ROOT|CURRENT_USER|USERS))\\?/i)) x.SetType('disabled'); // Windows Registry
 
 
-            if (_TokenText.startsWith('http:') || _TokenText.startsWith('https:')) x.SetType('url');
+            if (_TokenText.startsWith('http:') || _TokenText.startsWith('https:') || _TokenText.match(/[12]?\d?\d\.[12]?\d?\d\.[12]?\d?\d\.[12]?\d?\d/)) x.SetType('url');
 
         });
         return Tokens;

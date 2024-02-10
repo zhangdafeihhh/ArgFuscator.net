@@ -2,14 +2,17 @@
 @Modifier.AddArgument("LeaveOutDoubleSlashes", "checkbox", "Alternative Double Slashes (:// vs :/)", "")
 @Modifier.AddArgument("SubstituteSlashes", "checkbox", "Transform Slashes", "")
 @Modifier.AddArgument("IpToHex", "checkbox", "Alternate IP Form", "")
+@Modifier.AddArgument("PathTraversal", "checkbox", "URL Path traversal", "")
 @Modifier.Register("URL Transformer", "Change the format in which URLs are represented.", ['command', 'argument', 'path', 'value'])
 class UrlTransformer extends Modifier {
     private LeaveOutProtocol: boolean;
     private LeaveOutDoubleSlashes: boolean;
     private SubstituteSlashes: boolean;
     private IpToHex: boolean;
+    private PathTraversal: boolean;
+    private readonly Keywords: string[] = ["debug", "system32", "compile", "winsxs", "temp", "update"];
 
-    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, LeaveOutProtocol: boolean, LeaveOutDoubleSlashes: boolean, SubstituteSlashes: boolean, IpToHex: boolean) {
+    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, LeaveOutProtocol: boolean, LeaveOutDoubleSlashes: boolean, SubstituteSlashes: boolean, IpToHex: boolean, PathTraversal: boolean) {
         super(InputCommand, ExcludedTypes, Probability);
 
         this.Probability = Modifier.ParseProbability(Probability);
@@ -18,6 +21,7 @@ class UrlTransformer extends Modifier {
         this.LeaveOutDoubleSlashes = LeaveOutDoubleSlashes;
         this.SubstituteSlashes = SubstituteSlashes;
         this.IpToHex = IpToHex;
+        this.PathTraversal = PathTraversal;
     }
 
     GenerateOutput(): void {
@@ -26,9 +30,25 @@ class UrlTransformer extends Modifier {
             var NewTokenContent: string = Token.GetStringContent();
 
             if (!This.ExcludedTypes.includes(Token.GetType())) {
+
                 // Leave out protocol
                 if (this.LeaveOutProtocol && Modifier.CoinFlip(this.Probability))
                     NewTokenContent = NewTokenContent.replace(/\w+:\/\//, "://");
+
+                // Path Traversal
+                if (This.PathTraversal) {
+                    NewTokenContent = NewTokenContent.replace(/([^/])([/])([^/])/g, (match, a, b, c) => {
+                        let repeats = b;
+                        let i = 0;
+                        let options = This.Keywords.map(x => `${x}${b}..${b}`)
+                        //options.push(`.${b}`)
+                        do {
+                            repeats += Modifier.ChooseRandom(options);
+                            i++;
+                        } while (Modifier.CoinFlip(This.Probability * (0.9 ** i)));
+                        return Modifier.CoinFlip(This.Probability) ? `${a}${repeats}${c}` : match;
+                    });
+                }
 
                 // Change double slashes
                 if (this.LeaveOutDoubleSlashes && Modifier.CoinFlip(this.Probability))

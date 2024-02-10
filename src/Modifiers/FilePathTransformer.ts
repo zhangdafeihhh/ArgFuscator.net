@@ -1,4 +1,3 @@
-
 @Modifier.AddArgument("PathTraversal", "checkbox", "Path traversal", "")
 @Modifier.AddArgument("SubstituteSlashes", "checkbox", "Transform slashes", "")
 @Modifier.AddArgument("ExtraSlashes", "checkbox", "Extra slashes", "")
@@ -8,7 +7,7 @@ class FilePathTransformer extends Modifier {
     private PathTraversal: boolean;
     private SubstituteSlashes: boolean;
     private ExtraSlashes: boolean;
-    private readonly Keywords: string[] = ["debug", "system32", "compile", "exe", "temp", "find"];
+    private readonly Keywords: string[] = ["debug", "system32", "compile", "winsxs", "temp", "update"];
 
     constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, PathTraversal: boolean, SubstituteSlashes: boolean, ExtraSlashes: boolean) {
         super(InputCommand, ExcludedTypes, Probability);
@@ -43,7 +42,7 @@ class FilePathTransformer extends Modifier {
                 let tmp_tokencontent = NewTokenContent.split('');
                 NewTokenContent = '';
                 tmp_tokencontent.forEach(Char => {
-                    if (This.SubstituteSlashes && Char.match(/[/\\]/) && Modifier.CoinFlip(This.Probability))
+                    if (This.SubstituteSlashes && Char.match(/[/\\]/) && !NewTokenContent.endsWith(":") && Modifier.CoinFlip(This.Probability))
                         Char = Char == "\\" ? "/" : "\\";
                     NewTokenContent += Char;
                 });
