@@ -11,7 +11,7 @@ interface FileFormat {
 
 function GetInputCommand(): string | null {
     // Obtain input command
-    let InputObject = document.querySelector("textarea#input_command") as HTMLInputElement | null;
+    let InputObject = document.querySelector("textarea#input-command") as HTMLInputElement | null;
     let InputCommand = InputObject?.value?.trim();
     if (InputCommand == null || InputCommand == "") { console.warn("No input was provided."); return null; }
     return InputCommand;
@@ -20,7 +20,7 @@ function GetInputCommand(): string | null {
 function UpdateTokens(): void {
     removeUserErrors();
     ConfigTokenHTML = document.querySelector("div#tokens");
-    OutputTokenHTML = document.querySelector('div#output_command');
+    OutputTokenHTML = document.querySelector('div#output-command');
     LastTokenised = Modifier.CommandTokenise(GetInputCommand(), document.getElementById("menu-templates") as HTMLMenuElement);
 
     UpdateUITokens(LastTokenised);
@@ -30,7 +30,6 @@ function UpdateUITokens(Tokenised: Token[]): void {
     ConfigTokenHTML.innerHTML = "";
     OutputTokenHTML.innerHTML = "";
     Tokenised?.forEach((Token, Index, Array) => {
-        //     LatestIgnoredTokens.forEach(x => { if (TokenEquals(x, Token)) Token.ReadOnly = true });
         var OutputTokenElement = document.createElement('span');
         var ConfigTokenElement = document.createElement('div');
         let SpaceElement = document.createElement('span');
@@ -45,8 +44,6 @@ function UpdateUITokens(Tokenised: Token[]): void {
         if (Index < Array.length - 1 && !Modifier.ValueChars.some(y => Token.GetContent().reverse()[0] == y)) {
             OutputTokenHTML.appendChild(SpaceElement);
         }
-        //     if ((LatestIgnoredTokens.length == 0 && IsFirst) || Token.ReadOnly) OutputTokenElement.click();
-        //     IsFirst = false;
     });
 }
 
@@ -63,7 +60,7 @@ function ApplyObfuscation(): void {
     LastTokenised?.forEach(Token => Token.Reset());
 
     // Obtain selected options
-    let SelectedOptions = document.querySelectorAll("input[data-function][id^=\"option_\"]:checked") as NodeListOf<HTMLInputElement>;
+    let SelectedOptions = document.querySelectorAll("input[data-function][id^=\"option-\"]:checked") as NodeListOf<HTMLInputElement>;
     if (SelectedOptions?.length <= 0) { logUserError("pattern-no-options", "There are no transformations enabled in the options section below; without this, no obfuscation will be applied.", true) }
     SelectedOptions.forEach(Element => {
         let ClassName = Element.dataset.function as string;
@@ -96,22 +93,22 @@ function GenerateObfuscationOptionsHTML() {
 
         let modifierBoxBody = document.createElement('div');
         modifierBoxBody.classList.add('body');
-        modifierBoxBody.innerHTML = `<input type="checkbox" id="option_${modifierID}" data-function="${modifier.Function.name}" />
-        <label for="option_${modifierID}">Enable <a class="explain" title="${modifier.Description}">${modifier.Name}</a></label>`;
+        modifierBoxBody.innerHTML = `<input type="checkbox" id="option-${modifierID}" data-function="${modifier.Function.name}" />
+        <label for="option-${modifierID}">Enable <a class="explain" title="${modifier.Description}">${modifier.Name}</a></label>`;
 
         let modifierBoxBodySubOptions = document.createElement('div');
         modifierBoxBodySubOptions.classList.add('suboptions');
 
         let modifierBoxBodySubOptionsRow = document.createElement('div');
         modifierBoxBodySubOptionsRow.classList.add('flex-row')
-        modifierBoxBodySubOptionsRow.innerHTML = `<label for="option_${modifierID}_arg0">Apply to</label>
-        <div class="option_target button" id="option_${modifierID}_arg0"
-            data-excluded_types=""></div>
-            &nbsp;<label for="option_${modifierID}_arg1">with a probability of</label><input
-            type="number" id="option_${modifierID}_arg1" data-field="Probability"
+        modifierBoxBodySubOptionsRow.innerHTML = `<label for="option-${modifierID}_arg0">Apply to</label>
+        <div class="picker"><div class="option-target button" id="option-${modifierID}_arg0"
+            data-excluded_types=""></div></div>
+            &nbsp;<label for="option-${modifierID}_arg1">with a probability of</label><input
+            type="number" id="option-${modifierID}_arg1" data-field="Probability"
             class="probs-slider" value="0.5" min="0" max="1" step="0.1">`;
 
-        (modifierBoxBodySubOptionsRow.querySelector(`div#option_${modifierID}_arg0`) as HTMLElement).dataset['excluded_types'] = JSON.stringify(modifier.DefaultExcludedTypes);
+        (modifierBoxBodySubOptionsRow.querySelector(`div#option-${modifierID}_arg0`) as HTMLElement).dataset['excluded_types'] = JSON.stringify(modifier.DefaultExcludedTypes);
 
         modifierBoxBodySubOptions.appendChild(modifierBoxBodySubOptionsRow)
 
@@ -122,15 +119,15 @@ function GenerateObfuscationOptionsHTML() {
         modifier.Arguments.forEach((argument: ModifierArgumentsDefinition) => {
             let modifierBoxBodySubOptionsRow3 = document.createElement('div');
             modifierBoxBodySubOptionsRow3.classList.add("suboption")
-            let label = `<label for="option_${modifierID}_arg${i}">${argument.PublicName}</label>`;
+            let label = `<label for="option-${modifierID}_arg${i}">${argument.PublicName}</label>`;
             if (argument.Type == "text") {
-                modifierBoxBodySubOptionsRow3.innerHTML += label + `<input type="text" id="option_${modifierID}_arg${i}" data-field="${argument.InternalName}" data-type="array" placeholder="${argument.Description}" value="" />`;
+                modifierBoxBodySubOptionsRow3.innerHTML += label + `<input type="text" id="option-${modifierID}_arg${i}" data-field="${argument.InternalName}" data-type="array" placeholder="${argument.Description}" value="" />`;
             } else if (argument.Type == "number") {
-                modifierBoxBodySubOptionsRow3.innerHTML += label + `<input type="number" id="option_${modifierID}_arg${i}" data-field="${argument.InternalName}" placeholder="${argument.Description}" title="${argument.Description}" value="" />`;
+                modifierBoxBodySubOptionsRow3.innerHTML += label + `<input type="number" id="option-${modifierID}_arg${i}" data-field="${argument.InternalName}" placeholder="${argument.Description}" title="${argument.Description}" value="" />`;
             } else if (argument.Type == "checkbox") {
-                modifierBoxBodySubOptionsRow3.innerHTML += `<input data-field="${argument.InternalName}" type="checkbox" id="option_${modifierID}_arg${i}"></input>` + label;
+                modifierBoxBodySubOptionsRow3.innerHTML += `<input data-field="${argument.InternalName}" type="checkbox" id="option-${modifierID}_arg${i}"></input>` + label;
             } else if (argument.Type == "textarea") {
-                modifierBoxBodySubOptionsRow3.innerHTML += label + `<textarea data-field="${argument.InternalName}" id="option_${modifierID}_arg${i}" placeholder="${argument.Description}"></textarea>`;
+                modifierBoxBodySubOptionsRow3.innerHTML += label + `<textarea data-field="${argument.InternalName}" id="option-${modifierID}_arg${i}" placeholder="${argument.Description}"></textarea>`;
             }
             modifierBoxBodySubOptionsRow2.appendChild(modifierBoxBodySubOptionsRow3)
             i++;
@@ -158,17 +155,18 @@ function ResetForm() {
     document.getElementById("menu-templates").children[0].dispatchEvent(new Event("click"));
 }
 
-document.addEventListener("DOMContentLoaded", UpdateTokens);
-document.addEventListener("DOMContentLoaded", () => {
+function OnLoad(){
+    window.removeEventListener("DOMContentLoaded", OnLoad, false);
+    UpdateTokens();
     GenerateObfuscationOptionsHTML();
     document.getElementById("format-picker")?.addEventListener("change", FetchJsonFile);
     document.getElementById("JsonFile")?.addEventListener("change", ReadJsonFile);
-    document.getElementById("input_command")?.addEventListener("keyup", debounce(UpdateTokens, 1000));
-    document.getElementById("obfuscation_run")?.addEventListener("click", () => ApplyObfuscation());
-    document.getElementById("download_config")?.addEventListener("click", GenerateConfigJsonFile);
-    document.getElementById("reset_form")?.addEventListener("click", ResetForm);
+    document.getElementById("input-command")?.addEventListener("keyup", debounce(UpdateTokens, 1000));
+    document.getElementById("obfuscation-run")?.addEventListener("click", () => ApplyObfuscation());
+    document.getElementById("download-config")?.addEventListener("click", GenerateConfigJsonFile);
+    document.getElementById("reset-form")?.addEventListener("click", ResetForm);
 
-    document.getElementById("button_template").addEventListener("click", _ => ShowContextMenu(document.getElementById('menu-templates'), document.getElementById('button_template')))
+    document.getElementById("button-template").addEventListener("click", _ => ShowContextMenu(document.getElementById('menu-templates'), document.getElementById('button-template')))
 
     document.getElementById('menu-templates').childNodes.forEach((ContextMenuItem: HTMLLIElement) => {
         ContextMenuItem.addEventListener("click", e => {
@@ -176,17 +174,18 @@ document.addEventListener("DOMContentLoaded", () => {
             FetchJsonFile2(currentSelected).then(oldDefaultModifiers =>
                 FetchJsonFile2(ContextMenuItem).then(newModifiers => {
                     if (CheckChanged(ContextMenuItem, newModifiers, oldDefaultModifiers)) {
-                        ApplyTemplate({modifiers: newModifiers} as FileFormat, false);
                         ContextMenuItem.parentNode.childNodes.forEach((x: HTMLElement) => { if (x.dataset) x.dataset['active'] = "" });
 
                         if (!ContextMenuItem.dataset['function']) {
+                            ApplyTemplate({modifiers: newModifiers} as FileFormat, false);
                             ContextMenuItem.dataset['active'] = 'true';
 
-                            document.getElementById("template_selected").innerText = ContextMenuItem.innerText;
+                            document.getElementById("template-selected").innerText = ContextMenuItem.innerText;
                         } else
-                            document.getElementById("template_selected").innerText = "(none)";
+                            document.getElementById("template-selected").innerText = "(none)";
 
                         document.getElementById("menu-templates").style.display = 'none';
+
                     }
                 })
             );
@@ -212,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     })
 
-    document.querySelectorAll<HTMLInputElement>(".option_target").forEach((ContextMenuButton: HTMLDivElement) => {
+    document.querySelectorAll<HTMLInputElement>(".option-target").forEach((ContextMenuButton: HTMLDivElement) => {
         // Create new Context Menu
         var ContextMenu = document.getElementsByClassName("context-menu")[0].cloneNode(true) as HTMLMenuElement;
         ContextMenu.removeChild(ContextMenu.children[0]);
@@ -231,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ContextMenuButton.addEventListener("click", _ => ShowContextMenu(ContextMenu, ContextMenuButton))
     });
 
-    document.querySelectorAll<HTMLInputElement>("input[id^=\"option_\"]").forEach(p => {
+    document.querySelectorAll<HTMLInputElement>("input[id^=\"option-\"]").forEach(p => {
         p.addEventListener("change", _ => {
             if (p.parentElement) {
                 var suboptions = p.parentElement.querySelector<HTMLDivElement>("div.suboptions")
@@ -246,7 +245,10 @@ document.addEventListener("DOMContentLoaded", () => {
         }); p.dispatchEvent(new Event("change"))
     });
     slist(document.getElementById("options-panel-options"));
-});
+};
+
+
+document.addEventListener("DOMContentLoaded", OnLoad, false);
 
 
 function slist(target: HTMLElement) {

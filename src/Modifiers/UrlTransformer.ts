@@ -55,13 +55,20 @@ class UrlTransformer extends Modifier {
                     NewTokenContent = NewTokenContent.replace(/\:\/\//, ":/");
 
                 // Substitute Slashes
-                let tmp_tokencontent = NewTokenContent.split('');
-                NewTokenContent = '';
-                tmp_tokencontent.forEach(Char => {
-                    if (this.SubstituteSlashes && Char == "/" && Modifier.CoinFlip(this.Probability))
-                        Char = "\\";
-                    NewTokenContent += Char;
-                });
+                let match;
+                let regex = /\/+/g;
+                while ((match = regex.exec(NewTokenContent)) !== null) {
+                    if(Modifier.CoinFlip(this.Probability))
+                        NewTokenContent = NewTokenContent.substring(0,match.index) + ('\\'.repeat(match[0].length)) + NewTokenContent.substring(match.index+match[0].length,NewTokenContent.length)
+                }
+                // tmp_tokencontent.forEach((Char, index) => {
+                //     if (this.SubstituteSlashes && Char == "/" && (index==0 || tmp_tokencontent[index-1] != "/") && Modifier.CoinFlip(this.Probability)){
+                //         Char = "\\";
+                //         if(tmp_tokencontent.length > index && tmp_tokencontent[index+1] == "/")
+                //             tmp_tokencontent[index+1] == Char
+                //     }
+                //     NewTokenContent += Char;
+                // });
 
                 // IP Transform
                 if (this.IpToHex && Modifier.CoinFlip(this.Probability)) {

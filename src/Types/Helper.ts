@@ -1,8 +1,8 @@
 
 function SetPosition(Parent: HTMLElement, ContextMenu: HTMLElement): void {
     var box = Parent.getBoundingClientRect()
-    ContextMenu.style.top = (box.top + window.scrollY + parseFloat(getComputedStyle(Parent).paddingBottom) + parseFloat(getComputedStyle(Parent).paddingTop) + 1).toString() + "px";
-    ContextMenu.style.left = (box.left).toString() + "px";
+    ContextMenu.style.top = (box.height/2) + "px"; //(box.top + window.scrollY + parseFloat(getComputedStyle(Parent).paddingBottom) + parseFloat(getComputedStyle(Parent).paddingTop) + 1).toString() + "px";
+    //ContextMenu.style.left = (box.left).toString() + "px";
 }
 
 function ShowContextMenu(Element: HTMLElement, ClickElement: HTMLElement) {
@@ -14,11 +14,9 @@ function ShowContextMenu(Element: HTMLElement, ClickElement: HTMLElement) {
 
         var ClickHandler = (evt: Event) => {
             var Target = evt.target as HTMLElement;
-            if (!Element.contains(Target)) {
-                window.removeEventListener('mousedown', ClickHandler);
-                if (Target != ClickElement)
-                    ClickElement.dispatchEvent(new Event("click"));
-            }
+            window.removeEventListener('mousedown', ClickHandler);
+            if (!Element.contains(Target) && Target != ClickElement && !ClickElement.contains(Target))
+                ClickElement.dispatchEvent(new Event("click"));
         }
         window.addEventListener('mousedown', ClickHandler);
     }

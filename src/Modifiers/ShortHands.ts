@@ -1,15 +1,30 @@
 @Modifier.AddArgument("ShorthandCommands", "textarea", "Commands that can be shortened", "Enter ALL commands that can be shortened here (comma separated).\ne.g. enter 'test' if 'tes', 'te', 't' are also accepted.\nShould there be commands that start with the same letters, this will be taken into account when generating alternatives.")
+@Modifier.AddArgument("CaseSensitive", "checkbox", "Case sensitive", "")
 @Modifier.Register("Shorthands", "Allow certain commands to be shortened.", ['command', 'path', 'url'])
 class Shorthands extends Modifier {
     private static readonly Separator = ",";
     private Substitutions : Map<string, string[]> = new Map();
+    private CaseSensitive: boolean;
 
-    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, ShorthandCommands: string) {
+    private NormaliseArgument(input: string, strip_option_char: boolean = true) : string {
+        let result = input;
+        if(strip_option_char && OptionCharSubstitution.CommonOptionChars.some(x=>input.startsWith(x.toString())))
+            result = input.substring(1);
+
+        if(!this.CaseSensitive)
+            result = result.toLocaleLowerCase();
+
+        return result
+    }
+
+    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, ShorthandCommands: string, CaseSensitive:boolean) {
         super(InputCommand, ExcludedTypes, Probability);
 
         try {
             let This = this;
-            let commands = new Set(ShorthandCommands.split(Shorthands.Separator));
+            let commands = new Set(ShorthandCommands.split(Shorthands.Separator).map(x => This.NormaliseArgument(x)));
+            this.CaseSensitive = CaseSensitive;
+
             commands.forEach(command => {
                 let suffix = Modifier.ValueChars.includes(command.charAt(command.length-1)) ? command.charAt(command.length-1) : "";
                 // Skip commands that cannot be shortened
@@ -26,7 +41,9 @@ class Shorthands extends Modifier {
                     if (commands_other_a.every(command_test => command_test.substring(0, i) !== command_shortened)){
                         // At this stage, we have found the minimum number of letters the command should have to be 'unique' amongst the provided commands
                         // Create a substitution entry with an array of possible options
-                        This.Substitutions.set(command, Array.from({ length: command.length-i }, (_, j) => command.substring(0, i+j) + suffix));
+                        let options = Array.from({ length: command.length-i }, (_, j) => command.substring(0, i+j) + suffix)
+                        This.Substitutions.set(command, options);
+                        options.forEach(option => This.Substitutions.set(option, options))
                         break;
                     }
                 }
@@ -42,8 +59,13 @@ class Shorthands extends Modifier {
     GenerateOutput(): void {
         var This = this;
         this.InputCommandTokens.forEach(Token => {
-            if (!This.ExcludedTypes.includes(Token.GetType()) && Modifier.CoinFlip(This.Probability) && This.Substitutions.has(Token.GetStringContent()))
-                Token.SetContent(Modifier.ChooseRandom(This.Substitutions.get(Token.GetStringContent())).split(""));
+            if (!This.ExcludedTypes.includes(Token.GetType()) && Modifier.CoinFlip(This.Probability)){
+                let token = This.NormaliseArgument(Token.GetStringContent())
+                if(This.Substitutions.has(token)){
+                    let original_token = This.NormaliseArgument(Token.GetStringContent(), false);
+                    Token.SetContent(original_token.replace(token, Modifier.ChooseRandom(This.Substitutions.get(token))).split(""));
+                }
+            }
         });
     }
 }

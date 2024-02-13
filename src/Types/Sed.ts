@@ -1,5 +1,5 @@
 class SedStatement {
-    private static FORMAT = new RegExp(/^s\/(?<Find>(?:[^\/\\]|\\(?:\\|\/))+?)\/(?<Replace>(?:[^\/\\]|\\(?:\\|\/))+?)\/(?<Options>[ig])?$/)
+    private static FORMAT = new RegExp(/^s\/(?<Find>(?:[^\/\\]|\\(?:\\|\/))+?)\/(?<Replace>(?:[^\/\\]|\\(?:\\|\/))*?)\/(?<Options>[ig])?$/)
     public Find: string;
     public Replace: string[];
     public CaseInsensitive: boolean;

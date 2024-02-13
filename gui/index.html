@@ -31,49 +31,52 @@
     </header>
     <div class="container">
         <fieldset>
-            <textarea id="input_command" placeholder="Please paste the command you would like to obfuscate here."></textarea>
+            <textarea id="input-command" placeholder="Please paste the command you would like to obfuscate here."></textarea>
             <div id="tokens"></div>
             <div id="error-messages"></div>
         </fieldset>
 
         <fieldset>
             <legend>Output</legend>
-            <div id="output_command"></div>
+            <div id="output-command"></div>
         </fieldset>
 
         <fieldset class="collapsible">
             <legend>Options</legend>
             <div class="collapsed">
                 <div id="options-panel">
-                    <menu class="context-menu" id="menu-templates">
-                        <li data-function="none">(none)</li>
-                        <li data-function="upload">⇡ Upload file...</li>
-                        <li>arp.exe</li>
-                        <li>bitsadmin.exe</li>
-                        <li>cacls.exe</li>
-                        <li>certutil.exe</li>
-                        <li>cmdkey.exe</li>
-                        <li>csc.exe</li>
-                        <li>cscript.exe</li>
-                        <li>curl.exe</li>
-                        <li>findstr.exe</li>
-                        <li>forfiles.exe</li>
-                        <li>ipconfig.exe</li>
-                        <li>msiexec.exe</li>
-                        <li>net.exe</li>
-                        <li>netsh.exe</li>
-                        <li>netstat.exe</li>
-                        <li>nslookup.exe</li>
-                        <li>ping.exe</li>
-                        <li>reg.exe</li>
-                        <li>wmic.exe</li>
-                        <li>wscript.exe</li>
-                    </menu>
-                    <label for="JsonFile"><input type="file" id="JsonFile" accept=".json" /></label>
-                    <div class="button-selection">
-                        <a class="button" id="button_template"><strong>Selected template</strong>: <span id="template_selected">(none)</span></a>
-                        <a class="button" id="download_config" download="config-export.json"><strong>Download config</strong></a>
-                        <a class="button" id="reset_form"><strong>Reset</strong></a>
+                    <div class="picker">
+                        <menu class="context-menu" id="menu-templates">
+                            <li data-function="none">(none)</li>
+                            <li data-function="upload">⇡ Upload file...</li>
+                            <li>arp.exe</li>
+                            <li>bitsadmin.exe</li>
+                            <li>cacls.exe</li>
+                            <li>certutil.exe</li>
+                            <li>cmdkey.exe</li>
+                            <li>csc.exe</li>
+                            <li>cscript.exe</li>
+                            <li>curl.exe</li>
+                            <li>findstr.exe</li>
+                            <li>forfiles.exe</li>
+                            <li>ipconfig.exe</li>
+                            <li>msiexec.exe</li>
+                            <li data-alias="net1.exe">net.exe</li>
+                            <li>netsh.exe</li>
+                            <li>netstat.exe</li>
+                            <li>nslookup.exe</li>
+                            <li>ping.exe</li>
+                            <li data-alias="pwsh.exe">powershell.exe</li>
+                            <li>reg.exe</li>
+                            <li>wmic.exe</li>
+                            <li>wscript.exe</li>
+                        </menu>
+                        <label for="JsonFile"><input type="file" id="JsonFile" accept=".json" /></label>
+                        <div class="button-selection">
+                            <a class="button" id="button-template"><strong>Selected template</strong>: <span id="template-selected">(none)</span></a>
+                            <a class="button" id="download-config" download="config-export.json"><strong>Download config</strong></a>
+                            <a class="button" id="reset-form"><strong>Reset</strong></a>
+                        </div>
                     </div>
                 </div>
                 <div id="options-panel-options"></div>
@@ -81,7 +84,7 @@
         </fieldset>
 
         <div>
-            <a class="button button-primary" id="obfuscation_run"><strong>Apply obfuscation</strong></a>
+            <a class="button button-primary" id="obfuscation-run"><strong>Apply obfuscation</strong></a>
         </div>
     </div>
 

@@ -34,6 +34,8 @@ class Regex extends Modifier {
                     }
                     return match.substring(start, end)
                 })
+
+                RexReplace = RexReplace.replace(/\$RANDOM/g, Modifier.RandomString(Modifier.ChooseRandom(Array.from(Array(20).keys()))+1));
                 NewTokenContent = NewTokenContent.replace(this.RegexMatch, RexReplace)
             }
             Token.SetContent(NewTokenContent.split(""))

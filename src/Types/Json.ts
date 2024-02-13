@@ -28,7 +28,7 @@ function ObjectEquals(object_a: object, object_b: object): boolean {
 }
 
 function CheckChanged(targetElem: HTMLLIElement, newModifiers: object, oldDefaultModifiers: object): boolean {
-    let SelectedOptions = document.querySelectorAll("input[data-function][id^=\"option_\"]:checked") as NodeListOf<HTMLInputElement>;
+    let SelectedOptions = document.querySelectorAll("input[data-function][id^=\"option-\"]:checked") as NodeListOf<HTMLInputElement>;
     const warningText = "You made changes to the default obfuscation options, but the new command you entered has different obfuscation settings.\nAre you sure you want to lose the changes you made?\n\nPress OK to discard your changes and apply the new configuration, or click Cancel to keep your configuration.";
 
     // User clicks (none) or 'upload', check if there is an existing config prior to continuing
@@ -37,7 +37,7 @@ function CheckChanged(targetElem: HTMLLIElement, newModifiers: object, oldDefaul
     }
 
     // User clicks a button that is different to the selected template
-    if (targetElem.innerText != document.getElementById('template_selected').innerText) {
+    if (targetElem.innerText != document.getElementById('template-selected').innerText) {
         let currentConfig = GetJsonContents(); // Get JSON object of current config
         if (Object.entries(currentConfig).length === 0 // Current config is blank; no need to ask
             || ObjectEquals(newModifiers, currentConfig) // Current config equals the target config, no need to ask
@@ -97,9 +97,9 @@ function ReadJsonFile(this: HTMLInputElement): void {
 }
 
 function ApplyTemplate(Input: FileFormat, Interactive: Boolean) {
-    var CommandOutput: HTMLTextAreaElement = document.getElementById("input_command") as HTMLTextAreaElement;
+    var CommandOutput: HTMLTextAreaElement = document.getElementById("input-command") as HTMLTextAreaElement;
     // Reset all currently enabled modifiers
-    document.querySelectorAll<HTMLInputElement>("input[id^=\"option_\"]:checked").forEach(p => p.click());
+    document.querySelectorAll<HTMLInputElement>("input[id^=\"option-\"]:checked").forEach(p => p.click());
 
     // Construct command
     let CurrentCommand = GetInputCommand()
@@ -109,7 +109,16 @@ function ApplyTemplate(Input: FileFormat, Interactive: Boolean) {
 
     let NewCommand = null;
     if (Input.command)
-        NewCommand = Input.command.map(Token => Object.entries(Token)[0][1]).join(" ");
+        NewCommand = Input.command.map((Token, index) => {
+            let prefix = "";
+            if(index > 0){
+                let PreviousToken = Object.entries(Input.command[index-1]);
+                if(!(PreviousToken[0][0] == 'argument' && Modifier.ValueChars.some(x => PreviousToken[0][1].endsWith(x.toString())))){
+                    prefix = Modifier.SeparationChar.toString();
+                }
+            }
+            return prefix + Object.entries(Token)[0][1]
+        }).join("");
     if (Interactive && NewCommand && (CurrentCommand == null || CurrentCommand == '' || CurrentCommand == NewCommand || confirm('Would you like to replace the existing command with the command that is embedded in the provided config file?\n(Clicking "Cancel" will still apply all obfuscation options)'))) {
         CommandOutput.textContent = '';
         CommandOutput.value = NewCommand;
@@ -127,11 +136,11 @@ function ApplyTemplate(Input: FileFormat, Interactive: Boolean) {
     }
 
     // Set options
-    document.querySelectorAll<HTMLInputElement>("input[id^=\"option_\"]:checked").forEach(x => x.click())
+    document.querySelectorAll<HTMLInputElement>("input[id^=\"option-\"]:checked").forEach(x => x.click())
     document.querySelectorAll<HTMLInputElement>("div[data-excluded_types]").forEach(ContextMenuButton => { ContextMenuButton.dataset.excluded_types = "[]"; ContextMenuButton.innerText = UpdateExcludeText(ContextMenuButton, ContextMenuButton.nextSibling as HTMLElement); })
     var i = 0;
     Object.entries(Input.modifiers).forEach(([ModifierName, _]) => {
-        let ModifierObject = document.getElementById("option_" + ModifierName.toLowerCase())
+        let ModifierObject = document.getElementById("option-" + ModifierName.toLowerCase())
         if (ModifierObject == null) {
             console.warn(`Could not find modifier "${ModifierName}"`)
             return;

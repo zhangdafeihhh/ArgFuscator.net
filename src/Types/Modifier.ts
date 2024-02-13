@@ -32,7 +32,7 @@ abstract class Modifier {
     protected ExcludedTypes: string[] = ['disabled'];
     protected Probability: number;
 
-    private static SeparationChar: Char = ' ' as String as Char;
+    public static SeparationChar: Char = ' ' as String as Char;
     public static QuoteChars: Char[] = ['"' as String as Char, "'" as String as Char];
     public static ValueChars: Char[] = ['=' as String as Char, ':' as String as Char];
     public static CommonOptionChars: Char[] = ['/' as String as Char, '-' as String as Char];
@@ -52,19 +52,24 @@ abstract class Modifier {
         return options[Math.floor(Math.random() * options.length)];
     }
 
+    protected static RandomString(length: number): string {
+        var p = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        return [...Array(length)].reduce(a => a + p[~~(Math.random() * p.length)], '');
+    }
+
     public static CommandTokenise(InputCommand: string, FormatPicker: HTMLMenuElement): Token[] {
         if (InputCommand == null) return null;
         var InQuote: Char | null = null;
         var InOptionChar: boolean | null = null;
         var Tokens: Token[] = [];
         var TokenContent: Char[] = [];
-        var SeenValueChar : boolean = false;
+        var SeenValueChar: boolean = false;
         for (var i = 0; i < InputCommand.length; i++) {
-            if(TokenContent.length == 0) SeenValueChar = false;
+            if (TokenContent.length == 0) SeenValueChar = false;
             let Char: Char = new String(InputCommand[i]) as Char;
             InOptionChar = (TokenContent.length == 0 && Modifier.CommonOptionChars.some(y => y == Char)) ? true : InOptionChar;
 
-            if (InQuote == null && (Char == this.SeparationChar || (!SeenValueChar && (i == InputCommand.length || !(['\\', '/'].some(x => x ==InputCommand[i+1]))) && this.ValueChars.some(x => x == Char)))) {
+            if (InQuote == null && (Char == this.SeparationChar || (!SeenValueChar && (i == InputCommand.length || !(['\\', '/'].some(x => x == InputCommand[i + 1]))) && this.ValueChars.some(x => x == Char)))) {
                 if (Char != this.SeparationChar)
                     TokenContent.push(Char);
 
@@ -81,7 +86,6 @@ abstract class Modifier {
                 TokenContent.push(Char);
             }
             SeenValueChar = SeenValueChar || this.ValueChars.some(x => x == Char)
-            console.log(Char, SeenValueChar);
         }
         if (Token?.length > 0)
             Tokens.push(new Token(TokenContent));
@@ -113,7 +117,7 @@ abstract class Modifier {
             }
 
             FormatPicker.childNodes.forEach(x => {
-                if (x.textContent.toLowerCase() == token.toLowerCase() || x.textContent.toLowerCase() == token.toLowerCase() + ".exe") {
+                if ([token.toLowerCase(), token.toLowerCase() + ".exe"].find(y => y == x.textContent.toLowerCase() || (x instanceof HTMLElement && y == x.dataset["alias"]?.toLowerCase()))) {
                     found = true;
                     x.dispatchEvent(new Event("click"));
                 }
@@ -139,7 +143,7 @@ abstract class Modifier {
             let _TokenText = TokenText.replace(/(['"])(.*?)\1/g, '$2') //Remove any surrounding quotes
             // If previous token ends with a ValueChar, assume this token denotes a 'value' type;
             // or, if no option char present, designate it as 'value', unless overwritten further down
-            if(this.ValueChars.some(y => Tokens[i].GetContent().reverse()[0] == y) || !Modifier.CommonOptionChars.some(x => _TokenText.startsWith(x as string)))
+            if (this.ValueChars.some(y => Tokens[i].GetContent().reverse()[0] == y) || !Modifier.CommonOptionChars.some(x => _TokenText.startsWith(x as string)))
                 x.SetType('value');
 
             if (_TokenText.match(/^(?:\\\\[^\\]+|[a-zA-Z]:|\.[\\/])((?:\\[^\\]+)+\\)?([^<>:]*)$/) || _TokenText.match(/^[^<>:]+\.[a-zA-Z0-9]{2,4}$/)) x.SetType('path'); // Windows file path format
