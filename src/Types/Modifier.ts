@@ -124,17 +124,16 @@ abstract class Modifier {
                 i++;
             });
 
+            // Special cases
+            if (token.toLowerCase() == 'cmd.exe' || token.toLowerCase() == 'cmd')
+                return;
+            if (token.toLowerCase() == 'powershell.exe' || token.toLowerCase() == 'powershell' || token.toLowerCase() == 'pwsh.exe' || token.toLowerCase() == 'pwsh')
+                logUserError("pattern-cmd", 'We will proceed with obfuscating the provided PowerShell command-line arguments, but not any PowerShell code, as this goes beyond the scope of this project - please checkout <a href="https://github.com/danielbohannon/Invoke-Obfuscation" target="_blank">Invoke-Obfuscation</a> for this!');
+
             if (!found) {
-                // Special cases
-                if (token.toLowerCase() == 'cmd.exe' || token.toLowerCase() == 'cmd')
-                    return;
-                if (token.toLowerCase() == 'powershell.exe' || token.toLowerCase() == 'powershell' || token.toLowerCase() == 'pwsh.exe' || token.toLowerCase() == 'pwsh')
-                    logUserError("pattern-cmd", 'PowerShell requires special obfuscation that goes beyond the scope of this project - please checkout the <a href="https://github.com/danielbohannon/Invoke-Obfuscation" target="_blank">Invoke-Obfuscation project</a> for this!', true);
-                else {
-                    let token_code = document.createElement("code")
-                    token_code.innerText = token
-                    logUserError("pattern-unknown", `It looks like this project is not aware of obfuscation options for ${token_code.outerHTML}! Create your own using the options panel below.`);
-                }
+                let token_code = document.createElement("code")
+                token_code.innerText = token
+                logUserError("pattern-unknown", `It looks like this project is not aware of obfuscation options for ${token_code.outerHTML}! Create your own using the options panel below.`);
             }
         }
         Tokens.slice(1).forEach((x, i) => {
