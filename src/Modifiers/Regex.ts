@@ -1,5 +1,5 @@
-@Modifier.AddArgument("RegexMatch", "text", "Regex Match", "The regex string to find")
-@Modifier.AddArgument("RegexReplace", "text", "Regex Replace", "The replacement string")
+@Modifier.AddArgument("RegexMatch", "text-s", "Regex Match", "The regex string to find")
+@Modifier.AddArgument("RegexReplace", "text-s", "Regex Replace", "The replacement string")
 @Modifier.AddArgument("CaseSensitive", "checkbox", "Case sensitive", "")
 @Modifier.Register("Regex", "Apply a regex-replace operation (on token-level).", ['command'])
 class Regex extends Modifier {

@@ -1,4 +1,4 @@
-@Modifier.AddArgument("Characters", "text", "Accepted Characters", "Paste all characters, without separators, here")
+@Modifier.AddArgument("Characters", "text-a", "Accepted Characters", "Paste all characters, without separators, here")
 @Modifier.AddArgument("Offset", "number", "Offset", "The positions up to this index (zero-based, exclusive) will not be used for character insertion. Default: 0")
 @Modifier.Register("Character Insertion", "Add arbitrary characters to command-line arguments.", ['command', 'path', 'url'])
 class CharacterInsertion extends Modifier {

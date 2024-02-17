@@ -120,8 +120,10 @@ function GenerateObfuscationOptionsHTML() {
             let modifierBoxBodySubOptionsRow3 = document.createElement('div');
             modifierBoxBodySubOptionsRow3.classList.add("suboption")
             let label = `<label for="option-${modifierID}_arg${i}">${argument.PublicName}</label>`;
-            if (argument.Type == "text") {
+            if (argument.Type == "text-a") {
                 modifierBoxBodySubOptionsRow3.innerHTML += label + `<input type="text" id="option-${modifierID}_arg${i}" data-field="${argument.InternalName}" data-type="array" placeholder="${argument.Description}" value="" />`;
+            } else if (argument.Type == "text-s") {
+                    modifierBoxBodySubOptionsRow3.innerHTML += label + `<input type="text" id="option-${modifierID}_arg${i}" data-field="${argument.InternalName}" data-type="string" placeholder="${argument.Description}" value="" />`;
             } else if (argument.Type == "number") {
                 modifierBoxBodySubOptionsRow3.innerHTML += label + `<input type="number" id="option-${modifierID}_arg${i}" data-field="${argument.InternalName}" placeholder="${argument.Description}" title="${argument.Description}" value="" />`;
             } else if (argument.Type == "checkbox") {
