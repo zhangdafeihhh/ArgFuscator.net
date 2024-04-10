@@ -55,11 +55,13 @@ class UrlTransformer extends Modifier {
                     NewTokenContent = NewTokenContent.replace(/\:\/\//, ":/");
 
                 // Substitute Slashes
-                let match;
-                let regex = /\/+/g;
-                while ((match = regex.exec(NewTokenContent)) !== null) {
-                    if(Modifier.CoinFlip(this.Probability))
-                        NewTokenContent = NewTokenContent.substring(0,match.index) + ('\\'.repeat(match[0].length)) + NewTokenContent.substring(match.index+match[0].length,NewTokenContent.length)
+                if(this.SubstituteSlashes){
+                    let match;
+                    let regex = /\/+/g;
+                    while ((match = regex.exec(NewTokenContent)) !== null) {
+                        if(Modifier.CoinFlip(this.Probability))
+                            NewTokenContent = NewTokenContent.substring(0,match.index) + ('\\'.repeat(match[0].length)) + NewTokenContent.substring(match.index+match[0].length,NewTokenContent.length)
+                    }
                 }
                 // tmp_tokencontent.forEach((Char, index) => {
                 //     if (this.SubstituteSlashes && Char == "/" && (index==0 || tmp_tokencontent[index-1] != "/") && Modifier.CoinFlip(this.Probability)){

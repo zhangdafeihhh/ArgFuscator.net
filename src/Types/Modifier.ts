@@ -98,6 +98,11 @@ abstract class Modifier {
             let found = false;
             let token = Tokens[0].GetStringContent();
 
+            if(token.includes('\\')){
+                let parts = token.split('\\');
+                token = parts[parts.length-1];
+            }
+
             if (token.toLowerCase() == 'cmd.exe' || token.toLowerCase() == 'cmd') {
                 let commandIndex = Tokens.findIndex((x) => x.GetStringContent().match(/^\/c$/i));
 
@@ -132,7 +137,10 @@ abstract class Modifier {
 
             if (!found) {
                 let token_code = document.createElement("code")
-                token_code.innerText = token
+
+                token_code.innerText = token.length > 20 ? (token.slice(0, 20) + "…") : token;
+                token_code.title = token;
+
                 logUserError("pattern-unknown", `It looks like this project is not aware of obfuscation options for ${token_code.outerHTML}! Create your own using the options panel below.`);
             }
         }

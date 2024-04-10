@@ -164,6 +164,7 @@ function OnLoad(){
     document.getElementById("format-picker")?.addEventListener("change", FetchJsonFile);
     document.getElementById("JsonFile")?.addEventListener("change", ReadJsonFile);
     document.getElementById("input-command")?.addEventListener("keyup", debounce(UpdateTokens, 1000));
+    document.getElementById("input-command")?.addEventListener("paste", (e) => { setTimeout(UpdateTokens, 0)});
     document.getElementById("obfuscation-run")?.addEventListener("click", () => ApplyObfuscation());
     document.getElementById("download-config")?.addEventListener("click", GenerateConfigJsonFile);
     document.getElementById("reset-form")?.addEventListener("click", ResetForm);

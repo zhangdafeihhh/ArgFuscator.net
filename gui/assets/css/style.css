@@ -1,6 +1,6 @@
 :root {
-    --theme-colour: #EF6351;
-    /*b64913;*/
+    --theme-colour: #368EFF;
+    /* #EF6351; */
 
     --colour-1: #295498;
     --colour-2: #db4437;
@@ -14,30 +14,145 @@
     --colour-10: #f06292;
 }
 
-html,
-#obfuscation-bar {
-    font-family: Arial;
+@font-face {
+    font-family: 'Source Sans 3';
+    font-weight: 400;
+    font-style: normal;
+    font-stretch: normal;
+    src: url('../fonts/SourceSans3-Regular.ttf.woff2') format('woff2'),
+        url('../fonts/SourceSans3-Regular.otf.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Source Sans 3';
+    font-weight: 400;
+    font-style: italic;
+    font-stretch: normal;
+    src: url('../fonts/SourceSans3-It.ttf.woff2') format('woff2'),
+        url('../fonts/SourceSans3-It.otf.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Source Sans 3';
+    font-weight: 700;
+    font-style: normal;
+    font-stretch: normal;
+    src: url('../fonts/SourceSans3-Bold.ttf.woff2') format('woff2'),
+        url('../fonts/SourceSans3-Bold.otf.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'Source Sans 3';
+    font-weight: 700;
+    font-style: italic;
+    font-stretch: normal;
+    src: url('../fonts/SourceSans3-BoldIt.ttf.woff2') format('woff2'),
+        url('../fonts/SourceSans3-BoldIt.otf.woff') format('woff');
+}
+
+html {
+    font-family: 'Source Sans 3', Arial;
     margin: 0 auto;
     max-width: 1200px;
 }
 
 body {
     background-color: white;
+    margin: 0;
     margin-bottom: calc(20px + 2.5em);
-
+    padding: 0 3px;
 }
 
 header {
     display: flex;
+    flex-direction: column;
     gap: 10px;
-    align-items: center;
     padding-left: 10px;
-    /* background-color: #bfbfbf;
+    /* background-color: var(--theme-colour);
     color: #000; */
+    /*#EF6351*/
+    background: linear-gradient(-45deg, var(--theme-colour), color-mix(in srgb, var(--theme-colour) 80%, red), color-mix(in srgb, var(--theme-colour) 80%, #eeff00), color-mix(in srgb, var(--theme-colour) 80%, blue), var(--theme-colour));
+    background-size: 400% 400%;
+    animation: gradient 15s cubic-bezier(.79, .14, .15, .86) infinite;
+
+    color: #fff;
+    padding: 20px;
+    padding-top: 0;
 }
 
-header img.site-logo {
-    height: 3em;
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+header .top {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 0 10px;
+    align-items: center;
+    padding-top: 10px;
+    margin-bottom: 10px;
+
+    .logo {
+        display: flex;
+        flex-direction: row;
+        font-size: min(max(1.5vh, 1em), 1.5em);
+        align-items: center;
+        gap: 10px;
+        line-height: 1em;
+
+        img.site-logo {
+            height: calc(min(max(1.5vh, 1em), 1.5em) * 3);
+        }
+    }
+
+    .links {
+        display: flex;
+        gap: 0 15px;
+        flex-wrap: wrap;
+
+        a {
+            color: white;
+            text-decoration-style: dotted;
+        }
+
+        a.emphasis {
+            font-weight: bold;
+        }
+    }
+}
+
+header .mid {
+    height: 10vh;
+    text-transform: capitalize;
+    font-weight: bold;
+    font-size: min(max(3vh, 1.5em), 3em);
+    ;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .content {
+        align-self: center;
+        text-align: center;
+    }
+}
+
+header div.tools {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
 }
 
 .container {
@@ -48,8 +163,16 @@ header img.site-logo {
 }
 
 #input-command {
-    height: 2.5em;
+    /* min-height: 2.5em; */
     width: 100%;
+    box-sizing: border-box;
+    padding: 1em;
+    font-family: 'Consolas', 'Courier New', Courier, monospace;
+    field-sizing: normal;
+}
+
+#input-command::placeholder {
+    padding: 1em;
 }
 
 legend {
@@ -102,9 +225,10 @@ div.body input[type=text] {
     flex-grow: 1;
 }
 
-div.body input[type=text]:placeholder-shown {
+div.body input[type=text]:placeholder-shown, div.body textarea:placeholder-shown {
     accent-color: rgb(202, 8, 8);
-    border: 2px dotted rgb(202, 8, 8);
+    border: 1px solid rgb(202, 8, 8);
+    background: #fc000014;
 }
 
 div.suboptions {
@@ -120,7 +244,6 @@ div.suboptions {
 div.suboptions>div {
     display: flex;
     gap: 5px;
-    /* flex: calc(50%-10px); */
     flex-direction: column;
     flex-wrap: wrap;
 }
@@ -154,7 +277,7 @@ a.explain::after {
 
 #tokens,
 #output-command {
-    font-family: monospace;
+    font-family: 'Consolas', 'Courier New', Courier, monospace;
     min-height: 1.5em;
 }
 
@@ -167,8 +290,6 @@ a.explain::after {
 }
 
 #output-command {
-    background: rgb(53, 52, 52);
-    color: white;
     padding: 5px;
     overflow-wrap: anywhere;
 }
@@ -179,11 +300,16 @@ a.explain::after {
 
 #tokens>div.token {
     background: white;
+    color: black;
     border: 1px solid #ccc;
     border-radius: 5px;
     counter-increment: token-counter 1;
     cursor: pointer;
     padding: 2px;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 #tokens>div.token[data-type="disabled"] {
@@ -220,9 +346,11 @@ a.explain::after {
     background: var(--colour-1);
     color: white;
     content: counter(token-counter);
-    font-size: 10px;
+    font-size: x-small;
     margin-right: 5px;
-    padding: 0 3px;
+    padding: 0 4px;
+    font-family: Arial;
+    border-radius: 4px;
 }
 
 #tokens>div.token[data-type="disabled"]::before {
@@ -241,12 +369,16 @@ a.explain::after {
 
 .context-menu {
     background: white;
+    color: black;
     border: 1px solid grey;
     display: none;
     font-family: 'Arial';
     padding: 1px;
     position: absolute;
     z-index: 2;
+    max-height: 15em;
+    overflow-y: auto;
+    min-width: max-content;
 }
 
 .context-menu>li {
@@ -266,7 +398,7 @@ a.explain::after {
 
 fieldset {
     background: color-mix(in srgb, var(--theme-colour) 5%, white);
-    /*  rgb(244, 239, 239); */
+    margin: 0;
     border: 0;
     border: 1px solid #ddd;
     border-radius: 3px;
@@ -286,9 +418,7 @@ fieldset,
 fieldset[disabled] {
     background: lightgray;
     color: gray;
-    /*  rgb(244, 239, 239); */
 }
-
 
 fieldset>legend {
     background: white;
@@ -353,13 +483,13 @@ fieldset>legend {
 }
 
 .slist>div.hint {
-    border: 1px solid #EF8C5A;
+    border: 1px solid var(--theme-colour);
     /* background: ; */
 }
 
 .slist>div.active {
     border: 1px dotted #ffa5a5;
-    background: #DB682E;
+    background: var(--theme-colour);
     color: white;
 }
 
@@ -368,12 +498,14 @@ footer {
     bottom: 0;
     right: 0;
     left: 0;
-    background: var(--theme-colour);
-    color: white;
-    border-top: 3px solid white;
+    background: color-mix(in srgb, var(--theme-colour) 10%, white);
+    color: black;
+    border-top: 1px solid white;
+    margin: 0 auto;
 }
 
 #obfuscation-bar {
+    max-width: 1200px;
     position: relative;
     margin: 0px auto;
     padding: 10px 10px;
@@ -382,7 +514,7 @@ footer {
 }
 
 #obfuscation-bar span>a {
-    color: black;
+    color:  black;
 }
 
 #obfuscation-bar>div.fill {
@@ -403,25 +535,29 @@ footer {
 }
 
 #error-messages {
+    min-width: min-content;
     display: flex;
     flex-direction: column;
     gap: 2px;
-    width: 100%;
 }
 
 #error-messages>* {
     border: 1px solid rgb(240, 163, 48);
     border-radius: 0.2em;
-    background: #ffedb3;
-    padding: 10px;
+    background: #fff3cd;
+    padding: 5px;
     line-height: 1.4em;
     flex-grow: 1;
+    color: #856404;
+}
+
+#error-messages a {
+    color: var(--theme-colour);
 }
 
 #error-messages code {
     word-break: break-all;
 }
-
 
 .drag-list {
     list-style: none;
@@ -441,11 +577,56 @@ footer {
 
 .button-selection {
     display: flex;
-    gap: 5px;
+    gap: 2px 5px;
+    flex-wrap: wrap;
 }
-
 
 .suboption textarea {
     width: 100%;
     height: 65px;
+}
+
+.command-bar {
+    display: flex;
+    gap: 5px;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.command-bar>a {
+    min-width: fit-content;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: black;
+    }
+
+    .slist>div,
+    .context-menu {
+        border-color: #999;
+        background: #333;
+        color: white;
+    }
+
+    fieldset {
+        background: rgb(53, 52, 52);
+        color: white;
+    }
+
+    .button {
+        border: 1px solid white;
+        background-color: var(--theme-colour);
+        color: white;
+    }
+
+    .button:hover {
+        border-color: var(--theme-colour);
+        color: var(--theme-colour);
+        background: white;
+    }
+
+    .context-menu>li:hover {
+        background-color: #555;
+    }
 }

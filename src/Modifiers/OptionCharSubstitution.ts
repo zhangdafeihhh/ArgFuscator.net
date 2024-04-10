@@ -16,7 +16,7 @@ class OptionCharSubstitution extends Modifier {
         this.InputCommandTokens.forEach(Token => {
             var NewTokenContent: Char[] = Token.GetContent();
 
-            if (!This.ExcludedTypes.includes(Token.GetType()) && This.OutputOptionChars.some(x => x == (NewTokenContent[0] as string)) && Modifier.CoinFlip(This.Probability)){
+            if (!This.ExcludedTypes.includes(Token.GetType()) && This.OutputOptionChars.some(x => x == (NewTokenContent[0] as string)) && (NewTokenContent.length == 1 || !This.OutputOptionChars.some(x => x == (NewTokenContent[1] as string))) && Modifier.CoinFlip(This.Probability)){
                 NewTokenContent[0] = Modifier.ChooseRandom(This.OutputOptionChars.filter(x => x !== NewTokenContent[0]));
                 Token.SetContent(NewTokenContent);
             }

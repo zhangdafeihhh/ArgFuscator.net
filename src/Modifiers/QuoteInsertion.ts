@@ -11,29 +11,30 @@ class QuoteInsertion extends Modifier {
         this.InputCommandTokens.forEach(function (Token) {
             var NewTokenContent: Char[] = [];
             var previousQuote = false;
-            var i = 0;
-            Token.GetContent().forEach(char => {
+
+            let content = Token.GetContent();
+            content.forEach((char, index) => {
                 // Add current char to result string
                 NewTokenContent.push(char);
 
-                if (!This.ExcludedTypes.includes(Token.GetType()) && !Modifier.QuoteChars.some(x=> x==Token.GetStringContent()[0]) && Modifier.CoinFlip(This.Probability) && previousQuote == false) {
+                if (!This.ExcludedTypes.includes(Token.GetType()) && Modifier.CoinFlip(This.Probability) && previousQuote == false
+                && (!Modifier.QuoteChars.some(x=> x==content[0]) || ((index>0 && char.match(/[a-z0-9]$/i)) && (index<content.length-2 && content[index+1].match(/[a-z0-9]$/i))))
+                ) {
                     // let previousQuote = false;
                     // do {
                         NewTokenContent.push(QuoteInsertion.QuoteCharacter);
-                        previousQuote = true;
-                        i++;
-                    //} while (Modifier.CoinFlip(This.Probability * (0.9 ** i)));
-                } else {
-                    previousQuote = false;
-                }
+                        previousQuote = Modifier.QuoteChars.some(x=> x==char);
+                } else
+                    previousQuote= false;
             });
 
             // Check if there are unbalanced quotes
-            if (i % 2 != 0){
-                if (previousQuote) // If the last char was a quote, simply remove it
-                    NewTokenContent.pop();
-                else // If not:
-                    NewTokenContent.push(QuoteInsertion.QuoteCharacter); // If not, simply add a quote at the end of the string
+            if (NewTokenContent.filter(x => x == QuoteInsertion.QuoteCharacter).length % 2 != 0){
+                NewTokenContent.splice(NewTokenContent.lastIndexOf(QuoteInsertion.QuoteCharacter), 1)
+                // if (previousQuote) // If the last char was a quote, simply remove it
+                //     NewTokenContent.pop();
+                // else // If not:
+                //     NewTokenContent.push(QuoteInsertion.QuoteCharacter); // If not, simply add a quote at the end of the string
             }
 
             // Edge case: Check if we added a quote after a value char

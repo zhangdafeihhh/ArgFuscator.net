@@ -8,7 +8,7 @@ class Shorthands extends Modifier {
 
     private NormaliseArgument(input: string, strip_option_char: boolean = true) : string {
         let result = input;
-        if(strip_option_char && OptionCharSubstitution.CommonOptionChars.some(x=>input.startsWith(x.toString())))
+        if(strip_option_char && Modifier.CommonOptionChars.some(x=>input.startsWith(x.toString())))
             result = input.substring(1);
 
         if(!this.CaseSensitive)

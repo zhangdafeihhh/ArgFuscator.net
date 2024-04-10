@@ -5,7 +5,7 @@
 -->
 
 <head>
-    <title>Obfuscator Generator</title>
+    <title>ArgFuscation</title>
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,16 +25,32 @@
         <li data-type="url">URL</li>
         <li data-type="value">Value</li>
     </menu>
-    <header>
-        <img src="assets/img/logo.png" class="site-logo" alt="Logo" />
-        <h1>Command-Line Obfuscator</h1>
-    </header>
     <div class="container">
-        <fieldset>
-            <textarea id="input-command" placeholder="Please paste the command you would like to obfuscate here."></textarea>
-            <div id="tokens"></div>
-            <div id="error-messages"></div>
-        </fieldset>
+        <header>
+            <div class="top">
+                <div class="logo">
+                    <img src="assets/img/logo.svg" class="site-logo" alt="Logo" />
+                    <h1>ArgFuscation</h1>
+                </div>
+                <div class="links">
+                    <a href="#" target="_blank">What is this?</a>
+                    <a href="https://www.github.com/wietze/Invoke-ArgFuscation" target="_blank">Offline version</a>
+                    <a href="https://www.github.com/wietze/ArgFuscation" target="_blank">GitHub</a>
+                    <a href="https://www.twitter.com/wietze" target="_blank" class="emphasis">@Wietze</a>
+                </div>
+            </div>
+
+
+            <div class="tools">
+                <textarea id="input-command" placeholder="Please paste the command you want to obfuscate here..."></textarea>
+                <div class="command-bar">
+                    <div id="tokens"></div>
+                    <a class="button button-primary" id="obfuscation-run"><strong>Apply obfuscation</strong></a>
+                </div>
+                <div id="error-messages"></div>
+            </div>
+        </header>
+
 
         <fieldset>
             <legend>Output</legend>
@@ -83,17 +99,14 @@
             </div>
         </fieldset>
 
-        <div>
-            <a class="button button-primary" id="obfuscation-run"><strong>Apply obfuscation</strong></a>
-        </div>
     </div>
 
-    <footer>
+    <!-- <footer>
         <div id="obfuscation-bar">
             <div class="fill"></div>
             <span>Contribute to this project on <a href="">GitHub</a></span>
         </div>
-    </footer>
+    </footer> -->
 </body>
 
 </html>
