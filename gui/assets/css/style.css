@@ -228,7 +228,7 @@ div.body input[type=text] {
 div.body input[type=text]:placeholder-shown, div.body textarea:placeholder-shown {
     accent-color: rgb(202, 8, 8);
     border: 1px solid rgb(202, 8, 8);
-    background: #fc000014;
+    background: #f6e2e2;
 }
 
 div.suboptions {
@@ -392,7 +392,7 @@ a.explain::after {
 }
 
 .context-menu>li[data-active="true"] {
-    background: rgb(19, 75, 163);
+    background: color-mix(in srgb, var(--theme-colour) 50%, #000000); /*(19, 75, 163);*/
     color: white;
 }
 
@@ -599,7 +599,7 @@ footer {
 
 @media (prefers-color-scheme: dark) {
     body {
-        background-color: black;
+        background-color: #282828;
     }
 
     .slist>div,
