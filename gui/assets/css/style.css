@@ -225,7 +225,8 @@ div.body input[type=text] {
     flex-grow: 1;
 }
 
-div.body input[type=text]:placeholder-shown, div.body textarea:placeholder-shown {
+div.body input[type=text]:placeholder-shown,
+div.body textarea:placeholder-shown {
     accent-color: rgb(202, 8, 8);
     border: 1px solid rgb(202, 8, 8);
     background: #f6e2e2;
@@ -249,7 +250,7 @@ div.suboptions>div {
 }
 
 div.suboptions>div>div.suboption {
-    flex: 1;
+    flex-grow: 1;
     display: flex;
     gap: 5px;
     align-items: center;
@@ -259,6 +260,7 @@ div.suboptions>div.flex-row {
     align-items: center;
     flex: 100%;
     flex-direction: row;
+    justify-content: start;
 }
 
 div.suboptions>div.flex-row label {
@@ -392,7 +394,8 @@ a.explain::after {
 }
 
 .context-menu>li[data-active="true"] {
-    background: color-mix(in srgb, var(--theme-colour) 50%, #000000); /*(19, 75, 163);*/
+    background: color-mix(in srgb, var(--theme-colour) 50%, #000000);
+    /*(19, 75, 163);*/
     color: white;
 }
 
@@ -514,7 +517,7 @@ footer {
 }
 
 #obfuscation-bar span>a {
-    color:  black;
+    color: black;
 }
 
 #obfuscation-bar>div.fill {
@@ -604,7 +607,7 @@ footer {
 
     .slist>div,
     .context-menu {
-        border-color: #999;
+        border-color: #555;
         background: #333;
         color: white;
     }
@@ -612,18 +615,19 @@ footer {
     fieldset {
         background: rgb(53, 52, 52);
         color: white;
-    }
+        border-color: #555;
 
-    .button {
-        border: 1px solid white;
-        background-color: var(--theme-colour);
-        color: white;
-    }
+        .button {
+            border: 1px solid #555;
+            background-color: var(--theme-colour);
+            color: white;
+        }
 
-    .button:hover {
-        border-color: var(--theme-colour);
-        color: var(--theme-colour);
-        background: white;
+        .button:hover {
+            border-color: var(--theme-colour);
+            color: var(--theme-colour);
+            background: white;
+        }
     }
 
     .context-menu>li:hover {
