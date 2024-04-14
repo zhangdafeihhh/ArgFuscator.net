@@ -3,17 +3,15 @@
     "compilerOptions": {
         "experimentalDecorators": true,
         "noImplicitAny": true,
-        "outFile": "gui/assets/js/code.js",
         "preserveConstEnums": true,
         "removeComments": true,
         "sourceMap": true,
-        "suppressImplicitAnyIndexErrors": true,
         "target": "ES5",
-        "lib": ["dom", "es2017"]
+        "lib": ["dom", "es2019"]
     },
-    "files": ["src/code.ts"],
+    "files": ["code.ts"],
     "include": [
-        "src/Types/*",
-        "src/Modifiers/*"
+        "Types/*",
+        "Modifiers/*"
     ],
 }

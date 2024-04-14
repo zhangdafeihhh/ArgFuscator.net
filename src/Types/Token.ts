@@ -26,7 +26,6 @@ class Token {
         // Create new Context Menu
         this.ContextMenu = document.getElementsByClassName("context-menu")[0].cloneNode(true) as HTMLMenuElement;
 
-
         // Add event listeners to Context Menu children
         this.ContextMenu.childNodes.forEach(x => { x.addEventListener("click", e => this.HandleContextClick(e)); });
 
@@ -34,7 +33,7 @@ class Token {
         this.SetContent(this.TokenContent, false);
         this.SetType(this.Type);
 
-        this.ConfigElement.appendChild(this.ContextMenu); //, ConfigElement.nextSibling);
+        this.ConfigElement.parentElement.appendChild(this.ContextMenu);
     }
 
     public GetContent(): Char[] {

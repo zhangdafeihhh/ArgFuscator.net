@@ -1,4 +1,4 @@
 *.js
 *.js.map
-*.yml
 node_modules/*
+gui/assets/models/*

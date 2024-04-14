@@ -6,12 +6,12 @@ class Shorthands extends Modifier {
     private Substitutions : Map<string, string[]> = new Map();
     private CaseSensitive: boolean;
 
-    private NormaliseArgument(input: string, strip_option_char: boolean = true) : string {
+    private static NormaliseArgument(input: string, CaseSensitive: boolean, strip_option_char: boolean = true) : string {
         let result = input;
         if(strip_option_char && Modifier.CommonOptionChars.some(x=>input.startsWith(x.toString())))
             result = input.substring(1);
 
-        if(!this.CaseSensitive)
+        if(!CaseSensitive)
             result = result.toLocaleLowerCase();
 
         return result
@@ -22,7 +22,7 @@ class Shorthands extends Modifier {
 
         try {
             let This = this;
-            let commands = new Set(ShorthandCommands.split(Shorthands.Separator).map(x => This.NormaliseArgument(x)));
+            let commands = new Set(ShorthandCommands.split(Shorthands.Separator).map(x => Shorthands.NormaliseArgument(x, CaseSensitive)));
             this.CaseSensitive = CaseSensitive;
 
             commands.forEach(command => {
@@ -60,9 +60,9 @@ class Shorthands extends Modifier {
         var This = this;
         this.InputCommandTokens.forEach(Token => {
             if (!This.ExcludedTypes.includes(Token.GetType()) && Modifier.CoinFlip(This.Probability)){
-                let token = This.NormaliseArgument(Token.GetStringContent())
+                let token = Shorthands.NormaliseArgument(Token.GetStringContent(), This.CaseSensitive)
                 if(This.Substitutions.has(token)){
-                    let original_token = This.NormaliseArgument(Token.GetStringContent(), false);
+                    let original_token = Shorthands.NormaliseArgument(Token.GetStringContent(), This.CaseSensitive, false);
                     Token.SetContent(original_token.replace(token, Modifier.ChooseRandom(This.Substitutions.get(token))).split(""));
                 }
             }

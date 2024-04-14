@@ -180,11 +180,19 @@ legend {
     font-weight: bold;
 }
 
+legend>span {
+    margin-right: 2px;
+}
+
+fieldset.collapsible>legend {
+    cursor: pointer;
+}
+
 div.option {
     background: rgb(245, 245, 245);
     border-radius: 5px;
     color: black;
-    font-size: smaller;
+    font-size: small;
     font-weight: bold;
     display: flex;
     gap: 5px;
@@ -237,7 +245,7 @@ div.suboptions {
     display: flex;
     gap: 5px;
     flex-wrap: wrap;
-    font-size: smaller;
+    font-size: small;
     font-weight: normal;
     padding-left: 22px;
 }
@@ -279,8 +287,12 @@ a.explain::after {
 
 #tokens,
 #output-command {
-    font-family: 'Consolas', 'Courier New', Courier, monospace;
     min-height: 1.5em;
+}
+
+#tokens div.token,
+#output-command {
+    font-family: 'Consolas', 'Courier New', Courier, monospace;
 }
 
 #tokens {
@@ -300,7 +312,7 @@ a.explain::after {
     padding: 2px;
 }
 
-#tokens>div.token {
+#tokens div.token {
     background: white;
     color: black;
     border: 1px solid #ccc;
@@ -312,39 +324,40 @@ a.explain::after {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    position: relative;
 }
 
-#tokens>div.token[data-type="disabled"] {
+#tokens div.token[data-type="disabled"] {
     background: #bbb;
     color: #666;
 }
 
-#tokens>div.token[data-type="disabled"]::before {
+#tokens div.token[data-type="disabled"]::before {
     background: #666;
     color: #bbb;
 }
 
-#tokens>div.token[data-type="command"]::before {
+#tokens div.token[data-type="command"]::before {
     background: var(--colour-2);
     color: white;
 }
 
-#tokens>div.token[data-type="path"]::before {
+#tokens div.token[data-type="path"]::before {
     background: var(--colour-3);
     color: white;
 }
 
-#tokens>div.token[data-type="url"]::before {
+#tokens div.token[data-type="url"]::before {
     background: var(--colour-4);
     color: white;
 }
 
-#tokens>div.token[data-type="value"]::before {
+#tokens div.token[data-type="value"]::before {
     background: var(--colour-5);
     color: white;
 }
 
-#tokens>div.token::before {
+#tokens div.token::before {
     background: var(--colour-1);
     color: white;
     content: counter(token-counter);
@@ -355,8 +368,12 @@ a.explain::after {
     border-radius: 4px;
 }
 
-#tokens>div.token[data-type="disabled"]::before {
+#tokens div.token[data-type="disabled"]::before {
     color: #333;
+}
+
+#tokens .token-holder {
+    position: relative;
 }
 
 @media screen and (max-width: 700px) {
@@ -374,13 +391,13 @@ a.explain::after {
     color: black;
     border: 1px solid grey;
     display: none;
-    font-family: 'Arial';
     padding: 1px;
     position: absolute;
     z-index: 2;
     max-height: 15em;
     overflow-y: auto;
     min-width: max-content;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
 }
 
 .context-menu>li {

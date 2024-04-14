@@ -30,13 +30,17 @@ function UpdateUITokens(Tokenised: Token[]): void {
     ConfigTokenHTML.innerHTML = "";
     OutputTokenHTML.innerHTML = "";
     Tokenised?.forEach((Token, Index, Array) => {
+        var parentElement = document.createElement('div');
+        parentElement.classList.add("token-holder");
+        ConfigTokenHTML.appendChild(parentElement);
+
         var OutputTokenElement = document.createElement('span');
         var ConfigTokenElement = document.createElement('div');
         let SpaceElement = document.createElement('span');
         SpaceElement.innerHTML = "&nbsp;";
 
         ConfigTokenElement.classList.add("token");
-        ConfigTokenHTML.appendChild(ConfigTokenElement);
+        parentElement.appendChild(ConfigTokenElement);
         OutputTokenHTML.appendChild(OutputTokenElement);
 
         Token.SetElements(ConfigTokenElement, OutputTokenElement);
@@ -201,15 +205,15 @@ function OnLoad(){
         let legend = x.querySelector("legend");
         let span = document.createElement("span");
         let content = x.children[1] as HTMLElement;
-        span.innerText = content.classList.contains("collapsed") ? "▲" : "▼";
-        legend.appendChild(span);
+        span.innerText = content.classList.contains("collapsed") ? "▶" : "▼";
+        legend.prepend(span);
         legend.addEventListener("click", () => {
             if (content.classList.contains("collapsed")) {
                 content.classList.remove("collapsed");
             } else {
                 content.classList.add("collapsed");
             }
-            span.innerText = content.classList.contains("collapsed") ? "▲" : "▼";
+            span.innerText = content.classList.contains("collapsed") ? "▶" : "▼";
         });
 
     })
