@@ -1,0 +1,1 @@
+{"command":[{"command":"fltmc.exe"},{"value":"instances"},{"argument":"-v"},{"path":"\"c:\""}],"modifiers":{"RandomCase":{"ExcludedTypes":[],"Probability":"0.5"},"QuoteInsertion":{"ExcludedTypes":["command"],"Probability":"0.5"}}}

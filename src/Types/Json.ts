@@ -5,7 +5,7 @@ function FetchJsonFile(this: HTMLSelectElement): void {
         document.getElementById("JsonFile").click()
     }
     else {
-        let name = this.value.replace('.exe', '_config.json');
+        let name = this.value.replace('.exe', '.json');
         fetch("assets/models/" + name, { headers: { "Content-Type": "application/json; charset=utf-8" } })
             .then(res => res.text())
             .then(response => {
@@ -61,15 +61,20 @@ function CheckChanged(targetElem: HTMLLIElement, newModifiers: object, oldDefaul
 async function FetchJsonFile2(elem: HTMLLIElement): Promise<object | null> {
     if (elem == null || elem.dataset['function'] == 'none')
         return new Promise(function(resolve){ resolve(null); });
-    if (LoadedConfigModifiers.has(elem.innerText))
-        return new Promise(function(resolve){ resolve(LoadedConfigModifiers.get(elem.innerText)); });
+    if (LoadedConfigModifiers.has(elem.dataset.target))
+        return new Promise(function(resolve){ resolve(LoadedConfigModifiers.get(elem.dataset.target)); });
     if (elem.dataset['function'] == 'upload') {
         document.getElementById("JsonFile").click()
         return new Promise(function(resolve){ resolve(null); });;
     }
     else {
-        let name = elem.textContent.replace('.exe', '_config.json');
-        let response = await fetch("assets/models/" + name, { headers: { "Content-Type": "application/json; charset=utf-8" } })
+        let name = elem.dataset.target;
+        return await FetchJsonFileContents(name, elem);
+    }
+}
+
+async function FetchJsonFileContents(name: string, elem: HTMLLIElement | null){
+    let response = await fetch("/assets/models/" + name, { headers: { "Content-Type": "application/json; charset=utf-8" } })
             .then(res => {
                 if (!res.ok)
                     throw new Error(`Unexpected status code ${res.status}`);
@@ -77,7 +82,8 @@ async function FetchJsonFile2(elem: HTMLLIElement): Promise<object | null> {
             })
             .then(response => {
                 let result = JSON.parse(response as string).modifiers;
-                LoadedConfigModifiers.set(elem.innerText, result);
+                if(elem != null)
+                    LoadedConfigModifiers.set(elem.innerText, result);
                 return result;
             })
             .catch(err => {
@@ -85,7 +91,6 @@ async function FetchJsonFile2(elem: HTMLLIElement): Promise<object | null> {
                 throw err;
             });
         return response;
-    }
 }
 
 function ReadJsonFile(this: HTMLInputElement): void {
@@ -219,7 +224,7 @@ function GenerateConfigJsonFile(this: HTMLAnchorElement) {
     if (Object.keys(modifiers).length == 0) {
         alert("You haven't specified any output options, so there is nothing to download at this stage. Specify some obfuscation options first.");
     } else {
-        this.download = ((LastTokenised && LastTokenised.length > 0) ? (LastTokenised[0].GetStringContent().split(/[\\\/]/).slice(-1)[0]) : "unspecified") + "_config.json";
+        this.download = ((LastTokenised && LastTokenised.length > 0) ? (LastTokenised[0].GetStringContent().split(/[\\\/]/).slice(-1)[0]) : "unspecified") + ".json";
         this.href = 'data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify({ "command": tokens, "modifiers": modifiers }))));
     }
 }

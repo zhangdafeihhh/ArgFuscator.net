@@ -1,0 +1,35 @@
+title: "ArgFuscator"
+repo: wietze/ArgFuscator
+collections:
+  entries:
+    output: true
+    # permalink: /:collection/:name.html
+defaults:
+  -
+    values:
+      layout: "entry"
+    scope:
+      path: "_entries/*"
+
+mapping:
+  Sed:
+    name: Character Replacement
+    description: Some command-line arguments allow characters to be replaced with Unicode equivalents.
+  CharacterInsertion:
+    name: Character Insertion
+    description: Some command-line arguments allow specific characters to be inserted without altering the meaning of the original command line.
+  OptionCharSubstitution:
+    name: Option Character Substitution
+    description: Command-line options, such as those starting with a forward slash or hyphen, have alternatives...
+  QuoteInsertion:
+    name: Quote Insertion
+    description: It is possible to add double quotes (in multiples of two) to some of the command-line options. This may obfuscate keywords used on the command line.
+  FilePathTransformer:
+    name: File Path Transformations
+    description: When file paths are supplied to the executable, it is possible to apply transformations to the file path. This includes, for example, ...
+  UrlTransformer:
+    name: URL Transformations
+    description: Any URLs passed on the command line can be transformed in ways that may obfuscate the true destination.
+  RandomCase:
+    name: RaNdOmCaSe
+    description: A number of command-line options are case insensitive, meaning it is possible to use upper- and lowercase characterse interchangable. This may frustrate case-sensitive detections.

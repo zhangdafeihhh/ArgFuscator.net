@@ -1,7 +1,10 @@
+---
+
+---
 <!DOCTYPE html>
 <!--
     @Wietze, (c) 2022-2024
-    Licenced under GPLv3
+    Licensed under GPLv3
 -->
 
 <head>
@@ -30,19 +33,19 @@
             <div class="top">
                 <div class="logo">
                     <img src="assets/img/logo.svg" class="site-logo" alt="Logo" />
-                    <h1>ArgFuscator</h1>
+                    <h1><a href="/">{{site.title}}</a></h1>
                 </div>
                 <div class="links">
                     <a href="#" target="_blank">What is this?</a>
                     <a href="https://www.github.com/wietze/Invoke-ArgFuscator" target="_blank">Offline version</a>
-                    <a href="https://www.github.com/wietze/ArgFuscator" target="_blank">GitHub</a>
+                    <a href="https://www.github.com/wietze/{{site.title}}" target="_blank">GitHub</a>
                     <a href="https://www.twitter.com/wietze" target="_blank" class="emphasis">@Wietze</a>
                 </div>
             </div>
 
 
             <div class="tools">
-                <textarea id="input-command" placeholder="Please paste the command you want to obfuscate here..."></textarea>
+                <textarea id="input-command" placeholder="Please paste the command you want to obfuscate here…"></textarea>
                 <div class="command-bar">
                     <div id="tokens"></div>
                     <a class="button button-primary" id="obfuscation-run"><strong>Apply obfuscation</strong></a>
@@ -64,28 +67,10 @@
                     <div class="picker">
                         <menu class="context-menu" id="menu-templates">
                             <li data-function="none">(none)</li>
-                            <li data-function="upload">⇡ Upload file...</li>
-                            <li>arp.exe</li>
-                            <li>bitsadmin.exe</li>
-                            <li>cacls.exe</li>
-                            <li>certutil.exe</li>
-                            <li>cmdkey.exe</li>
-                            <li>csc.exe</li>
-                            <li>cscript.exe</li>
-                            <li>curl.exe</li>
-                            <li>findstr.exe</li>
-                            <li>forfiles.exe</li>
-                            <li>ipconfig.exe</li>
-                            <li>msiexec.exe</li>
-                            <li data-alias="net1.exe">net.exe</li>
-                            <li>netsh.exe</li>
-                            <li>netstat.exe</li>
-                            <li>nslookup.exe</li>
-                            <li>ping.exe</li>
-                            <li data-alias="pwsh.exe">powershell.exe</li>
-                            <li>reg.exe</li>
-                            <li>wmic.exe</li>
-                            <li>wscript.exe</li>
+                            <li data-function="upload">⇡ Upload file…</li>
+                            {% for entry in site.entries %}
+                            <li data-target="{{entry.relative_path|replace:'_entries/',''|replace:'.md', '.json'}}"{% if entry.alias %} data-alias="{{entry.alias}}"{%endif%}>{{entry.name | replace:'.md','.exe'}}</li>
+                            {%- endfor%}
                         </menu>
                         <label for="JsonFile"><input type="file" id="JsonFile" accept=".json" /></label>
                         <div class="button-selection">

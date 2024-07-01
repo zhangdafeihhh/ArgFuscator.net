@@ -30,6 +30,10 @@ jobs:
         run: |
           tsc --project src/ --outfile gui/assets/js/main.js;
           mv models/ gui/assets/models
+      - name: Convert JSON configs to YML format
+        run:  |
+          python3 -m pip install pyyaml;
+          python3 .github/workflows/json-transform.py
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:

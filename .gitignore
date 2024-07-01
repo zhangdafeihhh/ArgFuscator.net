@@ -1,4 +1,16 @@
 *.js
 *.js.map
+!gui/assets/js/*.js
+gui/assets/js/main.*
+
 node_modules/*
 gui/assets/models/*
+
+# Jekyll data
+_site/
+_entries/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+Gemfile
+Gemfile.lock

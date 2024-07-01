@@ -93,6 +93,7 @@ abstract class Modifier {
         // Find matching template, if available
         Tokens[0].SetType("command");
         //if (FormatPicker && FormatPicker.children[1].dataset['active'] != 'true')
+        if(FormatPicker != null)
         {
             let i = 0;
             let found = false;
@@ -121,7 +122,7 @@ abstract class Modifier {
                 }
             }
 
-            FormatPicker.childNodes.forEach(x => {
+            FormatPicker?.childNodes.forEach(x => {
                 if ([token.toLowerCase(), token.toLowerCase() + ".exe"].find(y => y == x.textContent.toLowerCase() || (x instanceof HTMLElement && y == x.dataset["alias"]?.toLowerCase()))) {
                     found = true;
                     x.dispatchEvent(new Event("click"));

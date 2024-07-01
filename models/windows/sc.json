@@ -1,0 +1,1 @@
+{"command":[{"command":"sc"},{"argument":"query"},{"value":"type="},{"value":"all"}],"modifiers":{"RandomCase":{"ExcludedTypes":["url","value"],"Probability":"0.5"},"QuoteInsertion":{"ExcludedTypes":["command"],"Probability":"0.5"}}}

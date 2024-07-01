@@ -78,6 +78,13 @@ header {
     color: #fff;
     padding: 20px;
     padding-top: 0;
+
+    h1 {
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+    }
 }
 
 @keyframes gradient {
@@ -238,6 +245,7 @@ div.body textarea:placeholder-shown {
     accent-color: rgb(202, 8, 8);
     border: 1px solid rgb(202, 8, 8);
     background: #f6e2e2;
+    color: black;
 }
 
 div.suboptions {
@@ -416,6 +424,17 @@ a.explain::after {
     color: white;
 }
 
+section {
+    background-color: color-mix(in srgb, var(--theme-colour) 5%, white); /*#fbfbfb;*/
+    padding: 1em;
+    margin: 10px 0;
+
+    h1, h2 {
+        margin-top: 0;
+    }
+}
+
+
 fieldset {
     background: color-mix(in srgb, var(--theme-colour) 5%, white);
     margin: 0;
@@ -462,7 +481,7 @@ fieldset>legend {
 }
 
 .button-inverted {
-    border: 1px solid white;
+    background-color: var(--theme-colour);
     color: white;
 }
 
@@ -620,6 +639,7 @@ footer {
 @media (prefers-color-scheme: dark) {
     body {
         background-color: #282828;
+        color: white;
     }
 
     .slist>div,
@@ -629,7 +649,7 @@ footer {
         color: white;
     }
 
-    fieldset {
+    fieldset, section {
         background: rgb(53, 52, 52);
         color: white;
         border-color: #555;
@@ -645,9 +665,27 @@ footer {
             color: var(--theme-colour);
             background: white;
         }
+
+        .suboption textarea, input[type=text]{
+            background: #666;
+            color: white;
+        }
     }
 
     .context-menu>li:hover {
         background-color: #555;
     }
+}
+
+h2>a {
+    color: white;
+    text-decoration: none;;
+}
+
+h2 {
+    margin-bottom: 5px;
+}
+
+ul {
+    padding-left: 1em;
 }

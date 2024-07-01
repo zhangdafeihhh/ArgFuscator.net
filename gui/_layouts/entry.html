@@ -1,0 +1,113 @@
+---
+
+---
+<!DOCTYPE html>
+<!--
+    @Wietze, (c) 2022-2024
+    licensed under GPLv3
+-->
+
+<head>
+    <title>ArgFuscator</title>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' lolbas-project.github.io;">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+</head>
+
+<body>
+
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/lolbas.js" async></script>
+    <div class="container">
+        <header>
+            <div class="top">
+                <div class="logo">
+                    <img src="/assets/img/logo.svg" class="site-logo" alt="Logo" />
+                    <h1><a href="/">ArgFuscator</a></h1>
+                </div>
+                <div class="links">
+                    <a href="#" target="_blank">What is this?</a>
+                    <a href="https://www.github.com/wietze/Invoke-ArgFuscator" target="_blank">Offline version</a>
+                    <a href="https://www.github.com/wietze/ArgFuscator" target="_blank">GitHub</a>
+                    <a href="https://www.twitter.com/wietze" target="_blank" class="emphasis">@Wietze</a>
+                </div>
+            </div>
+
+
+        </header>
+    </div>
+
+    {% assign program=page.command[0]['command'] | split:'\' | slice:-1 %}
+    <section>
+        <h1>{{program}}</h1>
+        According to our data, <code>{{program}}</code> command lines can be obfuscated with the following techniques:
+        <ul>
+
+            {% for item in site.mapping %}
+            {%assign x = item[0] %}
+            {% assign details = page.modifiers[x] %}
+            {% if details %}
+            <li><strong>{{ item[1].name }}</strong>: {{item[1].description}}</li>
+            {% endif %}
+            {%endfor%}
+            <!-- {%-for modifier in page.modifiers%}{% assign trans=modifier[0]%}        {% assign details = site.mapping[trans] %}
+        <li><strong>{{ details.name }}</strong>: {{details.description}}</li>
+        {%- endfor%} -->
+        </ul>
+    </section>
+    <section>
+        <h2>Obfuscate <code>{{program}}</code> commands</h2>
+        Use the form below to obfuscate <code>{{program}}</code> commands:
+
+        <menu class="context-menu">
+            <li data-type="disabled">Ignore</li>
+            <li data-type="command">Program Name</li>
+            <li data-type="argument">Regular Argument</li>
+            <li data-type="path">File Path</li>
+            <li data-type="url">URL</li>
+            <li data-type="value">Value</li>
+        </menu>
+        <div>
+            <div class="tools">
+                <textarea id="input-command" data-target="{{page.relative_path|replace:'_entries/',''|replace:'.md', '.json'}}" placeholder="Paste a valid {{program}} command here..."></textarea>
+                <div class="command-bar">
+                    <div id="tokens"></div>
+                    <div><a class="button button-primary button-toggle" data-target="obfuscation-options"><strong>Show options</strong></a> <a class="button button-inverted" id="obfuscation-run"><strong>Apply obfuscation</strong></a></div>
+                </div>
+                <div id="error-messages"></div>
+            </div>
+
+            <fieldset>
+                <legend>Output</legend>
+                <div id="output-command"></div>
+            </fieldset>
+
+            <fieldset class="collapsed" id="obfuscation-options">
+                <legend>Options</legend>
+                <div>
+                    <div id="options-panel">
+                        <div class="picker">
+                            <div class="button-selection">
+                                <a class="button" id="download-config" download="config-export.json"><strong>Download config</strong></a>
+                                <a class="button" id="reset-form"><strong>Reset</strong></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="options-panel-options"></div>
+                </div>
+            </fieldset>
+        </div>
+    </section>
+    <section>
+        <h2>Related</h2>
+        <div id="related-links" class="button-selection"><a href="/" class="button">More obfuscation techniques</a></div>
+    </section>
+    <section>
+        <h2>FAQs</h2>
+    </section>
+
+</body>
+
+</html>
