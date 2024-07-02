@@ -6,7 +6,7 @@ import sys
 
 import yaml
 
-PATTERN_INPUT = 'models/**/*.json'
+PATTERN_INPUT = 'gui/assets/models/**/*.json'
 PATTERN_OUTPUT = 'gui/_entries/*.md'
 ENCODING = 'utf-8'
 
