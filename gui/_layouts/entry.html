@@ -8,24 +8,24 @@
 -->
 
 <head>
-    <title>ArgFuscator</title>
+    <title>{{site.title}}</title>
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' lolbas-project.github.io;">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
-    <link rel="icon" type="image/x-icon" href="/assets/img/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="{{site.baseurl}}/assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="{{site.baseurl}}/assets/img/favicon.ico">
 </head>
 
 <body>
 
-    <script src="/assets/js/main.js"></script>
-    <script src="/assets/js/lolbas.js" async></script>
+    <script src="{{site.baseurl}}/assets/js/main.js"></script>
+    <script src="{{site.baseurl}}/assets/js/lolbas.js" async></script>
     <div class="container">
         <header>
             <div class="top">
                 <div class="logo">
-                    <img src="/assets/img/logo.svg" class="site-logo" alt="Logo" />
-                    <h1><a href="/">ArgFuscator</a></h1>
+                    <img src="{{site.baseurl}}/assets/img/logo.svg" class="site-logo" alt="Logo" />
+                    <h1><a href="{{site.baseurl}}/">{{site.title}}</a></h1>
                 </div>
                 <div class="links">
                     <a href="#" target="_blank">What is this?</a>
@@ -71,7 +71,7 @@
         </menu>
         <div>
             <div class="tools">
-                <textarea id="input-command" data-target="{{page.relative_path|replace:'_entries/',''|replace:'.md', '.json'}}" placeholder="Paste a valid {{program}} command here..."></textarea>
+                <textarea id="input-command" data-target="{{page.url|replace:'entries/','assets/models/'|replace:'.html', '.json'|relative_url}}" placeholder="Paste a valid {{program}} command here..."></textarea>
                 <div class="command-bar">
                     <div id="tokens"></div>
                     <div><a class="button button-primary button-toggle" data-target="obfuscation-options"><strong>Show options</strong></a> <a class="button button-inverted" id="obfuscation-run"><strong>Apply obfuscation</strong></a></div>

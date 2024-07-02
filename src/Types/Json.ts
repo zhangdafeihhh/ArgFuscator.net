@@ -74,7 +74,7 @@ async function FetchJsonFile2(elem: HTMLLIElement): Promise<object | null> {
 }
 
 async function FetchJsonFileContents(name: string, elem: HTMLLIElement | null){
-    let response = await fetch("/assets/models/" + name, { headers: { "Content-Type": "application/json; charset=utf-8" } })
+    let response = await fetch(name, { headers: { "Content-Type": "application/json; charset=utf-8" } })
             .then(res => {
                 if (!res.ok)
                     throw new Error(`Unexpected status code ${res.status}`);

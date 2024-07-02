@@ -8,17 +8,17 @@
 -->
 
 <head>
-    <title>ArgFuscator</title>
+    <title>{{site.title}}</title>
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="{{site.baseurl}}/assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="{{site.baseurl}}/assets/img/favicon.ico">
 </head>
 
 <body>
 
-    <script src="assets/js/main.js"></script>
+    <script src="{{site.baseurl}}/assets/js/main.js"></script>
 
     <menu class="context-menu">
         <li data-type="disabled">Ignore</li>
@@ -32,8 +32,8 @@
         <header>
             <div class="top">
                 <div class="logo">
-                    <img src="assets/img/logo.svg" class="site-logo" alt="Logo" />
-                    <h1><a href="/">{{site.title}}</a></h1>
+                    <img src="{{site.baseurl}}/assets/img/logo.svg" class="site-logo" alt="Logo" />
+                    <h1><a href="{{site.baseurl}}/">{{site.title}}</a></h1>
                 </div>
                 <div class="links">
                     <a href="#" target="_blank">What is this?</a>
@@ -69,7 +69,7 @@
                             <li data-function="none">(none)</li>
                             <li data-function="upload">⇡ Upload file…</li>
                             {% for entry in site.entries %}
-                            <li data-target="{{entry.relative_path|replace:'_entries/',''|replace:'.md', '.json'}}"{% if entry.alias %} data-alias="{{entry.alias}}"{%endif%}>{{entry.name | replace:'.md','.exe'}}</li>
+                            <li data-target="{{entry.url|replace:'entries/','assets/models/'|replace:'.html', '.json'|relative_url}}"{% if entry.alias %} data-alias="{{entry.alias}}"{%endif%}>{{entry.slug | append:'.exe'}}</li>
                             {%- endfor%}
                         </menu>
                         <label for="JsonFile"><input type="file" id="JsonFile" accept=".json" /></label>
