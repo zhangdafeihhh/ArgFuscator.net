@@ -39,12 +39,10 @@ class FilePathTransformer extends Modifier {
                 }
 
                 // Substitute Slashes
-                let tmp_tokencontent = NewTokenContent.split('');
-                NewTokenContent = '';
-                tmp_tokencontent.forEach(Char => {
-                    if (This.SubstituteSlashes && Char.match(/[/\\]/) && !NewTokenContent.endsWith(":") && Modifier.CoinFlip(This.Probability))
-                        Char = Char == "\\" ? "/" : "\\";
-                    NewTokenContent += Char;
+                NewTokenContent = NewTokenContent.replace(/(?<!:)(?:[/]+|[\\]+)/g, function (a, i) {
+                    // index must be greater than 0 (to avoid transforming the first two backslashes on e.g. "\\share\file\path.txt")
+                    if (Modifier.CoinFlip(This.Probability) && i > 0) return (a.startsWith("\\") ? "/" : "\\").repeat(a.length)
+                    return a;
                 });
 
                 // Extra Slashes
