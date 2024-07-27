@@ -84,7 +84,15 @@ header {
             color: inherit;
             text-decoration: none;
         }
+
+        a:hover {
+            text-decoration: underline;
+        }
     }
+}
+
+a {
+    color: var(--theme-colour);
 }
 
 @keyframes gradient {
@@ -425,11 +433,13 @@ a.explain::after {
 }
 
 section {
-    background-color: color-mix(in srgb, var(--theme-colour) 5%, white); /*#fbfbfb;*/
+    background-color: color-mix(in srgb, var(--theme-colour) 5%, white);
+    /*#fbfbfb;*/
     padding: 1em;
     margin: 10px 0;
 
-    h1, h2 {
+    h1,
+    h2 {
         margin-top: 0;
     }
 }
@@ -505,6 +515,7 @@ fieldset>legend {
 .button-inverted:hover {
     background: white;
     color: var(--theme-colour);
+    border-color: var(--theme-colour);
 }
 
 .button:hover a {
@@ -649,7 +660,8 @@ footer {
         color: white;
     }
 
-    fieldset, section {
+    fieldset,
+    section {
         background: rgb(53, 52, 52);
         color: white;
         border-color: #555;
@@ -666,7 +678,8 @@ footer {
             background: white;
         }
 
-        .suboption textarea, input[type=text]{
+        .suboption textarea,
+        input[type=text] {
             background: #666;
             color: white;
         }
@@ -679,7 +692,8 @@ footer {
 
 h2>a {
     color: white;
-    text-decoration: none;;
+    text-decoration: none;
+    ;
 }
 
 h2 {

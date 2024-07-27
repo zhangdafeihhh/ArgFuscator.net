@@ -1,6 +1,6 @@
 # ArgFuscator
 
-ArgFuscator is an open-source, stand-alone web application that helps generate obfuscated command-lines common system-native executables.
+ArgFuscator is an open-source, stand-alone web application that helps generate obfuscated command-lines for common system-native executables.
 
 👉 **Use the interactive version of ArgFuscator on [ArgFuscator.net](https://argfuscator.net/)** 🚀
 
