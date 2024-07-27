@@ -179,7 +179,6 @@ function OnLoad() {
         });
     }
 
-
     document.getElementById("button-template")?.addEventListener("click", _ => ShowContextMenu(document.getElementById('menu-templates'), document.getElementById('button-template')))
 
     document.getElementById('menu-templates')?.childNodes.forEach((ContextMenuItem: HTMLLIElement) => {

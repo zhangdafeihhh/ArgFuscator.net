@@ -92,6 +92,13 @@ abstract class Modifier {
 
         // Find matching template, if available
         Tokens[0].SetType("command");
+
+        if(document.getElementById("input-command")?.dataset.program !== undefined){
+            let expectedProgram = document.getElementById("input-command")?.dataset.program?.split(".")[0];
+            if(!Tokens[0].GetStringContent().toLowerCase().includes(expectedProgram.toLowerCase())){
+                logUserError("unexpected-program", `Are you sure you pasted a valid <code>${expectedProgram}</code> command? To obfuscate the command-line arguments of other executables, click <a href="/">here</a>.`)
+            }
+        }
         //if (FormatPicker && FormatPicker.children[1].dataset['active'] != 'true')
         if(FormatPicker != null)
         {
@@ -108,7 +115,7 @@ abstract class Modifier {
                 let commandIndex = Tokens.findIndex((x) => x.GetStringContent().match(/^\/c$/i));
 
                 if (commandIndex > 0) {
-                    logUserError("pattern-cmd", '<code>cmd.exe</code> requires special obfuscation - please checkout the <a href="https://github.com/danielbohannon/Invoke-DOSfuscation" target="_blank">Invoke-Dosfuscation project</a> for this! Below are the results for obfuscating the \'inner\' command.');
+                    logUserError("pattern-cmd", '<code>cmd.exe</code> requires special obfuscation - please check out the <a href="https://github.com/danielbohannon/Invoke-DOSfuscation" target="_blank">Invoke-Dosfuscation project</a> for this! Below are the results for obfuscating the \'inner\' command.');
                     if (Tokens[commandIndex + 1].GetContent()[0] == '"') { // Argument is quoted
                         let command = Tokens[commandIndex + 1].GetStringContent()
                         return Modifier.CommandTokenise(command.slice(1, command.length - 1), FormatPicker)
@@ -142,7 +149,7 @@ abstract class Modifier {
                 token_code.innerText = token.length > 20 ? (token.slice(0, 20) + "…") : token;
                 token_code.title = token;
 
-                logUserError("pattern-unknown", `It looks like this project is not aware of obfuscation options for ${token_code.outerHTML}! Create your own using the options panel below.`);
+                logUserError("pattern-unknown", `It looks like this project is not aware of obfuscation options for ${token_code.outerHTML}. Create your own using the options panel below.`);
             }
         }
         Tokens.slice(1).forEach((x, i) => {
