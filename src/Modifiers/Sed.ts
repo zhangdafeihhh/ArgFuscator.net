@@ -3,8 +3,8 @@
 class Sed extends Modifier {
     private readonly SedStatements: SedStatement[];
 
-    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, SedStatements: string) {
-        super(InputCommand, ExcludedTypes, Probability);
+    constructor(InputCommand: Token[], ApplyTo: string[], Probability: string, SedStatements: string) {
+        super(InputCommand, ApplyTo, Probability);
         this.SedStatements = [];
         if (!SedStatements)
             throw Error("No sed statements string provided")
@@ -26,7 +26,7 @@ class Sed extends Modifier {
         this.InputCommandTokens.forEach(Token => {
             var NewTokenContent: string = Token.GetStringContent();
 
-            if (!This.ExcludedTypes.includes(Token.GetType())) {
+            if (This.IncludedTypes.includes(Token.GetType())) {
                 let matches = this.SedStatements.filter(x => x.StringIndex(NewTokenContent) >= 0);
 
 

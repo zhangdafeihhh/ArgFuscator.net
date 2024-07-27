@@ -3,8 +3,8 @@ class QuoteInsertion extends Modifier {
     private static QuoteCharacter: Char = new String("\"") as Char;
     private static AcceptableSuccessionChars: RegExp = /^[a-z0-9\-\/]$/i;
 
-    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string) {
-        super(InputCommand, ExcludedTypes, Probability);
+    constructor(InputCommand: Token[], ApplyTo: string[], Probability: string) {
+        super(InputCommand, ApplyTo, Probability);
     }
 
 
@@ -32,7 +32,7 @@ class QuoteInsertion extends Modifier {
         var This = this;
         this.InputCommandTokens.forEach(function (Token) {
             // Skip if excluded
-            if (This.ExcludedTypes.includes(Token.GetType())) return;
+            if (!This.IncludedTypes.includes(Token.GetType())) return;
 
             // Split by SeperationChar (required to make sure we don't add quotes in the wrong places)
             let parts = Token.GetStringContent().split(Modifier.SeparationChar.toString())

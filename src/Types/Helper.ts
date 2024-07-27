@@ -1,7 +1,7 @@
 
 function SetPosition(Parent: HTMLElement, ContextMenu: HTMLElement): void {
     var box = Parent.getBoundingClientRect()
-    ContextMenu.style.top = (box.height/2) + "px";
+    ContextMenu.style.top = (box.height / 2) + "px";
 }
 
 function ShowContextMenu(Element: HTMLElement, ClickElement: HTMLElement) {
@@ -21,21 +21,19 @@ function ShowContextMenu(Element: HTMLElement, ClickElement: HTMLElement) {
     }
 }
 
-function UpdateExcludeText(ContextMenuButton: HTMLElement, ContextMenu : HTMLElement) : string{
-    let ExcludedTypes : string[] = JSON.parse(ContextMenuButton.dataset.excluded_types);
-    Array.from(ContextMenu.children).forEach((ContextMenuItem: HTMLElement) => { ContextMenuItem.dataset.active = (ExcludedTypes.includes(ContextMenuItem.dataset.type) ? "" : "true");});
-    if (ExcludedTypes.length == 0) {
-        return "everything"
-    } else if (ExcludedTypes.length >= ContextMenu.children.length) {
+function UpdateExcludeText(ContextMenuButton: HTMLElement, ContextMenu: HTMLElement): string {
+    let IncludedTypes: string[] = JSON.parse(ContextMenuButton.dataset.included_types);
+    Array.from(ContextMenu.children).forEach((ContextMenuItem: HTMLElement) => { ContextMenuItem.dataset.active = (IncludedTypes.includes(ContextMenuItem.dataset.type) ? "true" : ""); });
+    if (IncludedTypes.length == 0) {
         return "nothing"
-    } else if (ExcludedTypes.length > (ContextMenu.children.length / 2)) {
-        var IncludedTypeNames = Array.from(ContextMenu.children).filter((x: HTMLElement) => !ExcludedTypes.includes(x.dataset.type)).map((x: HTMLElement) => x.innerText + "s");
+    } else if (IncludedTypes.length >= ContextMenu.children.length) {
+        return "everything"
+    } else if (IncludedTypes.length < (ContextMenu.children.length / 2)) {
+        var IncludedTypeNames = Array.from(ContextMenu.children).filter((x: HTMLElement) => IncludedTypes.includes(x.dataset.type)).map((x: HTMLElement) => x.innerText + "s");
         return IncludedTypeNames.join(", ") + " only";
     }
     else {
-        var ExcludedTypeNames = Array.from(ContextMenu.children).filter((x: HTMLElement) => ExcludedTypes.includes(x.dataset.type)).map((x: HTMLElement) => x.innerText + "s");
-        return "everything except " + ExcludedTypeNames.join(", ")
+        var IncludedTypeNames = Array.from(ContextMenu.children).filter((x: HTMLElement) => !IncludedTypes.includes(x.dataset.type)).map((x: HTMLElement) => x.innerText + "s");
+        return "everything except " + IncludedTypeNames.join(", ")
     }
-
-
 }

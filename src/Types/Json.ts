@@ -148,7 +148,7 @@ function ApplyTemplate(Input: FileFormat, Interactive: Boolean) {
 
     // Set options
     document.querySelectorAll<HTMLInputElement>("input[id^=\"option-\"]:checked").forEach(x => x.click())
-    document.querySelectorAll<HTMLInputElement>("div[data-excluded_types]").forEach(ContextMenuButton => { ContextMenuButton.dataset.excluded_types = "[]"; ContextMenuButton.innerText = UpdateExcludeText(ContextMenuButton, ContextMenuButton.nextSibling as HTMLElement); })
+    document.querySelectorAll<HTMLInputElement>("div[data-included_types]").forEach(ContextMenuButton => { ContextMenuButton.dataset.included_types = "[]"; ContextMenuButton.innerText = UpdateExcludeText(ContextMenuButton, ContextMenuButton.nextSibling as HTMLElement); })
     var i = 0;
     Object.entries(Input.modifiers).forEach(([ModifierName, m]) => {
         let ModifierObject = document.getElementById("option-" + ModifierName.toLowerCase())
@@ -160,10 +160,10 @@ function ApplyTemplate(Input: FileFormat, Interactive: Boolean) {
         moveItem(ModifierObject.parentElement.parentElement, i++);
 
          Object.entries(m).forEach(([Option, value]) => {
-            if (Option == "ExcludedTypes") {
-                var ContextMenuButton = document.querySelector<HTMLInputElement>("#" + ModifierName + " div[data-excluded_types]");
+            if (Option == "AppliesTo") {
+                var ContextMenuButton = document.querySelector<HTMLInputElement>("#" + ModifierName + " div[data-included_types]");
                 var ContextMenu = document.querySelector<HTMLInputElement>("#" + ModifierName + " menu");
-                ContextMenuButton.dataset.excluded_types = JSON.stringify(value);
+                ContextMenuButton.dataset.included_types = JSON.stringify(value);
                 ContextMenuButton.innerText = UpdateExcludeText(ContextMenuButton, ContextMenu);
             } else {
                 var SettingObject = document.querySelector<HTMLInputElement | HTMLTextAreaElement>("#" + ModifierName + " input[data-field='" + Option + "'], textarea[data-field='" + Option + "']");
@@ -191,7 +191,7 @@ function GetJsonContents(): object {
     document.querySelectorAll<HTMLInputElement>("input[type=checkbox][data-function]:checked").forEach(x => {
         let dataFunction = x.dataset['function'] as string;
         var settings = new Map<string, string | number | boolean | string[]>();
-        settings.set('ExcludedTypes', JSON.parse(x.parentNode.querySelector<HTMLInputElement>("div[data-excluded_types]").dataset.excluded_types));
+        settings.set('AppliesTo', JSON.parse(x.parentNode.querySelector<HTMLInputElement>("div[data-included_types]").dataset.included_types));
         x.parentNode.querySelectorAll<HTMLInputElement>("input[data-field], textarea[data-field]").forEach(y => {
             var result = undefined;
             if (y.type == "checkbox")
@@ -211,6 +211,8 @@ function GetJsonContents(): object {
     return Object.fromEntries(modifiers.entries());
 }
 
+const jsonEscapeNonAsci = (input : string) => [...Array.from(input)].map(c => /^[\x20-\x7f]$/.test(c) ? c : c.split("").map(a => "\\u" + a.charCodeAt(0).toString(16).padStart(4, "0")).join("")).join("");
+
 function GenerateConfigJsonFile(this: HTMLAnchorElement) {
     removeUserErrors();
     if (LastTokenised == null || LastTokenised?.length <= 0)
@@ -225,6 +227,6 @@ function GenerateConfigJsonFile(this: HTMLAnchorElement) {
         alert("You haven't specified any output options, so there is nothing to download at this stage. Specify some obfuscation options first.");
     } else {
         this.download = ((LastTokenised && LastTokenised.length > 0) ? (LastTokenised[0].GetStringContent().split(/[\\\/]/).slice(-1)[0]) : "unspecified") + ".json";
-        this.href = 'data:application/json;base64,' + btoa(unescape(encodeURIComponent(JSON.stringify({ "command": tokens, "modifiers": modifiers }))));
+        this.href = 'data:application/json;base64,' + btoa(unescape(encodeURIComponent(jsonEscapeNonAsci(JSON.stringify({ "command": tokens, "modifiers": modifiers })))));
     }
 }

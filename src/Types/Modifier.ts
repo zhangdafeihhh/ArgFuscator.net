@@ -9,7 +9,7 @@ function CharEquals(char1: Char, char2: Char): boolean {
 class ModifierDefinition {
     public Name: string;
     public Description: string;
-    public DefaultExcludedTypes: string[];
+    public DefaultIncludedTypes: string[];
     public Arguments: ModifierArgumentsDefinition[] = [];
     public Function: Function;
     public constructor(init?: Partial<ModifierDefinition>) {
@@ -29,7 +29,7 @@ class ModifierArgumentsDefinition {
 
 abstract class Modifier {
     protected InputCommandTokens: Token[] = [];
-    protected ExcludedTypes: string[] = ['disabled'];
+    protected IncludedTypes: string[] = [];
     protected Probability: number;
 
     public static SeparationChar: Char = ' ' as String as Char;
@@ -37,10 +37,10 @@ abstract class Modifier {
     public static ValueChars: Char[] = ['=' as String as Char, ':' as String as Char];
     public static CommonOptionChars: Char[] = ['/' as String as Char, '-' as String as Char];
 
-    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string) {
+    constructor(InputCommand: Token[], IncludedTypes: string[], Probability: string) {
         // Parse inputs
         this.InputCommandTokens = InputCommand
-        this.ExcludedTypes.push(...ExcludedTypes);
+        this.IncludedTypes.push(...IncludedTypes);
         this.Probability = Modifier.ParseProbability(Probability);
     }
 
@@ -178,9 +178,9 @@ abstract class Modifier {
 
     private static Implementations: Record<string, ModifierDefinition> = {};
 
-    public static Register = (Name: string, Description: string, DefaultExcludedTypes: string[]) => {
+    public static Register = (Name: string, Description: string, DefaultIncludedTypes: string[]) => {
         return (target: Function) => {
-            Modifier.Implementations[target.name] = new ModifierDefinition({ Name: Name, Description: Description, DefaultExcludedTypes: DefaultExcludedTypes, Function: target });
+            Modifier.Implementations[target.name] = new ModifierDefinition({ Name: Name, Description: Description, DefaultIncludedTypes: DefaultIncludedTypes, Function: target });
         }
     }
 

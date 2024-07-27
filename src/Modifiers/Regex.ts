@@ -5,8 +5,8 @@
 class Regex extends Modifier {
     private readonly RegexMatch: RegExp;
     private readonly RegexReplace: string;
-    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, RegexMatch: string, RegexReplace: string, CaseSensitive: boolean) {
-        super(InputCommand, ExcludedTypes, Probability);
+    constructor(InputCommand: Token[], ApplyTo: string[], Probability: string, RegexMatch: string, RegexReplace: string, CaseSensitive: boolean) {
+        super(InputCommand, ApplyTo, Probability);
         if (!RegexMatch)
             throw Error("No regex string provided")
 
@@ -23,7 +23,7 @@ class Regex extends Modifier {
         this.InputCommandTokens.forEach(Token => {
             var NewTokenContent: string = Token.GetStringContent();
 
-            if (!This.ExcludedTypes.includes(Token.GetType()) && Modifier.CoinFlip(this.Probability) && NewTokenContent.match(this.RegexMatch)) {
+            if (This.IncludedTypes.includes(Token.GetType()) && Modifier.CoinFlip(this.Probability) && NewTokenContent.match(this.RegexMatch)) {
                 let RexReplace = this.RegexReplace.replace(new RegExp('\\$(\\d+)\\[(\\d+):(\\d+(?:-(?:\\d+)?)?)\\]'), (x, rIndex, start, end) => {
                     let match = NewTokenContent.match(this.RegexMatch)[rIndex];
                     if (end.indexOf('-') >= 0) {

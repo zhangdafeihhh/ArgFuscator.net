@@ -11,8 +11,8 @@ class SedStatement {
         this.CaseInsensitive = (results[3] !== undefined && results[3].indexOf('i') >= 0) || false;
     }
 
-    public StringIndex(Content: string) : number {
-        if(this.CaseInsensitive)
+    public StringIndex(Content: string): number {
+        if (this.CaseInsensitive)
             return Content.toUpperCase().indexOf(this.Find.toUpperCase());
         else
             return Content.indexOf(this.Find);

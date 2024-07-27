@@ -3,8 +3,8 @@
 class OptionCharSubstitution extends Modifier {
     private OutputOptionChars: Char[];
 
-    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, OutputOptionChars: string | null) {
-        super(InputCommand, ExcludedTypes, Probability);
+    constructor(InputCommand: Token[], ApplyTo: string[], Probability: string, OutputOptionChars: string | null) {
+        super(InputCommand, ApplyTo, Probability);
         if (OutputOptionChars == null || OutputOptionChars.length == 0)
             throw Error(`Unexpected OutputOptionChars length (expecting at least 1, found ${OutputOptionChars?.length})`);
 
@@ -16,7 +16,7 @@ class OptionCharSubstitution extends Modifier {
         this.InputCommandTokens.forEach(Token => {
             var NewTokenContent: Char[] = Token.GetContent();
 
-            if (!This.ExcludedTypes.includes(Token.GetType()) && This.OutputOptionChars.some(x => x == (NewTokenContent[0] as string)) && (NewTokenContent.length == 1 || !This.OutputOptionChars.some(x => x == (NewTokenContent[1] as string))) && Modifier.CoinFlip(This.Probability)){
+            if (This.IncludedTypes.includes(Token.GetType()) && This.OutputOptionChars.some(x => x == (NewTokenContent[0] as string)) && (NewTokenContent.length == 1 || !This.OutputOptionChars.some(x => x == (NewTokenContent[1] as string))) && Modifier.CoinFlip(This.Probability)){
                 NewTokenContent[0] = Modifier.ChooseRandom(This.OutputOptionChars.filter(x => x !== NewTokenContent[0]));
                 Token.SetContent(NewTokenContent);
             }

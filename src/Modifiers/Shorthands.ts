@@ -17,8 +17,8 @@ class Shorthands extends Modifier {
         return result
     }
 
-    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, ShorthandCommands: string, CaseSensitive:boolean) {
-        super(InputCommand, ExcludedTypes, Probability);
+    constructor(InputCommand: Token[], ApplyTo: string[], Probability: string, ShorthandCommands: string, CaseSensitive:boolean) {
+        super(InputCommand, ApplyTo, Probability);
 
         try {
             let This = this;
@@ -59,7 +59,7 @@ class Shorthands extends Modifier {
     GenerateOutput(): void {
         var This = this;
         this.InputCommandTokens.forEach(Token => {
-            if (!This.ExcludedTypes.includes(Token.GetType()) && Modifier.CoinFlip(This.Probability)){
+            if (This.IncludedTypes.includes(Token.GetType()) && Modifier.CoinFlip(This.Probability)){
                 let token = Shorthands.NormaliseArgument(Token.GetStringContent(), This.CaseSensitive)
                 if(This.Substitutions.has(token)){
                     let original_token = Shorthands.NormaliseArgument(Token.GetStringContent(), This.CaseSensitive, false);

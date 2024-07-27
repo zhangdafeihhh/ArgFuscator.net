@@ -12,8 +12,8 @@ class UrlTransformer extends Modifier {
     private PathTraversal: boolean;
     private readonly Keywords: string[] = ["debug", "system32", "compile", "winsxs", "temp", "update"];
 
-    constructor(InputCommand: Token[], ExcludedTypes: string[], Probability: string, LeaveOutProtocol: boolean, LeaveOutDoubleSlashes: boolean, SubstituteSlashes: boolean, IpToHex: boolean, PathTraversal: boolean) {
-        super(InputCommand, ExcludedTypes, Probability);
+    constructor(InputCommand: Token[], ApplyTo: string[], Probability: string, LeaveOutProtocol: boolean, LeaveOutDoubleSlashes: boolean, SubstituteSlashes: boolean, IpToHex: boolean, PathTraversal: boolean) {
+        super(InputCommand, ApplyTo, Probability);
 
         this.Probability = Modifier.ParseProbability(Probability);
 
@@ -29,7 +29,7 @@ class UrlTransformer extends Modifier {
         this.InputCommandTokens.forEach(Token => {
             var NewTokenContent: string = Token.GetStringContent();
 
-            if (!This.ExcludedTypes.includes(Token.GetType())) {
+            if (This.IncludedTypes.includes(Token.GetType())) {
 
                 // Leave out protocol
                 if (this.LeaveOutProtocol && Modifier.CoinFlip(this.Probability))

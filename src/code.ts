@@ -70,8 +70,8 @@ function ApplyObfuscation(): void {
         let ClassName = Element.dataset.function as string;
         let ClassInstance: Modifier = Object.create((window as any)[ClassName].prototype);
 
-        let ExcludedTypes = JSON.parse(document.getElementById(Element.id + "_arg0").dataset.excluded_types);
-        let ClassInstanceArguments: any[] = [LastTokenised, ExcludedTypes];
+        let IncludedTypes = JSON.parse(document.getElementById(Element.id + "_arg0").dataset.included_types);
+        let ClassInstanceArguments: any[] = [LastTokenised, IncludedTypes];
 
         let SelectedOptionArguments = document.querySelectorAll("input[id^=\"" + Element.id + "_arg\"], textarea[id^=\"" + Element.id + "_arg\"]") as NodeListOf<HTMLInputElement | HTMLTextAreaElement>;
         SelectedOptionArguments.forEach(OptionElement => {
@@ -107,12 +107,12 @@ function GenerateObfuscationOptionsHTML() {
         modifierBoxBodySubOptionsRow.classList.add('flex-row')
         modifierBoxBodySubOptionsRow.innerHTML = `<label for="option-${modifierID}_arg0">Apply to</label>
         <div class="picker"><div class="option-target button" id="option-${modifierID}_arg0"
-            data-excluded_types=""></div></div>
+            data-included_types=""></div></div>
             &nbsp;<label for="option-${modifierID}_arg1">with a probability of</label><input
             type="number" id="option-${modifierID}_arg1" data-field="Probability"
             class="probs-slider" value="0.5" min="0" max="1" step="0.1">`;
 
-        (modifierBoxBodySubOptionsRow.querySelector(`div#option-${modifierID}_arg0`) as HTMLElement).dataset['excluded_types'] = JSON.stringify(modifier.DefaultExcludedTypes);
+        (modifierBoxBodySubOptionsRow.querySelector(`div#option-${modifierID}_arg0`) as HTMLElement).dataset['included_types'] = JSON.stringify(modifier.DefaultIncludedTypes);
 
         modifierBoxBodySubOptions.appendChild(modifierBoxBodySubOptionsRow)
 
@@ -243,9 +243,12 @@ function OnLoad() {
         Array.from(ContextMenu.children).forEach((ContextMenuItem: HTMLElement) => {
             ContextMenuItem.addEventListener("click", e => {
                 ContextMenuItem.dataset.active = (ContextMenuItem.dataset.active == "true" ? "" : "true");
-                var ExcludedTypes = JSON.parse(ContextMenuButton.dataset.excluded_types) as string[];
-                if (ContextMenuItem.dataset.active != "true") ExcludedTypes.push(ContextMenuItem.dataset.type); else ExcludedTypes = ExcludedTypes.filter(item => item !== ContextMenuItem.dataset.type);
-                ContextMenuButton.dataset.excluded_types = JSON.stringify(ExcludedTypes);
+                var IncludedTypes = JSON.parse(ContextMenuButton.dataset.included_types) as string[];
+                if (ContextMenuItem.dataset.active == "true")
+                    IncludedTypes.push(ContextMenuItem.dataset.type);
+                else
+                    IncludedTypes = IncludedTypes.filter(item => item !== ContextMenuItem.dataset.type);
+                ContextMenuButton.dataset.included_types = JSON.stringify(IncludedTypes);
                 ContextMenuButton.innerText = UpdateExcludeText(ContextMenuButton, ContextMenu);
             })
         });

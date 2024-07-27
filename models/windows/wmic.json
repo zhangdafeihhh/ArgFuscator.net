@@ -1,1 +1,1 @@
-{"modifiers":{}}
+{"modifiers": {"QuoteInsertion": {"Probability": "0.5", "AppliesTo": ["path", "argument", "value"]}}}
