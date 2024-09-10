@@ -161,6 +161,14 @@ function ResetForm() {
     document.getElementById("menu-templates")?.children[0].dispatchEvent(new Event("click"));
 }
 
+function addEnterListener(target: HTMLElement){
+    if(!target) return;
+
+    target.addEventListener("keyup", (event) => {
+        event.preventDefault(); if (event.key === 'Enter') (event.target as HTMLElement).click();
+    });
+}
+
 function OnLoad() {
     window.removeEventListener("DOMContentLoaded", OnLoad, false);
     UpdateTokens();
@@ -170,8 +178,11 @@ function OnLoad() {
     document.getElementById("input-command")?.addEventListener("keyup", debounce(UpdateTokens, 1000));
     document.getElementById("input-command")?.addEventListener("paste", (e) => { setTimeout(UpdateTokens, 0) });
     document.getElementById("obfuscation-run")?.addEventListener("click", () => ApplyObfuscation());
+    addEnterListener(document.getElementById("obfuscation-run"));
     document.getElementById("download-config")?.addEventListener("click", GenerateConfigJsonFile);
+    addEnterListener(document.getElementById("download-config"));
     document.getElementById("reset-form")?.addEventListener("click", ResetForm);
+    addEnterListener(document.getElementById("reset-form"));
 
     if (document.getElementById("input-command").dataset.target !== undefined) {
         FetchJsonFileContents(document.getElementById("input-command").dataset.target, null).then(newModifiers => {
@@ -180,6 +191,8 @@ function OnLoad() {
     }
 
     document.getElementById("button-template")?.addEventListener("click", _ => ShowContextMenu(document.getElementById('menu-templates'), document.getElementById('button-template')))
+    addEnterListener(document.getElementById("button-template"));
+
 
     document.getElementById('menu-templates')?.childNodes.forEach((ContextMenuItem: HTMLLIElement) => {
         ContextMenuItem.addEventListener("click", e => {
@@ -187,11 +200,12 @@ function OnLoad() {
             FetchJsonFile2(currentSelected).then(oldDefaultModifiers =>
                 FetchJsonFile2(ContextMenuItem).then(newModifiers => {
                     if (CheckChanged(ContextMenuItem, newModifiers, oldDefaultModifiers)) {
-                        ContextMenuItem.parentNode.childNodes.forEach((x: HTMLElement) => { if (x.dataset) x.dataset['active'] = "" });
+                        ContextMenuItem.parentNode.childNodes.forEach((x: HTMLElement) => { x.ariaSelected = 'false'; if (x.dataset) x.dataset['active'] = "" });
 
                         if (!ContextMenuItem.dataset['function']) {
                             ApplyTemplate({ modifiers: newModifiers } as FileFormat, false);
                             ContextMenuItem.dataset['active'] = 'true';
+                            ContextMenuItem.ariaSelected = 'true';
 
                             document.getElementById("template-selected").innerText = ContextMenuItem.innerText;
                         } else
@@ -202,8 +216,9 @@ function OnLoad() {
                     }
                 })
             );
-        })
+        });
     });
+
 
     document.querySelectorAll<HTMLFieldSetElement>("fieldset.collapsible").forEach((x) => {
         let legend = x.querySelector("legend");

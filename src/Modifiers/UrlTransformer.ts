@@ -83,7 +83,7 @@ class UrlTransformer extends Modifier {
                         else
                             NewTokenContent = NewTokenContent.replace(IpAddress[0], "0x" + Decimal.toString(16));
                     } else
-                        logUserError("ipv4-address", "No valid IPv4 IP address could be found.");
+                        logUserError("ipv4-address", "No valid IPv4 IP address could be found ("+NewTokenContent+").");
                 }
 
                 Token.SetContent(NewTokenContent.split(""));

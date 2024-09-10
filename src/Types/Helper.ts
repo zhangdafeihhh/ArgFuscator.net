@@ -7,9 +7,13 @@ function SetPosition(Parent: HTMLElement, ContextMenu: HTMLElement): void {
 function ShowContextMenu(Element: HTMLElement, ClickElement: HTMLElement) {
     if (Element.style.display == "block") {
         Element.style.display = 'none';
+        ClickElement.ariaExpanded = 'false';
+        ClickElement.setAttribute('aria-activedescendant', "");
     } else {
         SetPosition(ClickElement, Element);
         Element.style.display = 'block';
+        ClickElement.ariaExpanded = 'true';
+        ClickElement.setAttribute('aria-activedescendant', Element.querySelector('li[aria-selected=true]')?.id || "");
 
         var ClickHandler = (evt: Event) => {
             var Target = evt.target as HTMLElement;
