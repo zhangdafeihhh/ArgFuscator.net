@@ -13,7 +13,7 @@
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="{{site.baseurl}}/assets/css/style.css">
-    <link rel="icon" type="image/x-icon" href="{{site.baseurl}}/assets/img/favicon.ico">
+    <link rel="icon" href="{{site.baseurl}}/assets/img/logo.svg">
 </head>
 
 <body>
@@ -21,18 +21,18 @@
     <script src="{{site.baseurl}}/assets/js/main.js"></script>
 
     <menu class="context-menu">
-        <li data-type="disabled">Ignore</li>
-        <li data-type="command">Program Name</li>
-        <li data-type="argument">Regular Argument</li>
-        <li data-type="path">File Path</li>
-        <li data-type="url">URL</li>
-        <li data-type="value">Value</li>
+        <li role="option" data-type="disabled">Ignore</li>
+        <li role="option" data-type="command">Program Name</li>
+        <li role="option" data-type="argument">Regular Argument</li>
+        <li role="option" data-type="path">File Path</li>
+        <li role="option" data-type="url">URL</li>
+        <li role="option" data-type="value">Value</li>
     </menu>
     <div class="container">
         <header>
             <div class="top">
                 <div class="logo">
-                    <img src="{{site.baseurl}}/assets/img/logo.svg" class="site-logo" alt="Logo" />
+                    <a href="{{site.baseurl}}/"><img src="{{site.baseurl}}/assets/img/logo.svg" class="site-logo" alt="Logo" /></a>
                     <h1><a href="{{site.baseurl}}/">{{site.title}}</a></h1>
                 </div>
                 <div class="links">
@@ -45,10 +45,10 @@
 
 
             <div class="tools">
-                <textarea id="input-command" placeholder="Please paste the command you want to obfuscate here…"></textarea>
+                <textarea id="input-command" placeholder="Please paste the command you want to obfuscate here…" tabindex="0"></textarea>
                 <div class="command-bar">
                     <div id="tokens"></div>
-                    <a class="button button-primary" id="obfuscation-run"><strong>Apply obfuscation</strong></a>
+                    <a class="button button-primary" id="obfuscation-run" tabindex="1"><strong>Apply obfuscation</strong></a>
                 </div>
                 <div id="error-messages"></div>
             </div>
@@ -65,18 +65,18 @@
             <div class="collapsed">
                 <div id="options-panel">
                     <div class="picker">
-                        <menu class="context-menu" id="menu-templates">
-                            <li data-function="none">(none)</li>
-                            <li data-function="upload">⇡ Upload file…</li>
+                        <menu class="context-menu" id="menu-templates" aria-labelledby="button-template" tabindex="-1" role="listbox">
+                            <li role="option" data-function="none">(none)</li>
+                            <li role="option" data-function="upload">⇡ Upload file…</li>
                             {% for entry in site.entries %}
-                            <li data-target="{{entry.url|replace:'entries/','assets/models/'|replace:'.html', '.json'|relative_url}}"{% if entry.alias %} data-alias="{{entry.alias}}"{%endif%}>{{entry.slug | append:'.exe'}}</li>
-                            {%- endfor%}
+                            <li role="option" id="format_{{entry.slug}}" data-target="{{entry.url|replace:'entries/','assets/models/'|replace:'.html', '.json'|relative_url}}"{% if entry.alias %} data-alias="{{entry.alias}}"{%endif%}>{{entry.slug | append:'.exe'}}</li>
+                            {%- endfor %}
                         </menu>
                         <label for="JsonFile"><input type="file" id="JsonFile" accept=".json" /></label>
                         <div class="button-selection">
-                            <a class="button" id="button-template"><strong>Selected template</strong>: <span id="template-selected">(none)</span></a>
-                            <a class="button" id="download-config" download="config-export.json"><strong>Download config</strong></a>
-                            <a class="button" id="reset-form"><strong>Reset</strong></a>
+                            <a class="button" id="button-template" aria-haspopup="listbox" aria-expanded="false" role="combobox" tabindex="2" aria-controls="menu-templates"><strong>Selected template</strong>: <span id="template-selected">(none)</span></a>
+                            <a class="button" id="download-config" download="config-export.json" tabindex="3"><strong>Download config</strong></a>
+                            <a class="button" id="reset-form" tabindex="4"><strong>Reset</strong></a>
                         </div>
                     </div>
                 </div>

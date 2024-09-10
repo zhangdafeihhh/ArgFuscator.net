@@ -59,7 +59,8 @@ html {
 body {
     background-color: white;
     margin: 0;
-    margin-bottom: calc(20px + 2.5em);
+    margin-bottom: 2px;
+    /* margin-bottom: calc(20px + 2.5em); */
     padding: 0 3px;
 }
 
@@ -127,7 +128,8 @@ header .top {
         line-height: 1em;
 
         img.site-logo {
-            height: calc(min(max(1.5vh, 1em), 1.5em) * 3);
+            height: calc(min(max(1.5vh, 0.8em), 1.5em) * 3);
+            filter: drop-shadow( 3px 3px 2px rgba(68, 68, 68, 0.26));
         }
     }
 
@@ -292,6 +294,7 @@ div.suboptions>div.flex-row label {
 }
 
 a.explain {
+    color: inherit;
     border-bottom: 1px dotted black;
 }
 
@@ -442,6 +445,10 @@ section {
     h2 {
         margin-top: 0;
     }
+}
+
+section:last-of-type {
+    margin-bottom: 0;
 }
 
 
