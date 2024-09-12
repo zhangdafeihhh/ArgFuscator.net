@@ -3,7 +3,7 @@
 @Modifier.AddArgument("SubstituteSlashes", "checkbox", "Transform Slashes", "")
 @Modifier.AddArgument("IpToHex", "checkbox", "Alternate IP Form", "")
 @Modifier.AddArgument("PathTraversal", "checkbox", "URL Path traversal", "")
-@Modifier.Register("URL Transformer", "Change the format in which URLs are represented.", ['command', 'argument', 'path', 'value'])
+@Modifier.Register("URL Transformer", "Change the format in which URLs are represented.", ['url'])
 class UrlTransformer extends Modifier {
     private LeaveOutProtocol: boolean;
     private LeaveOutDoubleSlashes: boolean;
@@ -55,12 +55,12 @@ class UrlTransformer extends Modifier {
                     NewTokenContent = NewTokenContent.replace(/\:\/\//, ":/");
 
                 // Substitute Slashes
-                if(this.SubstituteSlashes){
+                if (this.SubstituteSlashes) {
                     let match;
                     let regex = /\/+/g;
                     while ((match = regex.exec(NewTokenContent)) !== null) {
-                        if(Modifier.CoinFlip(this.Probability))
-                            NewTokenContent = NewTokenContent.substring(0,match.index) + ('\\'.repeat(match[0].length)) + NewTokenContent.substring(match.index+match[0].length,NewTokenContent.length)
+                        if (Modifier.CoinFlip(this.Probability))
+                            NewTokenContent = NewTokenContent.substring(0, match.index) + ('\\'.repeat(match[0].length)) + NewTokenContent.substring(match.index + match[0].length, NewTokenContent.length)
                     }
                 }
                 // tmp_tokencontent.forEach((Char, index) => {
@@ -83,7 +83,7 @@ class UrlTransformer extends Modifier {
                         else
                             NewTokenContent = NewTokenContent.replace(IpAddress[0], "0x" + Decimal.toString(16));
                     } else
-                        logUserError("ipv4-address", "No valid IPv4 IP address could be found ("+NewTokenContent+").");
+                        logUserError("ipv4-address", "No valid IPv4 IP address could be found (" + NewTokenContent + ").");
                 }
 
                 Token.SetContent(NewTokenContent.split(""));

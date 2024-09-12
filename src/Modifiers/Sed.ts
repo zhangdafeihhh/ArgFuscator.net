@@ -1,5 +1,5 @@
 @Modifier.AddArgument("SedStatements", "textarea", "Sed statements", "Sed replacement statements, one per line, e.g.:\ns/xx/yy/ to replace xx with yy\ns/xx/yy/i to replace xx with yy, case insensitively\ns/xx/yy|zz/ to replace xx with either yy or zz (at random)")
-@Modifier.Register("Sed replacements", "Apply a sed-style replace operation (on token-level).", ['command', 'path','url'])
+@Modifier.Register("Sed replacements", "Apply a sed-style replace operation (on token-level).", ['argument', 'value'])
 class Sed extends Modifier {
     private readonly SedStatements: SedStatement[];
 

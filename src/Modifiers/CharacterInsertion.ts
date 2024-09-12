@@ -1,6 +1,6 @@
 @Modifier.AddArgument("Characters", "text-a", "Accepted Characters", "Paste all characters, without separators, here")
 @Modifier.AddArgument("Offset", "number", "Offset", "The positions up to this index (zero-based, exclusive) will not be used for character insertion. Default: 0")
-@Modifier.Register("Character Insertion", "Add arbitrary characters to command-line arguments.", ['command', 'path', 'url'])
+@Modifier.Register("Character Insertion", "Add arbitrary characters to command-line arguments.", ['argument'])
 class CharacterInsertion extends Modifier {
     private CharacterInsertRange: Char[];
     private Offset: number;
@@ -23,7 +23,7 @@ class CharacterInsertion extends Modifier {
         var This = this;
         this.InputCommandTokens.forEach(function (Token: Token) {
             var NewTokenContent: Char[] = Token.GetContent().slice(0, This.Offset);
-            var lastChar = Modifier.CommonOptionChars.some(y =>  Token.GetContent()[0] == y) && Modifier.ValueChars.some(y => Token.GetContent().reverse()[0] == y) ? Token.GetContent().length - 1 : undefined;
+            var lastChar = Modifier.CommonOptionChars.some(y => Token.GetContent()[0] == y) && Modifier.ValueChars.some(y => Token.GetContent().reverse()[0] == y) ? Token.GetContent().length - 1 : undefined;
 
             Token.GetContent().slice(This.Offset, lastChar).forEach(char => {
                 // Add current char to result string
@@ -39,7 +39,7 @@ class CharacterInsertion extends Modifier {
                     } while (Modifier.CoinFlip(This.Probability * (0.9 ** i)));
             });
 
-            if(lastChar !== undefined)
+            if (lastChar !== undefined)
                 NewTokenContent.push(...Token.GetContent().slice(lastChar))
 
             Token.SetContent(NewTokenContent);

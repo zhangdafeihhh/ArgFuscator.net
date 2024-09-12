@@ -1,7 +1,7 @@
 @Modifier.AddArgument("PathTraversal", "checkbox", "Path traversal", "")
 @Modifier.AddArgument("SubstituteSlashes", "checkbox", "Transform slashes", "")
 @Modifier.AddArgument("ExtraSlashes", "checkbox", "Extra slashes", "")
-@Modifier.Register("File Path Transformer", "Change the format in which file paths are represented.", ['command', 'argument', 'url', 'value'])
+@Modifier.Register("File Path Transformer", "Change the format in which file paths are represented.", ['path'])
 class FilePathTransformer extends Modifier {
 
     private PathTraversal: boolean;
@@ -39,7 +39,7 @@ class FilePathTransformer extends Modifier {
                 }
 
                 // Substitute Slashes
-                if (This.SubstituteSlashes){
+                if (This.SubstituteSlashes) {
                     NewTokenContent = NewTokenContent.replace(/(?<!:)(?:[/]+|[\\]+)/g, function (a, i) {
                         // index must be greater than 0 (to avoid transforming the first two backslashes on e.g. "\\share\file\path.txt")
                         if (Modifier.CoinFlip(This.Probability) && i > 0) return (a.startsWith("\\") ? "/" : "\\").repeat(a.length)

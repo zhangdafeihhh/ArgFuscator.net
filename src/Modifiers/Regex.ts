@@ -1,7 +1,7 @@
 @Modifier.AddArgument("RegexMatch", "text-s", "Regex Match", "The regex string to find")
 @Modifier.AddArgument("RegexReplace", "text-s", "Regex Replace", "The replacement string")
 @Modifier.AddArgument("CaseSensitive", "checkbox", "Case sensitive", "")
-@Modifier.Register("Regex", "Apply a regex-replace operation (on token-level).", ['command'])
+@Modifier.Register("Regex", "Apply a regex-replace operation (on token-level).", ['argument', 'value', 'path', 'url'])
 class Regex extends Modifier {
     private readonly RegexMatch: RegExp;
     private readonly RegexReplace: string;
@@ -35,7 +35,7 @@ class Regex extends Modifier {
                     return match.substring(start, end)
                 })
 
-                RexReplace = RexReplace.replace(/\$RANDOM/g, Modifier.RandomString(Modifier.ChooseRandom(Array.from(Array(20).keys()))+1));
+                RexReplace = RexReplace.replace(/\$RANDOM/g, Modifier.RandomString(Modifier.ChooseRandom(Array.from(Array(20).keys())) + 1));
                 NewTokenContent = NewTokenContent.replace(this.RegexMatch, RexReplace)
             }
             Token.SetContent(NewTokenContent.split(""))

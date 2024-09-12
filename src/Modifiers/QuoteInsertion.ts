@@ -1,4 +1,4 @@
-@Modifier.Register("Quote Insertion", "Add pairs of quotes to command-line arguments.", ['command'])
+@Modifier.Register("Quote Insertion", "Add pairs of quotes to command-line arguments.", ['argument', 'path', 'url', 'value'])
 class QuoteInsertion extends Modifier {
     private static QuoteCharacter: Char = new String("\"") as Char;
     private static AcceptableSuccessionChars: RegExp = /^[a-z0-9\-\/]$/i;
