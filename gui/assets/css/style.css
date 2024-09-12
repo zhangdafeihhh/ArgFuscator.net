@@ -702,6 +702,11 @@ footer {
         }
     }
 
+    fieldset > legend {
+        background-color: var(--theme-colour);
+        color: white;
+    }
+
     .context-menu>li:hover {
         background-color: #555;
     }

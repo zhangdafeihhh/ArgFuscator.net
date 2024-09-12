@@ -17,7 +17,9 @@ function ShowContextMenu(Element: HTMLElement, ClickElement: HTMLElement) {
 
         var ClickHandler = (evt: Event) => {
             var Target = evt.target as HTMLElement;
-            window.removeEventListener('mousedown', ClickHandler);
+            if (!Element.contains(Target))
+                window.removeEventListener('mousedown', ClickHandler);
+
             if (!Element.contains(Target) && Target != ClickElement && !ClickElement.contains(Target))
                 ClickElement.dispatchEvent(new Event("click"));
         }

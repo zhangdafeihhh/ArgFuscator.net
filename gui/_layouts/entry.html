@@ -29,26 +29,25 @@
                 <div class="links">
                     <a href="{{site.baseurl}}/about.html">What is this?</a>
                     <a href="https://www.github.com/wietze/Invoke-ArgFuscator" target="_blank">Offline version</a>
-                    <a href="https://www.github.com/wietze/ArgFuscator" target="_blank">GitHub</a>
+                    <a href="https://www.github.com/{{site.repo}}" target="_blank">GitHub</a>
                     <a href="https://www.twitter.com/wietze" target="_blank" class="emphasis">@Wietze</a>
                 </div>
             </div>
         </header>
     </div>
 
-    {% assign program=page.command[0]['command'] | split:'\' | slice:-1 %}
+    {% capture program %}{{page.command[0]['command'] | split:'\' | slice:-1}}{% endcapture %}
     <section>
         <h1>{{program}}</h1>
         According to our data, <code>{{program}}</code> command lines can be obfuscated with the following techniques:
         <ul>
-
-            {% for item in site.mapping %}
-            {%assign x = item[0] %}
-            {% assign details = page.modifiers[x] %}
-            {% if details %}
+            {% for item in site.mapping -%}
+            {%- assign x = item[0] -%}
+            {%- assign details = page.modifiers[x] -%}
+            {%- if details -%}
             <li><strong>{{ item[1].name }}</strong>: {{item[1].description}}</li>
-            {% endif %}
-            {%endfor%}
+            {% endif -%}
+            {%- endfor -%}
             <!-- {%-for modifier in page.modifiers%}{% assign trans=modifier[0]%}        {% assign details = site.mapping[trans] %}
         <li><strong>{{ details.name }}</strong>: {{details.description}}</li>
         {%- endfor%} -->
@@ -68,7 +67,7 @@
         </menu>
         <div>
             <div class="tools">
-                <textarea id="input-command" data-target="{{page.url|replace:'entries/','assets/models/'|replace:'.html', '.json'|relative_url}}" data-program="{{program}}" placeholder="Paste a valid {{program}} command here..."></textarea>
+                <textarea id="input-command" data-target="{{page.url|replace:'entries/','assets/models/'|replace:'.html', '.json'|relative_url}}" data-program="{{program}}" placeholder="Paste a valid {{program}} command here..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
                 <div class="command-bar">
                     <div id="tokens"></div>
                     <div><a class="button button-primary button-toggle" data-target="obfuscation-options"><strong>Show options</strong></a> <a class="button button-inverted" id="obfuscation-run"><strong>Apply obfuscation</strong></a></div>
@@ -99,7 +98,7 @@
     </section>
     <section>
         <h2>Related</h2>
-        <div id="related-links" class="button-selection"><a href="/" class="button">More obfuscation techniques</a></div>
+        <div id="related-links" class="button-selection"><a href="https://ss64.com/nt/{{program | replace:".exe", ""}}.html" class="button" target="_blank">Documentation for {{program}}</a><a href="/" class="button">More obfuscation techniques</a></div>
     </section>
     <section>
         <h2>FAQs</h2>

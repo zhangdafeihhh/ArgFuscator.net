@@ -12,14 +12,12 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="{{site.baseurl}}/assets/css/style.css">
     <link rel="icon" href="{{site.baseurl}}/assets/img/logo.svg">
+    <link rel="stylesheet" type="text/css" href="{{site.baseurl}}/assets/css/style.css">
 </head>
 
 <body>
-
     <script src="{{site.baseurl}}/assets/js/main.js"></script>
-
     <menu class="context-menu">
         <li role="option" data-type="disabled">Ignore</li>
         <li role="option" data-type="command">Program Name</li>
@@ -43,9 +41,8 @@
                 </div>
             </div>
 
-
             <div class="tools">
-                <textarea id="input-command" placeholder="Please paste the command you want to obfuscate here…" tabindex="0"></textarea>
+                <textarea id="input-command" placeholder="Please paste the command you want to obfuscate here…" tabindex="0" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
                 <div class="command-bar">
                     <div id="tokens"></div>
                     <a class="button button-primary" id="obfuscation-run" tabindex="1"><strong>Apply obfuscation</strong></a>
@@ -53,7 +50,6 @@
                 <div id="error-messages"></div>
             </div>
         </header>
-
 
         <fieldset>
             <legend>Output</legend>
@@ -83,15 +79,6 @@
                 <div id="options-panel-options"></div>
             </div>
         </fieldset>
-
     </div>
-
-    <!-- <footer>
-        <div id="obfuscation-bar">
-            <div class="fill"></div>
-            <span>Contribute to this project on <a href="">GitHub</a></span>
-        </div>
-    </footer> -->
 </body>
-
 </html>

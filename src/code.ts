@@ -161,8 +161,8 @@ function ResetForm() {
     document.getElementById("menu-templates")?.children[0].dispatchEvent(new Event("click"));
 }
 
-function addEnterListener(target: HTMLElement){
-    if(!target) return;
+function addEnterListener(target: HTMLElement) {
+    if (!target) return;
 
     target.addEventListener("keyup", (event) => {
         event.preventDefault(); if (event.key === 'Enter') (event.target as HTMLElement).click();
@@ -192,7 +192,13 @@ function OnLoad() {
 
     document.getElementById("button-template")?.addEventListener("click", _ => ShowContextMenu(document.getElementById('menu-templates'), document.getElementById('button-template')))
     addEnterListener(document.getElementById("button-template"));
-
+    document.getElementById("button-template")?.addEventListener('keyup', (e: KeyboardEvent) => {
+        if (e.key >= 'a' && e.key <= 'z') {
+            let finds = [...Array.from(document.getElementById('menu-templates')?.querySelectorAll('li'))].filter(i => i.innerText.toLowerCase().startsWith(e.key))[0]
+            if (finds !== undefined)
+                finds.scrollIntoView()
+        }
+    });;
 
     document.getElementById('menu-templates')?.childNodes.forEach((ContextMenuItem: HTMLLIElement) => {
         ContextMenuItem.addEventListener("click", e => {
@@ -211,14 +217,12 @@ function OnLoad() {
                         } else
                             document.getElementById("template-selected").innerText = "(none)";
 
-                        document.getElementById("menu-templates").style.display = 'none';
-
+                        document.dispatchEvent(new MouseEvent("mousedown", { clientX: 1, clientY: 1, bubbles: true }));
                     }
                 })
             );
         });
     });
-
 
     document.querySelectorAll<HTMLFieldSetElement>("fieldset.collapsible").forEach((x) => {
         let legend = x.querySelector("legend");
@@ -227,11 +231,11 @@ function OnLoad() {
         span.innerText = content.classList.contains("collapsed") ? "▶" : "▼";
         legend.prepend(span);
         legend.addEventListener("click", () => {
-            if (content.classList.contains("collapsed")) {
+            if (content.classList.contains("collapsed"))
                 content.classList.remove("collapsed");
-            } else {
+            else
                 content.classList.add("collapsed");
-            }
+
             span.innerText = content.classList.contains("collapsed") ? "▶" : "▼";
         });
 
@@ -250,14 +254,14 @@ function OnLoad() {
     });
     document.querySelectorAll<HTMLInputElement>(".option-target").forEach((ContextMenuButton: HTMLDivElement) => {
         // Create new Context Menu
-        var ContextMenu = document.getElementsByClassName("context-menu")[0].cloneNode(true) as HTMLMenuElement;
+        let ContextMenu = document.getElementsByClassName("context-menu")[0].cloneNode(true) as HTMLMenuElement;
         ContextMenu.removeChild(ContextMenu.children[0]);
         ContextMenuButton.parentNode.insertBefore(ContextMenu, ContextMenuButton.nextSibling);
 
         Array.from(ContextMenu.children).forEach((ContextMenuItem: HTMLElement) => {
             ContextMenuItem.addEventListener("click", e => {
                 ContextMenuItem.dataset.active = (ContextMenuItem.dataset.active == "true" ? "" : "true");
-                var IncludedTypes = JSON.parse(ContextMenuButton.dataset.included_types) as string[];
+                let IncludedTypes = JSON.parse(ContextMenuButton.dataset.included_types) as string[];
                 if (ContextMenuItem.dataset.active == "true")
                     IncludedTypes.push(ContextMenuItem.dataset.type);
                 else
