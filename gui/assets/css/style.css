@@ -593,7 +593,7 @@ footer {
     background: grey;
 }
 
-#JsonFile {
+#json-file {
     display: none;
 }
 
@@ -660,6 +660,12 @@ footer {
     min-width: fit-content;
 }
 
+.command-bar #feeling-lucky a {
+    color: #ededed;
+    text-decoration: underline dotted;
+    cursor: pointer;
+}
+
 @media (prefers-color-scheme: dark) {
     :root {
         --theme-colour: #2872D2;
@@ -702,7 +708,7 @@ footer {
         }
     }
 
-    fieldset > legend {
+    fieldset>legend {
         background-color: var(--theme-colour);
         color: white;
     }

@@ -23,6 +23,9 @@ function UpdateTokens(): void {
     OutputTokenHTML = document.querySelector('div#output-command');
     LastTokenised = Modifier.CommandTokenise(GetInputCommand(), document.getElementById("menu-templates") as HTMLMenuElement);
 
+    if(document.getElementById("feeling-lucky"))
+        document.getElementById("feeling-lucky").style.display = LastTokenised?.length > 0 ? 'none' : 'block';
+
     UpdateUITokens(LastTokenised);
 }
 
@@ -174,15 +177,29 @@ function OnLoad() {
     UpdateTokens();
     GenerateObfuscationOptionsHTML();
     document.getElementById("format-picker")?.addEventListener("change", FetchJsonFile);
-    document.getElementById("JsonFile")?.addEventListener("change", ReadJsonFile);
+    document.getElementById("json-file")?.addEventListener("change", ReadJsonFile);
     document.getElementById("input-command")?.addEventListener("keyup", debounce(UpdateTokens, 1000));
-    document.getElementById("input-command")?.addEventListener("paste", (e) => { setTimeout(UpdateTokens, 0) });
+    document.getElementById("input-command")?.addEventListener("paste", () => setTimeout(UpdateTokens, 0));
     document.getElementById("obfuscation-run")?.addEventListener("click", () => ApplyObfuscation());
     addEnterListener(document.getElementById("obfuscation-run"));
     document.getElementById("download-config")?.addEventListener("click", GenerateConfigJsonFile);
     addEnterListener(document.getElementById("download-config"));
     document.getElementById("reset-form")?.addEventListener("click", ResetForm);
     addEnterListener(document.getElementById("reset-form"));
+
+    document.getElementById("feeling-lucky")?.addEventListener("click", (x) => {
+        let jsons = Array.from(document.getElementById('menu-templates').querySelectorAll<HTMLLIElement>("li[data-target]")).map(x => x.dataset?.target);
+        let json = jsons[Math.floor(Math.random() * jsons.length)];
+        fetch(json, { headers: { "Content-Type": "application/json; charset=utf-8" } })
+            .then(res => res.text())
+            .then(response => {
+                ApplyTemplate(JSON.parse(response as string), true);
+                document.getElementById("feeling-lucky").style.display = 'none';
+            })
+            .catch(err => {
+                throw err;
+            });
+    });
 
     if (document.getElementById("input-command").dataset.target !== undefined) {
         FetchJsonFileContents(document.getElementById("input-command").dataset.target, null).then(newModifiers => {

@@ -2,7 +2,7 @@ function FetchJsonFile(this: HTMLSelectElement): void {
     if (this.selectedIndex == 0)
         return
     else if (this.selectedIndex == 1) {
-        document.getElementById("JsonFile").click()
+        document.getElementById("json-file").click()
     }
     else {
         let name = this.value.replace('.exe', '.json');
@@ -64,7 +64,7 @@ async function FetchJsonFile2(elem: HTMLLIElement): Promise<object | null> {
     if (LoadedConfigModifiers.has(elem.dataset.target))
         return new Promise(function(resolve){ resolve(LoadedConfigModifiers.get(elem.dataset.target)); });
     if (elem.dataset['function'] == 'upload') {
-        document.getElementById("JsonFile").click()
+        document.getElementById("json-file").click()
         return new Promise(function(resolve){ resolve(null); });;
     }
     else {

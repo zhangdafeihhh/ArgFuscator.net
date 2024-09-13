@@ -44,6 +44,7 @@
             <div class="tools">
                 <textarea id="input-command" placeholder="Please paste the command you want to obfuscate here…" tabindex="0" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
                 <div class="command-bar">
+                    <div id="feeling-lucky"><a>Click here to try a random command</a></div>
                     <div id="tokens"></div>
                     <a class="button button-primary" id="obfuscation-run" tabindex="1"><strong>Apply obfuscation</strong></a>
                 </div>
@@ -68,7 +69,7 @@
                             <li role="option" id="format_{{entry.slug}}" data-target="{{entry.url|replace:'entries/','assets/models/'|replace:'.html', '.json'|relative_url}}"{% if entry.alias %} data-alias="{{entry.alias}}"{%endif%}>{{entry.slug | append:'.exe'}}</li>
                             {%- endfor %}
                         </menu>
-                        <label for="JsonFile"><input type="file" id="JsonFile" accept=".json" /></label>
+                        <label for="json-file"><input type="file" id="json-file" accept=".json" /></label>
                         <div class="button-selection">
                             <a class="button" id="button-template" aria-haspopup="listbox" aria-expanded="false" role="combobox" tabindex="2" aria-controls="menu-templates"><strong>Selected template</strong>: <span id="template-selected">(none)</span></a>
                             <a class="button" id="download-config" download="config-export.json" tabindex="3"><strong>Download config</strong></a>
