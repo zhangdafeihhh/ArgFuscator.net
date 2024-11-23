@@ -1,1 +1,1 @@
-{"modifiers": {"QuoteInsertion": {"Probability": "0.5", "AppliesTo": ["path", "argument", "value"]}}}
+{"command":[{"command":"wmic.exe"},{"value":"process"},{"value":"call"},{"value":"create"},{"path":"\"c:\\windows\\system32\\calc.exe\""}],"modifiers":{"QuoteInsertion":{"AppliesTo":["path","argument","value"],"Probability":"0.5"}}}
