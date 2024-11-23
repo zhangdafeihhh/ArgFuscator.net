@@ -93,22 +93,21 @@ abstract class Modifier {
         // Find matching template, if available
         Tokens[0].SetType("command");
 
-        if(document.getElementById("input-command")?.dataset.program !== undefined){
+        if (document.getElementById("input-command")?.dataset.program !== undefined) {
             let expectedProgram = document.getElementById("input-command")?.dataset.program?.split(".")[0];
-            if(!Tokens[0].GetStringContent().toLowerCase().includes(expectedProgram.toLowerCase())){
+            if (!Tokens[0].GetStringContent().toLowerCase().includes(expectedProgram.toLowerCase())) {
                 logUserError("unexpected-program", `Are you sure you pasted a valid <code>${expectedProgram}</code> command? To obfuscate the command-line arguments of other executables, click <a href="/">here</a>.`)
             }
         }
         //if (FormatPicker && FormatPicker.children[1].dataset['active'] != 'true')
-        if(FormatPicker != null)
-        {
+        if (FormatPicker != null) {
             let i = 0;
             let found = false;
             let token = Tokens[0].GetStringContent();
 
-            if(token.includes('\\')){
+            if (token.includes('\\')) {
                 let parts = token.split('\\');
-                token = parts[parts.length-1];
+                token = parts[parts.length - 1];
             }
 
             if (token.toLowerCase() == 'cmd.exe' || token.toLowerCase() == 'cmd') {
@@ -182,6 +181,27 @@ abstract class Modifier {
     }
 
     abstract GenerateOutput(): void;
+
+    public TestRun(InputCommand: string): string {
+        let token = new Token(Array.from(InputCommand));
+        //let output = document.createElement("span")
+        //token.SetElements(null, output)
+        token.SetType("dummy");
+
+        this.IncludedTypes = ["dummy"]
+        this.InputCommandTokens = [token]
+        this.Probability = 0.05;
+        while (true) {
+            this.Probability *= 2;
+            this.GenerateOutput();
+            if (token.GetStringContent() != InputCommand)
+                return token.GetStringContent()
+            else if (this.Probability > 1) {
+                //console.warn(`Exhausted ${InputCommand}`)
+                return null;
+            }
+        }
+    }
 
     private static Implementations: Record<string, ModifierDefinition> = {};
 

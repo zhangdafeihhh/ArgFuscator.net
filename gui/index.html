@@ -1,56 +1,26 @@
 ---
-
----
-<!DOCTYPE html>
-<!--
-    @Wietze, (c) 2022-2024
-    Licensed under GPLv3
--->
-
-<head>
-    <title>{{site.title}}</title>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="{{site.baseurl}}/assets/img/logo.svg">
-    <link rel="stylesheet" type="text/css" href="{{site.baseurl}}/assets/css/style.css">
-</head>
-
-<body>
-    <script src="{{site.baseurl}}/assets/js/main.js"></script>
-    <menu class="context-menu">
-        <li role="option" data-type="disabled">Ignore</li>
-        <li role="option" data-type="command">Program Name</li>
-        <li role="option" data-type="argument">Regular Argument</li>
-        <li role="option" data-type="path">File Path</li>
-        <li role="option" data-type="url">URL</li>
-        <li role="option" data-type="value">Value</li>
-    </menu>
-    <div class="container">
-        <header>
-            <div class="top">
-                <div class="logo">
-                    <a href="{{site.baseurl}}/"><img src="{{site.baseurl}}/assets/img/logo.svg" class="site-logo" alt="Logo" /></a>
-                    <h1><a href="{{site.baseurl}}/">{{site.title}}</a></h1>
-                </div>
-                <div class="links">
-                    <a href="{{site.baseurl}}/about.html">What is this?</a>
-                    <a href="https://www.github.com/wietze/Invoke-ArgFuscator" target="_blank">Offline version</a>
-                    <a href="https://www.github.com/wietze/{{site.title}}" target="_blank">GitHub</a>
-                    <a href="https://www.twitter.com/wietze" target="_blank" class="emphasis">@Wietze</a>
-                </div>
-            </div>
-
+layout: general
+description: Generate obfuscated command-line arguments for common system-native executables now with __SITE__.
+header: |
             <div class="tools">
-                <textarea id="input-command" placeholder="Please paste the command you want to obfuscate here…" tabindex="0" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
-                <div class="command-bar">
-                    <div id="feeling-lucky"><a>Click here to try a random command</a></div>
-                    <div id="tokens"></div>
-                    <a class="button button-primary" id="obfuscation-run" tabindex="1"><strong>Apply obfuscation</strong></a>
-                </div>
-                <div id="error-messages"></div>
-            </div>
-        </header>
+                            <textarea id="input-command" placeholder="Please paste the command you want to obfuscate here…" tabindex="0" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+                            <div class="command-bar">
+                                <div id="feeling-lucky"><a>Click here to try a random command</a></div>
+                                <div id="tokens"></div>
+                                <a class="button button-primary" id="obfuscation-run" tabindex="1"><strong>Apply obfuscation</strong></a>
+                            </div>
+                            <div id="error-messages"></div>
+                        </div>
+---
+
+        <menu class="context-menu">
+            <li role="option" data-type="disabled">Ignore</li>
+            <li role="option" data-type="command">Program Name</li>
+            <li role="option" data-type="argument">Regular Argument</li>
+            <li role="option" data-type="path">File Path</li>
+            <li role="option" data-type="url">URL</li>
+            <li role="option" data-type="value">Value</li>
+        </menu>
 
         <fieldset>
             <legend>Output</legend>
@@ -80,6 +50,3 @@
                 <div id="options-panel-options"></div>
             </div>
         </fieldset>
-    </div>
-</body>
-</html>

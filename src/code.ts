@@ -23,7 +23,7 @@ function UpdateTokens(): void {
     OutputTokenHTML = document.querySelector('div#output-command');
     LastTokenised = Modifier.CommandTokenise(GetInputCommand(), document.getElementById("menu-templates") as HTMLMenuElement);
 
-    if(document.getElementById("feeling-lucky"))
+    if (document.getElementById("feeling-lucky"))
         document.getElementById("feeling-lucky").style.display = LastTokenised?.length > 0 ? 'none' : 'block';
 
     UpdateUITokens(LastTokenised);
@@ -174,6 +174,7 @@ function addEnterListener(target: HTMLElement) {
 
 function OnLoad() {
     window.removeEventListener("DOMContentLoaded", OnLoad, false);
+    if (!document.querySelector("div#tokens")) return;
     UpdateTokens();
     GenerateObfuscationOptionsHTML();
     document.getElementById("format-picker")?.addEventListener("change", FetchJsonFile);
@@ -204,6 +205,29 @@ function OnLoad() {
     if (document.getElementById("input-command").dataset.target !== undefined) {
         FetchJsonFileContents(document.getElementById("input-command").dataset.target, null).then(newModifiers => {
             ApplyTemplate({ modifiers: newModifiers } as FileFormat, false);
+            document.querySelectorAll<HTMLSpanElement>("code[data-process]").forEach(x => {
+                // Create modifier
+                const ID = document.querySelector(`input[data-function="${x.dataset.process}"]`).id;
+
+
+                let ClassInstance: Modifier = Object.create((window as any)[x.dataset.process].prototype);
+                let ClassInstanceArguments: any[] = [null, null];
+                let SelectedOptionArguments = document.querySelectorAll("input[id^=\"" + ID + "_arg\"], textarea[id^=\"" + ID + "_arg\"]") as NodeListOf<HTMLInputElement | HTMLTextAreaElement>;
+                SelectedOptionArguments.forEach(OptionElement => {
+                    ClassInstanceArguments.push((OptionElement instanceof HTMLInputElement && OptionElement.type == 'checkbox') ? OptionElement.checked : OptionElement.value);
+                });
+
+                // Create modifier instance
+                let y = ClassInstance.constructor.apply(ClassInstance, ClassInstanceArguments);
+                // Obtain obfuscated version
+                let obfuscated = y.TestRun(x.innerText);
+
+                // Show in UI
+                if (obfuscated) {
+                    x.innerText = obfuscated;
+                    x.parentElement.classList.remove("collapsed");
+                }
+            });
         });
     }
 
@@ -418,5 +442,6 @@ function logUserError(id: string, message: string, error: boolean = false) {
 }
 
 function removeUserErrors(): void {
-    document.getElementById("error-messages").innerHTML = "";
+    if (document.getElementById("error-messages"))
+        document.getElementById("error-messages").innerHTML = "";
 }

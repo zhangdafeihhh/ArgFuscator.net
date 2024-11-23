@@ -17,11 +17,11 @@ class Token {
         Array.from(document.querySelector('menu').children).forEach((x: HTMLLIElement) => this.TokenTypes[x.dataset.type] = x.innerText);
     }
 
-    public SetElements(ConfigElement: HTMLElement, OutputElement: HTMLElement) {
+    public SetElements(ConfigElement: HTMLElement | null, OutputElement: HTMLElement) {
         // Set elements accordingly
         this.ConfigElement = ConfigElement;
         this.OutputElement = OutputElement;
-        this.ConfigElement.addEventListener("click", e => this.HandleClick(e));
+        this.ConfigElement?.addEventListener("click", e => this.HandleClick(e));
 
         // Create new Context Menu
         this.ContextMenu = document.getElementsByClassName("context-menu")[0].cloneNode(true) as HTMLMenuElement;
@@ -33,7 +33,7 @@ class Token {
         this.SetContent(this.TokenContent, false);
         this.SetType(this.Type);
 
-        this.ConfigElement.parentElement.appendChild(this.ContextMenu);
+        this.ConfigElement?.parentElement.appendChild(this.ContextMenu);
     }
 
     public GetContent(): Char[] {
@@ -46,8 +46,9 @@ class Token {
 
     public SetContent(Content: Char[], OutputOnly: boolean = true): void {
         this.TokenContent = Content;
-        this.OutputElement.textContent = this.TokenContent.join('');
-        if (!OutputOnly)
+        if (this.OutputElement)
+            this.OutputElement.textContent = this.TokenContent.join('');
+        if (!OutputOnly && this.ConfigElement)
             this.ConfigElement.textContent = this.OutputElement.textContent;
     }
 

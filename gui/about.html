@@ -1,64 +1,28 @@
 ---
-
+layout: general
+title: About
+description: Learn more about the background of __SITE__ and how it may help you.
 ---
-<!DOCTYPE html>
-<!--
-    @Wietze, (c) 2022-2024
-    licensed under GPLv3
--->
 
-<head>
-    <title>{{site.title}}</title>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self';">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="{{site.baseurl}}/assets/css/style.css">
-    <link rel="icon" href="{{site.baseurl}}/assets/img/logo.svg">
-</head>
+<h2>What is {{site.title}}?</h2>
+<p><strong>{{site.title}} is an open-source, stand-alone web application that helps generate obfuscated command lines for common system-native executables.</strong></p>
 
-<body>
-    <div class="container">
-        <header>
-            <div class="top">
-                <div class="logo">
-                    <a href="{{site.baseurl}}/"><img src="{{site.baseurl}}/assets/img/logo.svg" class="site-logo" alt="Logo" /></a>
-                    <h1><a href="{{site.baseurl}}/">{{site.title}}</a></h1>
-                </div>
-                <div class="links">
-                    <a href="{{site.baseurl}}/about.html">What is this?</a>
-                    <a href="https://www.github.com/wietze/Invoke-ArgFuscator" target="_blank">Offline version</a>
-                    <a href="https://www.github.com/{{site.repo}}" target="_blank">GitHub</a>
-                    <a href="https://www.twitter.com/wietze" target="_blank" class="emphasis">@Wietze</a>
-                </div>
-            </div>
-        </header>
-    </div>
+<p>Command-Line Obfuscation (<a href="https://attack.mitre.org/techniques/T1027/010/" target="_blank">T1027.010</a>) is the masquerading of a command's true intention through the manipulation of a process' command line. Across <a href="https://www.wietzebeukema.nl/blog/windows-command-line-obfuscation" target="_blank">Windows</a>, Linux and MacOS, many applications parse passed command-line arguments in unexpected ways, leading to situations in which insertion, deletion and/or subsitution of certain characters does not change the program's execution flow. Successful command-line obfuscation is likely to frustrate defensive measures such as AV and EDR software, in some cases completely bypassing detection altogether.</p>
 
-    <section>
-        <h2>What is {{site.title}}?</h2>
-        <p><strong>{{site.title}} is an open-source, stand-alone web application that helps generate obfuscated command-lines for common system-native executables.</strong></p>
+<p>Although previous research has highlighted the risks of command-line obfuscation, mostly with anecdotal examples of vulnerable (system-native) applications, there is an knowledge vacuum surrounding this technique. This project aims to overcome this by providing a centralised resource that documents and demonstrates various command-line obfuscation techniques, and records the subsceptability of popular applications for each.</p>
 
-            <p>Command-Line Obfuscation (<a href="https://attack.mitre.org/techniques/T1027/010/" target="_blank">T1027.010</a>) is the masquerading of a command's true intention through the manipulation of a process' command line. Across <a href="https://www.wietzebeukema.nl/blog/windows-command-line-obfuscation" target="_blank">Windows</a>, Linux and MacOS, many applications parse passed command-line arguments in unexpected ways, leading to situations in which insertion, deletion and/or subsitution of certain characters does not change the program's execution flow. Successful command-line obfuscation is likely to frustrate defensive measures such as AV and EDR software, in some cases completely bypassing detection altogether.</p>
+<h2>Goal</h2>
+<p>The primary goal of this project is to document known command-line obfuscation techniques against applications commonly used in cyber attacks, and using this knowledge to allow users to generate obfuscated command lines. For cyber security defenders, this provides a powerful tool to test one's own defence systems. Since detecting or otherwise accommodating for command-line obfuscation does not have to be difficult, having access to a this resource allows for effective, real-world validation of defense mechanisms in one's environment.</p>
 
-                <p>Although previous research has highlighted the risks of command-line obfuscation, mostly with anecdotal examples of vulnerable (system-native) applications, there is an knowledge vacuum surrounding this technique. This project aims to overcome this by providing a centralised resource that documents and demonstrates various command-line obfuscation techniques, and records the subsceptability of popular applications for each.</p>
+<h2>Coming about</h2>
+<p>First, through literature review and our own research, command-line obfuscation techniques were gathered, analysed and classified. The identified techniques form the basis for the subsequent analysis.</p>
 
-        <h2>Goal</h2>
-        <p>The primary goal of this project is to document known command-line obfuscation techniques against applications commonly used in cyber attacks, and using this knowledge to allow users to generate obfuscated command lines. For cyber security defenders, this provides a powerful tool to test one's own defence systems. Since detecting or otherwise accommodating for command-line obfuscation does not have to be difficult, having access to a this resource allows for effective, real-world validation of defense mechanisms in one's environment.</p>
+<p>Secondly, by assessing a wide variety of popular applications, both in <a href="https://github.com/wietze/windows-command-line-obfuscation" target="_blank">automated fashion</a> and through manual inspection, a mapping between the defined techinques and vulnerable applications was created. The results are captured in a machine-readable format (see <a href="https://github.com/{{site.repo}}/tree/main/models/" target="_blank"><code>./models</code></a>).</p>
 
-        <h2>Coming about</h2>
-        <p>First, through literature review and our own research, command-line obfuscation techniques were gathered, analysed and classified. The identified techniques form the basis for the subsequent analysis.</p>
+<p>Thirdly, a system was created that allows for the transformation of an arbitrary command line using a sequence of defined obfuscation technique in a provided configuration. To ensure ease of use, a TypeScript implementation was created (see <a href="https://github.com/{{site.repo}}/tree/main/src/" target="_blank"><code>./src</code></a>) that is supported by a user-friendly web interface (see <a href="https://github.com/{{site.repo}}/tree/main/gui/" target="_blank"><code>./gui</code></a>), which can interpret the aforementioned model files.</p>
 
-        <p>Secondly, by assessing a wide variety of popular applications, both in <a href="https://github.com/wietze/windows-command-line-obfuscation" target="_blank">automated fashion</a> and through manual inspection, a mapping between the defined techinques and vulnerable applications was created. The results are captured in a machine-readable format (see <a href="https://github.com/{{site.repo}}/tree/main/models/" target="_blank"><code>./models</code></a>).</p>
+<p>Finally, the models were tested against the created implementation in order to validate their correctness, which allows for the further tuning of the findings. The result is this project, encompassing the results of all stages.</p>
 
-        <p>Thirdly, a system was created that allows for the transformation of an arbitrary command line using a sequence of defined obfuscation technique in a provided configuration. To ensure ease of use, a TypeScript implementation was created (see <a href="https://github.com/{{site.repo}}/tree/main/src/" target="_blank"><code>./src</code></a>) that is supported by a user-friendly web interface (see <a href="https://github.com/{{site.repo}}/tree/main/gui/" target="_blank"><code>./gui</code></a>), which can interpret the aforementioned model files.</p>
-
-        <p>Finally, the models were tested against the created implementation in order to validate their correctness, which allows for the further tuning of the findings. The result is this project, encompassing the results of all stages.</p>
-    </section>
-
-    <section>
-        <h2>FAQs</h2>
-    </section>
-
-</body>
-
-</html>
+</section>
+<section>
+{% include faqs.html %}

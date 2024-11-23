@@ -1,0 +1,1 @@
+{{- include.page.command[0]['command'] | downcase | split:'\' | last | remove:'"' | remove:".exe" -}}{%if include.page.url contains '/windows/'  %}.exe{%endif%}

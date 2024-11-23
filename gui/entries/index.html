@@ -1,0 +1,18 @@
+---
+layout: general
+title: Entries
+---
+<h2>All supported entries ({{ site.entries | size }})</h2>
+
+<h3>Windows</h3>
+<ul class="dynamic-columns">
+{%- for page in site.entries %}
+    <li><a href="{{ page.url | relative_url | replace: 'http:', 'https:'}}">{% include name page=page %}</a>{% if page.alias %} (and <code>{{page.alias}}</code>){% endif%}</li>
+{%- endfor %}
+</ul>
+
+<h3>Linux</h3>
+Coming soon.
+
+<h3>MacOS</h3>
+Coming soon.

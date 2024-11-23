@@ -1,0 +1,7 @@
+---
+Note: Please use the rendered version of this file.
+---
+User-agent: *
+Disallow:
+
+Sitemap: {{'/sitemap.xml' | absolute_url }}
