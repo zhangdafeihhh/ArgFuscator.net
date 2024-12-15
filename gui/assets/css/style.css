@@ -717,11 +717,11 @@ footer {
     }
 
     code {
-        color: color-mix(in srgb, var(--theme-colour) 70%, #ffffff) !important;
+        color: color-mix(in srgb, var(--theme-colour) 50%, #ffffff) !important;
     }
 
     section a {
-        color: color-mix(in srgb, var(--theme-colour) 70%, #ffffff);
+        color: color-mix(in srgb, var(--theme-colour) 50%, #ffffff);
     }
 }
 

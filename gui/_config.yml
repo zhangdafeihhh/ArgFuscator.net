@@ -1,5 +1,6 @@
 title: "ArgFuscator"
 repo: wietze/ArgFuscator.net
+baseurl: ''
 collections:
   entries:
     output: true

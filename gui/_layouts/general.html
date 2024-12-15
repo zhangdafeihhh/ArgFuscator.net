@@ -4,8 +4,27 @@ description:
 ---
 <!DOCTYPE html>
 <!--
-    @Wietze, (c) 2022-{{ site.time | date: '%Y' }}
-    licensed under GPLv3
+                               .:::..
+             .:::.        ::::..   .::.
+        .:::.-:::::          ..:::.  ::.
+       :-::::-=:::::        ... .:::  ::
+      ..=-::::-=-::::.     :::::  .:: .
+    .::::-=:::::=-:::::    .::::.  ::.
+    --::::-=-::::-=:::::.   :::::  .::
+     :=:::::=-::::-=-::::.  .:::::
+   :::-=-::::-=:::::--:::::  :::::.             Thanks for being interested in {{site.title}}'s source code!
+   :::::=-::::-=-::::::::-=-:::::::             If you're interested in improving this project, check out
+    .::::-=:::::-:::::::=-::::::::::                   https://www.github.com/{{site.repo}}
+     .::::-=-::::::::::=-::::::::::::
+       :::::-:::::::::-=:::::::::::::           @Wietze, (c) 2022-{{ site.time | date: '%Y' }} - licensed under GPLv3
+  ::.   .:::::::::::::-=:::::::::::::.
+  .::     ::::::::::::-=:::::::::::::
+ . :::     ::::::::::::-=:::::::::::.
+::  :::.    .:::::::::::--:::::::::.
+.::  .::::.  .::::::::::::::::::::
+ .::.   ..::::  .::::::::::::::.
+   ..:::.          ...:::::..
+
 -->
 {%- assign logo = site.baseurl | append:'/assets/img/logo.svg' %}
 {% capture title %}{% if page.layout == 'entry' %}{% include name page=page %}{% else %}{{page.title}}{% endif %}{% endcapture -%}
