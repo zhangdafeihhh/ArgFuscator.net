@@ -209,7 +209,6 @@ function OnLoad() {
                 // Create modifier
                 const ID = document.querySelector(`input[data-function="${x.dataset.process}"]`).id;
 
-
                 let ClassInstance: Modifier = Object.create((window as any)[x.dataset.process].prototype);
                 let ClassInstanceArguments: any[] = [null, null];
                 let SelectedOptionArguments = document.querySelectorAll("input[id^=\"" + ID + "_arg\"], textarea[id^=\"" + ID + "_arg\"]") as NodeListOf<HTMLInputElement | HTMLTextAreaElement>;
@@ -226,6 +225,21 @@ function OnLoad() {
                 if (obfuscated) {
                     x.innerText = obfuscated;
                     x.parentElement.classList.remove("collapsed");
+
+                    // Optionally, show a Unicode hint if the option char changed to a character outside the ASCII range
+                    // (these are sometimes hard to distinguish from their ASCII equivalent)
+                    let firstChar = obfuscated.charCodeAt(0)
+                    if (firstChar > 255) {
+                        let a = document.createElement("a")
+                        a.href = `https://unicode-explorer.com/c/${firstChar.toString(16)}`;
+                        a.target = "_blank"
+                        a.innerText = `U+${firstChar.toString(16)}`
+
+                        let text = document.createTextNode(` (using character `);
+                        x.parentElement.insertBefore(text, x.nextSibling)
+                        x.parentElement.insertBefore(a, text.nextSibling)
+                        x.parentElement.insertBefore(document.createTextNode(")"), a.nextSibling)
+                    }
                 }
             });
         });
