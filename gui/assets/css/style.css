@@ -140,6 +140,7 @@ header .top {
         a {
             color: white;
             text-decoration-style: dotted;
+            text-decoration-thickness: from-font;
         }
 
         a.emphasis {
@@ -182,12 +183,7 @@ div.tools {
     /* min-height: 2.5em; */
     width: 100%;
     box-sizing: border-box;
-    padding: 1em;
-    font-family: 'Consolas', 'Courier New', Courier, monospace;
-    field-sizing: normal;
-}
-
-#input-command::placeholder {
+    field-sizing: content;
     padding: 1em;
 }
 
@@ -294,13 +290,21 @@ div.suboptions>div.flex-row label {
 
 a.explain {
     color: inherit;
-    border-bottom: 1px dotted black;
+    text-decoration: underline dotted;
+    text-decoration-thickness: from-font;
 }
 
 a.explain::after {
     color: #aaa;
-    content: ' 🯄';
+    content: '?';
+    background-color: #99abb0;
     font-size: small;
+    margin: 3px;
+    padding: 0px 4px;
+    color: white;
+    font-weight: normal;
+    font-size: smaller;
+    text-decoration: none;
 }
 
 #tokens,
@@ -309,8 +313,11 @@ a.explain::after {
 }
 
 #tokens div.token,
-#output-command {
-    font-family: 'Consolas', 'Courier New', Courier, monospace;
+#input-command,
+#output-command,
+code,
+.suboption textarea {
+    font-family: Monaco, Menlo, Consolas, 'Droid Sans Mono', Inconsolata, 'Courier New', monospace;
 }
 
 #tokens {
@@ -383,7 +390,7 @@ a.explain::after {
     margin-right: 5px;
     padding: 0 4px;
     font-family: Arial;
-    border-radius: 4px;
+    border-radius: 3px;
 }
 
 #tokens div.token[data-type="disabled"]::before {
@@ -495,6 +502,7 @@ fieldset>legend {
     padding: 5px;
     text-decoration: none;
     user-select: none;
+    border-radius: 5px;
 }
 
 .button {
@@ -662,6 +670,7 @@ footer {
 .command-bar #feeling-lucky a {
     color: #ededed;
     text-decoration: underline dotted;
+    text-decoration-thickness: from-font;
     cursor: pointer;
 }
 
@@ -691,7 +700,8 @@ footer {
         .button {
             border: 1px solid #555;
             background-color: var(--theme-colour);
-            color: white; /* color-contrast(var(--theme-colour) vs white, black); */
+            color: white;
+            /* color-contrast(var(--theme-colour) vs white, black); */
         }
 
         .button:hover {
@@ -740,11 +750,15 @@ ul {
 }
 
 ul.dynamic-columns {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  grid-gap: 0 2em;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 0 2em;
 }
 
 code {
     color: color-mix(in srgb, var(--theme-colour) 70%, #000000);
+}
+
+img.full-width {
+    width: 100%;
 }

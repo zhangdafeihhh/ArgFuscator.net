@@ -24,7 +24,7 @@ The primary goal of this project is to document known command-line obfuscation t
 
 First, through literature review and our own research, command-line obfuscation techniques were gathered, analysed and classified. The identified techniques form the basis for the subsequent analysis.
 
-Secondly, by assessing a wide variety of popular applications, both in [automated fashion](https://github.com/wietze/windows-command-line-obfuscation) and through manual inspection, a mapping between the defined techinques and vulnerable applications was created. The results are captured in a machine-readable format (see [`./models`](/models/)).
+Following this, by assessing a wide variety of popular applications, both in [automated fashion](https://github.com/wietze/windows-command-line-obfuscation) and through manual inspection, a mapping between the defined techniques and vulnerable applications was created. The results are captured in a machine-readable format (see [`./models`](/models/)).
 
 Thirdly, a system was created that allows for the transformation of an arbitrary command line using a sequence of defined obfuscation technique in a provided configuration. To ensure ease of use, a TypeScript implementation was created (see [`./src`](/src/)) that is supported by a user-friendly web interface (see [`./gui`](/gui/)), which can interpret the aforementioned model files.
 
