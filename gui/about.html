@@ -9,6 +9,8 @@ description: Learn more about the background of __SITE__ and how it may help you
 
 <p>Command-Line obfuscation (<a href="https://attack.mitre.org/techniques/T1027/010/" target="_blank">T1027.010</a>) is the masquerading of a command's true intention through the manipulation of a process' command line. Across <a href="https://www.wietzebeukema.nl/blog/windows-command-line-obfuscation" target="_blank">Windows</a>, Linux and MacOS, many applications parse passed command-line arguments in unexpected ways, leading to situations in which insertion, deletion and/or subsitution of certain characters does not change the program's execution flow. Successful command-line obfuscation is likely to frustrate defensive measures such as AV and EDR software, in some cases completely bypassing detection altogether.</p>
 
+<img src="{{ '/assets/img/example.svg' | relative_url }}" alt="A sample certutil command in normal and obfuscated form" class="full-width" />
+
 <p>Although previous research has highlighted the risks of command-line obfuscation, mostly with anecdotal examples of vulnerable (system-native) applications, there is an knowledge vacuum surrounding this technique. This project aims to overcome this by providing a centralised resource that documents and demonstrates various command-line obfuscation techniques, and records the subsceptability of popular applications for each.</p>
 
 <h2>Goal</h2>
@@ -17,9 +19,9 @@ description: Learn more about the background of __SITE__ and how it may help you
 <h2>Coming about</h2>
 <p>First, through literature review and our own research, command-line obfuscation techniques were gathered, analysed and classified. The identified techniques form the basis for the subsequent analysis.</p>
 
-<p>Secondly, by assessing a wide variety of popular applications, both in <a href="https://github.com/wietze/windows-command-line-obfuscation" target="_blank">automated fashion</a> and through manual inspection, a mapping between the defined techinques and vulnerable applications was created. The results are captured in a machine-readable format (see <a href="https://github.com/{{site.repo}}/tree/main/models/" target="_blank"><code>./models</code></a>).</p>
+<p>Following this, by assessing a wide variety of popular applications, both in <a href="https://github.com/wietze/windows-command-line-obfuscation" target="_blank">automated fashion</a> and through manual inspection, a mapping between the defined techniques and vulnerable applications was created. The resulting 'obfuscation models' are captured in <a href="https://github.com/{{site.repo}}/tree/main/models/" target="_blank">machine-readable format</a>.</p>
 
-<p>Thirdly, a system was created that allows for the transformation of an arbitrary command line using a sequence of defined obfuscation technique in a provided configuration. To ensure ease of use, a TypeScript implementation was created (see <a href="https://github.com/{{site.repo}}/tree/main/src/" target="_blank"><code>./src</code></a>) that is supported by a user-friendly web interface (see <a href="https://github.com/{{site.repo}}/tree/main/gui/" target="_blank"><code>./gui</code></a>), which can interpret the aforementioned model files.</p>
+<p>Thirdly, a system was created that allows for the transformation of an arbitrary command line using a sequence of defined obfuscation technique in a provided configuration. To ensure ease of use, a  <a href="https://github.com/{{site.repo}}/tree/main/src/" target="_blank">TypeScript implementation</a> was created that is supported by a user-friendly <a href="https://github.com/{{site.repo}}/tree/main/gui/" target="_blank">web interface</a>, which can interpret the aforementioned model files - the result is the website you're currently visiting. Additionally, a <a href="https://www.github.com/wietze/Invoke-ArgFuscator">cross-platform PowerShell implementation</a> was created.</p>
 
 <p>Finally, the models were tested against the created implementation in order to validate their correctness, which allows for the further tuning of the findings. The result is this project, encompassing the results of all stages.</p>
 

@@ -733,6 +733,10 @@ footer {
     section a {
         color: color-mix(in srgb, var(--theme-colour) 50%, #ffffff);
     }
+
+    table.comparison tbody {
+        background-color: color-mix(in srgb, var(--theme-colour) 5%, #555) !important;
+    }
 }
 
 h2>a {
@@ -755,8 +759,25 @@ ul.dynamic-columns {
     grid-gap: 0 2em;
 }
 
+table.comparison thead>tr {
+    background-color: var(--theme-colour);
+    color: white;
+}
+table.comparison td:first-child {
+    padding-left: 0.5em;
+}
+table.comparison td:not(:first-child) {
+    text-align: center;
+}
+table.comparison tbody {
+    background-color: color-mix(in srgb, var(--theme-colour) 5%, color-mix(in srgb, var(--theme-colour) 7%, white));
+}
+div.comparison-container {
+    overflow-x: auto;
+}
 code {
     color: color-mix(in srgb, var(--theme-colour) 70%, #000000);
+    font-size: calc(100% - 2px);
 }
 
 img.full-width {
