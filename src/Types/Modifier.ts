@@ -157,14 +157,26 @@ abstract class Modifier {
             let _TokenText = TokenText.replace(/(['"])(.*?)\1/g, '$2') //Remove any surrounding quotes
             // If previous token ends with a ValueChar, assume this token denotes a 'value' type;
             // or, if no option char present, designate it as 'value', unless overwritten further down
-            if (this.ValueChars.some(y => Tokens[i].GetContent().reverse()[0] == y) || !Modifier.CommonOptionChars.some(x => _TokenText.startsWith(x as string)))
+            if (this.ValueChars.some(y => Tokens[i].GetContent().reverse()[0] == y) || !Modifier.CommonOptionChars.some(x => _TokenText.startsWith(x as string))){
                 x.SetType('value');
+
+                // Special case: WMIC
+                if(Tokens[0].GetStringContent().match(/wmic(\.exe)?/i)
+                    && !Tokens.slice(1, 2+i).some(x => x.GetType() == 'disabled')
+                && !(Tokens[i].GetType() == 'argument' && Modifier.ValueChars.some(x => Tokens[i].GetContent().reverse()[0] == x))
+            ){
+                console.log(Tokens[i]);
+                    x.SetType('disabled');
+                }
+
+            }
 
             if (_TokenText.match(/^(?:\\\\[^\\]+|[a-zA-Z]:|\.[\\/])((?:\\[^\\]+)+\\)?([^<>:]*)$/) || _TokenText.match(/^[^<>:]+\.[a-zA-Z0-9]{2,4}$/)) x.SetType('path'); // Windows file path format
             if (_TokenText.match(/^(HKLM|HKCC|HKCR|HKCU|HKU|HKEY_(LOCAL_MACHINE|CURRENT_CONFIG|CLASSES_ROOT|CURRENT_USER|USERS))\\?/i)) x.SetType('disabled'); // Windows Registry
 
 
-            if (_TokenText.startsWith('http:') || _TokenText.startsWith('https:') || _TokenText.match(/[12]?\d?\d\.[12]?\d?\d\.[12]?\d?\d\.[12]?\d?\d/)) x.SetType('url');
+            if (_TokenText.startsWith('http:') || _TokenText.startsWith('https:') || _TokenText.match(/[12]?\d?\d\.[12]?\d?\d\.[12]?\d?\d\.[12]?\d?\d/)) x.SetType('url'); //URLs (including IP addresses)
+
 
         });
         return Tokens;

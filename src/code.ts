@@ -231,9 +231,9 @@ function OnLoad() {
                     let firstChar = obfuscated.charCodeAt(0)
                     if (firstChar > 255) {
                         let a = document.createElement("a")
-                        a.href = `https://unicode-explorer.com/c/${firstChar.toString(16)}`;
+                        a.href = `https://unicode-explorer.com/c/${firstChar.toString(16).toUpperCase()}`;
                         a.target = "_blank"
-                        a.innerText = `U+${firstChar.toString(16)}`
+                        a.innerText = `U+${firstChar.toString(16).toUpperCase()}`
 
                         let text = document.createTextNode(` (using character `);
                         x.parentElement.insertBefore(text, x.nextSibling)

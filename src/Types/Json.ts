@@ -100,6 +100,7 @@ function ReadJsonFile(this: HTMLInputElement): void {
         reader.readAsText(file, "UTF-8");
         reader.onload = function (evt) {
             ApplyTemplate(JSON.parse(evt.target.result as string), true);
+            UpdateTokens();
         }
         reader.onerror = function (evt) {
             document.getElementById("fileContents").innerHTML = "error reading file";
