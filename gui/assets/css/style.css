@@ -675,10 +675,6 @@ footer {
 }
 
 @media (prefers-color-scheme: dark) {
-    :root {
-        --theme-colour: #2872D2;
-    }
-
     body {
         background-color: #282828;
         color: white;
@@ -687,7 +683,7 @@ footer {
     .slist>div,
     .context-menu {
         border-color: #555;
-        background: #111;
+        background: #3e3e3e;
         color: white;
     }
 
@@ -699,14 +695,14 @@ footer {
 
         .button {
             border: 1px solid #555;
-            background-color: var(--theme-colour);
+            background-color: color-mix(in srgb, var(--theme-colour) 80%, #000000);
             color: white;
             /* color-contrast(var(--theme-colour) vs white, black); */
         }
 
         .button:hover {
-            border-color: var(--theme-colour);
-            color: var(--theme-colour);
+            border-color: color-mix(in srgb, var(--theme-colour) 80%, #000000);
+            color: color-mix(in srgb, var(--theme-colour) 80%, #000000);
             background: white;
         }
 
@@ -718,7 +714,7 @@ footer {
     }
 
     fieldset>legend {
-        background-color: var(--theme-colour);
+        background-color: color-mix(in srgb, var(--theme-colour) 80%, #000000);
         color: white;
     }
 
@@ -727,11 +723,11 @@ footer {
     }
 
     code {
-        color: color-mix(in srgb, var(--theme-colour) 50%, #ffffff) !important;
+        color: color-mix(in srgb, var(--theme-colour) 80%, #ffffff) !important;
     }
 
     section a {
-        color: color-mix(in srgb, var(--theme-colour) 50%, #ffffff);
+        color: color-mix(in srgb, var(--theme-colour) 80%, #ffffff);
     }
 
     table.comparison tbody {
@@ -763,18 +759,23 @@ table.comparison thead>tr {
     background-color: var(--theme-colour);
     color: white;
 }
+
 table.comparison td:first-child {
     padding-left: 0.5em;
 }
+
 table.comparison td:not(:first-child) {
     text-align: center;
 }
+
 table.comparison tbody {
     background-color: color-mix(in srgb, var(--theme-colour) 5%, color-mix(in srgb, var(--theme-colour) 7%, white));
 }
+
 div.comparison-container {
     overflow-x: auto;
 }
+
 code {
     color: color-mix(in srgb, var(--theme-colour) 70%, #000000);
     font-size: calc(100% - 2px);
