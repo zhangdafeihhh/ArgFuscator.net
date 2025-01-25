@@ -12,9 +12,9 @@ description:
     .::::-=:::::=-:::::    .::::.  ::.
     --::::-=-::::-=:::::.   :::::  .::
      :=:::::=-::::-=-::::.  .:::::
-   :::-=-::::-=:::::--:::::  :::::.             Thanks for being interested in {{site.title}}'s source code!
+   :::-=-::::-=:::::--:::::  :::::.             Thanks for being interested in {{ site.title }}'s source code!
    :::::=-::::-=-::::::::-=-:::::::             If you're interested in improving this project, check out
-    .::::-=:::::-:::::::=-::::::::::                   https://www.github.com/{{site.repo}}
+    .::::-=:::::-:::::::=-::::::::::                   https://www.github.com/{{ site.repo }}
      .::::-=-::::::::::=-::::::::::::
        :::::-:::::::::-=:::::::::::::           @Wietze, (c) 2022-{{ site.time | date: '%Y' }} - licensed under GPLv3
   ::.   .:::::::::::::-=:::::::::::::.
@@ -27,44 +27,45 @@ description:
 
 -->
 {%- assign logo = '/assets/img/logo.svg' | relative_url %}
-{% capture title %}{% if page.layout == 'entry' %}{% include name page=page %}{% else %}{{page.title}}{% endif %}{% endcapture -%}
+{% capture title %}{% if page.layout == 'entry' %}{% include name page=page %}{% else %}{{ page.title }}{% endif %}{% endcapture -%}
 <head>
-    <title>{% if title != "" %}{{ title }} | {% endif %}{{site.title}}</title>
+    <title>{% if title != "" %}{{ title }} | {% endif %}{{ site.title }}</title>
 
     <link rel="canonical" href="{{ page.url | absolute_url }}">
-    <link rel="icon" href="{{logo}}">
+    <link rel="icon" href="{{ logo }}">
     <link rel="stylesheet" type="text/css" href="{{ '/assets/css/style.css' | relative_url }}">
 
     <meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://lolbas-project.github.io/api/ 'self';">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://visit.argfuscator.net/ ; connect-src https://lolbas-project.github.io/api/ 'self';img-src 'self' https://visit.argfuscator.net/ ;">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta property="og:description" content="{% if page.layout == 'entry'%}{{title}} is vulnerable to various kinds of command-line obfuscation; create your own obfuscated command lines with {{site.title}}.{%else%}{{page.description | replace:'__SITE__',site.title}}{%endif%}" />
-    <meta property="og:image" content="{{logo | absolute_url }}" />
-    <meta property="og:site_name" content="{{site.title}}" />
-    <meta property="og:title" content="{% if title != "" %}{{ title }} on {% endif %}{{site.title}}" />
+    <meta property="og:description" content="{% if page.layout == 'entry'%}{{ title }} is vulnerable to various kinds of command-line obfuscation; create your own obfuscated command lines with {{ site.title }}.{%else%}{{ page.description | replace:'__SITE__',site.title }}{%endif%}" />
+    <meta property="og:image" content="{{ logo | absolute_url }}" />
+    <meta property="og:site_name" content="{{ site.title }}" />
+    <meta property="og:title" content="{% if title != "" %}{{ title }} on {% endif %}{{ site.title }}" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="{{ page.url | absolute_url }}" />
 </head>
 
 <body>
-    <script src="{{'/assets/js/main.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+    <script src="{{ '/assets/js/visit.js' | relative_url }}" async></script>
     <div class="container">
         <header>
             <div class="top">
                 <div class="logo">
-                    <a href="{{ '/' | relative_url }}"><img src="{{logo}}" class="site-logo" alt="Logo" /></a>
-                    <h1><a href="{{ '/' | relative_url }}">{{site.title}}</a></h1>
+                    <a href="{{ '/' | relative_url }}"><img src="{{ logo }}" class="site-logo" alt="Logo" /></a>
+                    <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
                 </div>
                 <div class="links">
                     <a href="{{'about.html' | relative_url }}">What is this?</a>
                     <a href="{{'/entries/' | relative_url }}">All entries</a>
                     <a href="https://www.github.com/wietze/Invoke-ArgFuscator" target="_blank">Offline version</a>
-                    <a href="https://www.github.com/{{site.repo}}" target="_blank">GitHub</a>
+                    <a href="https://www.github.com/{{ site.repo }}" target="_blank">GitHub</a>
                     <a href="https://www.twitter.com/wietze" target="_blank" class="emphasis">@Wietze</a>
                 </div>
             </div>{% if page.header %}
 
-            {{page.header}}{%- endif%}
+            {{ page.header }}{%- endif%}
         </header>
     </div>
 

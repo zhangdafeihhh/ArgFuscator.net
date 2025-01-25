@@ -36,13 +36,13 @@ header: |
                             <li role="option" data-function="none">(none)</li>
                             <li role="option" data-function="upload">⇡ Upload file…</li>
                             {% for entry in site.entries %}
-                            <li role="option" id="format_{{entry.slug}}" data-target="{{entry.url|replace:'entries/','assets/models/'|replace:'.html', '.json'|relative_url}}"{% if entry.alias %} data-alias="{{entry.alias}}"{%endif%}>{{entry.slug | append:'.exe'}}</li>
+                            <li role="option" id="format_{{ entry.slug }}" data-target="{{ entry.url|replace:'entries/','assets/models/'|replace:'.html', '.json'|relative_url }}"{% if entry.alias %} data-alias="{{ entry.alias }}"{%endif%}>{{ entry.slug | append:'.exe' }}</li>
                             {%- endfor %}
                         </menu>
                         <label for="json-file"><input type="file" id="json-file" accept=".json" /></label>
                         <div class="button-selection">
                             <a class="button" id="button-template" aria-haspopup="listbox" aria-expanded="false" role="combobox" tabindex="2" aria-controls="menu-templates"><strong>Selected template</strong>: <span id="template-selected">(none)</span></a>
-                            <a class="button" id="download-config" download="config-export.json" tabindex="3"><strong>Download config</strong></a>
+                            <a class="button" id="download-config" download="config-export.json" data-visit-click="JSON-Download" tabindex="3"><strong>Download config</strong></a>
                             <a class="button" id="reset-form" tabindex="4"><strong>Reset</strong></a>
                         </div>
                     </div>
