@@ -405,6 +405,10 @@ code,
     .container {
         flex-wrap: wrap;
     }
+
+    img.pct80-width {
+        width: 100% !important;
+    }
 }
 
 @media screen and (max-width: 1200px) {
@@ -783,4 +787,10 @@ code {
 
 img.full-width {
     width: 100%;
+}
+
+img.pct80-width {
+    display: block;
+    margin: auto;
+    width: 80%;
 }
