@@ -32,7 +32,8 @@ description:
     <title>{% if title != "" %}{{ title }} | {% endif %}{{ site.title }}</title>
 
     <link rel="canonical" href="{{ page.url | absolute_url }}">
-    <link rel="icon" href="{{ logo }}">
+    <link rel="icon" href="{{ logo }}" type="image/svg" sizes="any">
+    <link rel="shortcut icon" href="{{ logo }}" type="image/svg">
     <link rel="stylesheet" type="text/css" href="{{ '/assets/css/style.css' | relative_url }}">
 
     <meta charset="utf-8">
