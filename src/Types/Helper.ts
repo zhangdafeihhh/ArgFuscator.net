@@ -1,4 +1,3 @@
-
 function SetPosition(Parent: HTMLElement, ContextMenu: HTMLElement): void {
     var box = Parent.getBoundingClientRect()
     ContextMenu.style.top = (box.height / 2) + "px";
@@ -7,12 +6,12 @@ function SetPosition(Parent: HTMLElement, ContextMenu: HTMLElement): void {
 function ShowContextMenu(Element: HTMLElement, ClickElement: HTMLElement) {
     if (Element.style.display == "block") {
         Element.style.display = 'none';
-        ClickElement.ariaExpanded = 'false';
+        ClickElement.setAttribute('aria-expanded', 'false');
         ClickElement.setAttribute('aria-activedescendant', "");
     } else {
         SetPosition(ClickElement, Element);
         Element.style.display = 'block';
-        ClickElement.ariaExpanded = 'true';
+        ClickElement.setAttribute('aria-expanded', 'true');
         ClickElement.setAttribute('aria-activedescendant', Element.querySelector('li[aria-selected=true]')?.id || "");
 
         var ClickHandler = (evt: Event) => {

@@ -1,15 +1,24 @@
 title: ArgFuscator
 repo: wietze/ArgFuscator.net
 baseurl: ''
+
 collections:
   entries:
     output: true
+    permalink: /entries/:name
+
 defaults:
-  -
-    values:
-      layout: "entry"
-    scope:
+  - scope:
       path: "_entries/*"
+    values:
+      layout: entry
+  - scope:
+      path: "assets/models"
+    values:
+      layout: null
+
+include:
+  - "assets/models"
 
 mapping:
   Sed:

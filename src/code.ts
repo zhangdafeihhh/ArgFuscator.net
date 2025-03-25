@@ -261,12 +261,17 @@ function OnLoad() {
             FetchJsonFile2(currentSelected).then(oldDefaultModifiers =>
                 FetchJsonFile2(ContextMenuItem).then(newModifiers => {
                     if (CheckChanged(ContextMenuItem, newModifiers, oldDefaultModifiers)) {
-                        ContextMenuItem.parentNode.childNodes.forEach((x: HTMLElement) => { x.ariaSelected = 'false'; if (x.dataset) x.dataset['active'] = "" });
+                        Array.from(ContextMenuItem.parentNode.children).forEach((x: Element) => { 
+                            x.setAttribute('aria-selected', 'false'); 
+                            if (x instanceof HTMLElement && x.dataset) {
+                                x.dataset['active'] = "";
+                            }
+                        });
 
                         if (!ContextMenuItem.dataset['function']) {
                             ApplyTemplate({ modifiers: newModifiers } as FileFormat, false);
                             ContextMenuItem.dataset['active'] = 'true';
-                            ContextMenuItem.ariaSelected = 'true';
+                            ContextMenuItem.setAttribute('aria-selected', 'true');
 
                             document.getElementById("template-selected").innerText = ContextMenuItem.innerText;
                         } else

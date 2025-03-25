@@ -69,6 +69,9 @@ async function FetchJsonFile2(elem: HTMLLIElement): Promise<object | null> {
     }
     else {
         let name = elem.dataset.target;
+        if (!name.endsWith('.json')) {
+            name = name + '.json';
+        }
         return await FetchJsonFileContents(name, elem);
     }
 }
@@ -188,6 +191,7 @@ function ApplyTemplate(Input: FileFormat, Interactive: Boolean) {
 }
 
 function GetJsonContents(): object {
+    console.log("Getting JSON contents");
     let modifiers = new Map<string, object>();
     document.querySelectorAll<HTMLInputElement>("input[type=checkbox][data-function]:checked").forEach(x => {
         let dataFunction = x.dataset['function'] as string;
