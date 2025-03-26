@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg width="208.84mm" height="146.7mm" version="1.1" viewBox="0 0 208.84 146.7" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+ <defs>
+  <linearGradient id="linearGradient22677" x1=".81136" x2="212.47" y1="62.812" y2="62.9" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#ececec" offset="0"/>
+   <stop stop-color="#4d4d4d" offset="1"/>
+  </linearGradient>
+  <linearGradient id="linearGradient37521" x1="13.231" x2="199.58" y1="155.23" y2="55.792" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#1a1a1a" offset="0"/>
+   <stop stop-color="#666" offset="1"/>
+  </linearGradient>
+  <clipPath id="clipPath37865">
+   <rect x=".83957" y="18.066" width="208.84" height="146.7" ry="15.653" fill="#333" fill-rule="evenodd" stroke-width=".80343"/>
+  </clipPath>
+  <linearGradient id="linearGradient75882" x1="209.68" x2=".22668" y1="35.893" y2="37.525" gradientUnits="userSpaceOnUse">
+   <stop stop-color="#3771c8" offset="0"/>
+   <stop stop-color="#f06" offset="1"/>
+  </linearGradient>
+  <clipPath id="clipPath76102">
+   <rect x="-20.168" y="46.013" width="253.26" height="142.49" d="M -20.168482,46.013485 H 233.08968 V 188.50801 H -20.168482 Z" display="none" fill="#ff0" stroke-width=".28172"/>
+   <path class="powerclip" d="m-4.1604 13.066h218.84v156.7h-218.84zm-16.008 32.948v142.49h253.26v-142.49z" display="block" fill="#ff0" stroke-width=".28172"/>
+  </clipPath>
+ </defs>
+ <g transform="translate(-.83957 -18.066)">
+  <rect x=".83957" y="18.066" width="208.84" height="146.7" clip-path="url(#clipPath37865)" fill="url(#linearGradient37521)"/>
+  <path x="0.83956879" y="18.065813" width="208.84366" height="146.70435" ry="15.653403" d="m16.493 18.066h177.54c8.672 0 15.653 6.9814 15.653 15.653v115.4c0 8.672-6.9814 15.653-15.653 15.653h-177.54c-8.672 0-15.653-6.9814-15.653-15.653v-115.4c0-8.672 6.9814-15.653 15.653-15.653z" clip-path="url(#clipPath76102)" fill="url(#linearGradient75882)" fill-rule="evenodd"/>
+  <g transform="translate(-5.8224 -2.6047)" fill="#fff" stroke-linecap="square" stroke-linejoin="round" stroke-miterlimit="1" stroke-width="1.9" aria-label="&gt;">
+   <path d="m42.129 62.638 45.475 32.969v17.777l-47.284 33.693-9.7151-19.172 35.863-22.996-35.76-24.753z"/>
+  </g>
+  <text transform="matrix(.26458 0 0 .26458 .83957 18.066)" fill="black" font-family="sans-serif" font-size="40px" style="line-height:1.25;shape-inside:url(#rect13621);white-space:pre" xml:space="preserve"/>
+  <g transform="translate(18.219 -2.6047)" stroke-width=".26458" aria-label="_">
+   <path d="m166.81 126.9v20.567h-71.313v-20.567z" fill="#fff"/>
+  </g>
+  <rect x="-.27843" y="45.979" width="214.3" height="1.2" fill="#fff"/>
+ </g>
+ <g transform="translate(-.83957 -18.066)" display="none">
+  <rect x="-4.1604" y="13.066" width="224.43" height="157" ry="0" fill="url(#linearGradient22677)" stroke-width=".26458"/>
+ </g>
+</svg>

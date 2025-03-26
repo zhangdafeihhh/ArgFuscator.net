@@ -191,6 +191,9 @@ function OnLoad() {
     document.getElementById("feeling-lucky")?.addEventListener("click", (x) => {
         let jsons = Array.from(document.getElementById('menu-templates').querySelectorAll<HTMLLIElement>("li[data-target]")).map(x => x.dataset?.target);
         let json = jsons[Math.floor(Math.random() * jsons.length)];
+        if(json.indexOf(".") == -1) {
+            json = json + ".json";
+        }
         fetch(json, { headers: { "Content-Type": "application/json; charset=utf-8" } })
             .then(res => res.text())
             .then(response => {

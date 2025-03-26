@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<!--
+                               .:::..
+             .:::.        ::::..   .::.
+        .:::.-:::::          ..:::.  ::.
+       :-::::-=:::::        ... .:::  ::
+      ..=-::::-=-::::.     :::::  .:: .
+    .::::-=:::::=-:::::    .::::.  ::.
+    --::::-=-::::-=:::::.   :::::  .::
+     :=:::::=-::::-=-::::.  .:::::
+   :::-=-::::-=:::::--:::::  :::::.             Thanks for being interested in ArgFuscator's source code!
+   :::::=-::::-=-::::::::-=-:::::::             If you're interested in improving this project, check out
+    .::::-=:::::-:::::::=-::::::::::                   https://www.github.com/wietze/ArgFuscator.net
+     .::::-=-::::::::::=-::::::::::::
+       :::::-:::::::::-=:::::::::::::           @Wietze, (c) 2022-2025 - licensed under GPLv3
+  ::.   .:::::::::::::-=:::::::::::::.
+  .::     ::::::::::::-=:::::::::::::
+ . :::     ::::::::::::-=:::::::::::.
+::  :::.    .:::::::::::--:::::::::.
+.::  .::::.  .::::::::::::::::::::
+ .::.   ..::::  .::::::::::::::.
+   ..:::.          ...:::::..
+
+-->
+<head>
+    <title>ArgFuscator</title>
+
+    <link rel="canonical" href="http://0.0.0.0:4000/">
+    <link rel="icon" href="/assets/img/logo.svg" type="image/svg" sizes="any">
+    <link rel="shortcut icon" href="/assets/img/logo.svg" type="image/svg">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://visit.argfuscator.net/ ; connect-src https://lolbas-project.github.io/api/ https://visit.argfuscator.net/ 'self';img-src 'self' https://visit.argfuscator.net/ ;">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:description" content="Generate obfuscated command-line arguments for common system-native executables now with ArgFuscator." />
+    <meta property="og:image" content="http://0.0.0.0:4000/assets/img/logo.svg" />
+    <meta property="og:site_name" content="ArgFuscator" />
+    <meta property="og:title" content="ArgFuscator" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://0.0.0.0:4000/" />
+</head>
+
+<body>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/visit.js" async></script>
+    <div class="container">
+        <header>
+            <div class="top">
+                <div class="logo">
+                    <a href="/"><img src="/assets/img/logo.svg" class="site-logo" alt="Logo" /></a>
+                    <h1><a href="/">ArgFuscator</a></h1>
+                </div>
+                <div class="links">
+                    <a href="/about.html">What is this?</a>
+                    <a href="/entries/">All entries</a>
+                    <a href="https://www.github.com/wietze/Invoke-ArgFuscator" target="_blank">Offline version</a>
+                    <a href="https://www.github.com/wietze/ArgFuscator.net" target="_blank">GitHub</a>
+                    <a href="https://www.twitter.com/wietze" target="_blank" class="emphasis">@Wietze</a>
+                </div>
+            </div>
+
+            <div class="tools">
+                <textarea id="input-command" placeholder="Please paste the command you want to obfuscate here…" tabindex="0" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+                <div class="command-bar">
+                    <div id="feeling-lucky"><a>Click here to try a random command</a></div>
+                    <div id="tokens"></div>
+                    <a class="button button-primary" id="obfuscation-run" tabindex="1"><strong>Apply obfuscation</strong></a>
+                </div>
+                <div id="error-messages"></div>
+            </div>
+
+        </header>
+    </div>
+
+    <section>
+        <menu class="context-menu">
+            <li role="option" data-type="disabled">Ignore</li>
+            <li role="option" data-type="command">Program Name</li>
+            <li role="option" data-type="argument">Regular Argument</li>
+            <li role="option" data-type="path">File Path</li>
+            <li role="option" data-type="url">URL</li>
+            <li role="option" data-type="value">Value</li>
+        </menu>
+
+        <fieldset>
+            <legend>Output</legend>
+            <div id="output-command"></div>
+        </fieldset>
+
+        <fieldset class="collapsible">
+            <legend>Options</legend>
+            <div class="collapsed">
+                <div id="options-panel">
+                    <div class="picker">
+                        <menu class="context-menu" id="menu-templates" aria-labelledby="button-template" tabindex="-1" role="listbox">
+                            <li role="option" data-function="none">(none)</li>
+                            <li role="option" data-function="upload">⇡ Upload file…</li>
+                            
+                            <li role="option" id="format_addinutil" data-target="/assets/models/windows/addinutil">addinutil.exe</li>
+                            <li role="option" id="format_adfind" data-target="/assets/models/windows/adfind">adfind.exe</li>
+                            <li role="option" id="format_arp" data-target="/assets/models/windows/arp">arp.exe</li>
+                            <li role="option" id="format_aspnet_compiler" data-target="/assets/models/windows/aspnet-compiler">aspnet_compiler.exe</li>
+                            <li role="option" id="format_at" data-target="/assets/models/windows/at">at.exe</li>
+                            <li role="option" id="format_auditpol" data-target="/assets/models/windows/auditpol">auditpol.exe</li>
+                            <li role="option" id="format_bcdedit" data-target="/assets/models/windows/bcdedit">bcdedit.exe</li>
+                            <li role="option" id="format_bitsadmin" data-target="/assets/models/windows/bitsadmin">bitsadmin.exe</li>
+                            <li role="option" id="format_cacls" data-target="/assets/models/windows/cacls">cacls.exe</li>
+                            <li role="option" id="format_certreq" data-target="/assets/models/windows/certreq">certreq.exe</li>
+                            <li role="option" id="format_certutil" data-target="/assets/models/windows/certutil">certutil.exe</li>
+                            <li role="option" id="format_cipher" data-target="/assets/models/windows/cipher">cipher.exe</li>
+                            <li role="option" id="format_cmdkey" data-target="/assets/models/windows/cmdkey">cmdkey.exe</li>
+                            <li role="option" id="format_cmstp" data-target="/assets/models/windows/cmstp">cmstp.exe</li>
+                            <li role="option" id="format_csc" data-target="/assets/models/windows/csc">csc.exe</li>
+                            <li role="option" id="format_cscript" data-target="/assets/models/windows/cscript">cscript.exe</li>
+                            <li role="option" id="format_curl" data-target="/assets/models/windows/curl">curl.exe</li>
+                            <li role="option" id="format_dism" data-target="/assets/models/windows/dism">dism.exe</li>
+                            <li role="option" id="format_driverquery" data-target="/assets/models/windows/driverquery">driverquery.exe</li>
+                            <li role="option" id="format_expand" data-target="/assets/models/windows/expand">expand.exe</li>
+                            <li role="option" id="format_extrac32" data-target="/assets/models/windows/extrac32">extrac32.exe</li>
+                            <li role="option" id="format_findstr" data-target="/assets/models/windows/findstr">findstr.exe</li>
+                            <li role="option" id="format_fltmc" data-target="/assets/models/windows/fltmc">fltmc.exe</li>
+                            <li role="option" id="format_forfiles" data-target="/assets/models/windows/forfiles">forfiles.exe</li>
+                            <li role="option" id="format_fsutil" data-target="/assets/models/windows/fsutil">fsutil.exe</li>
+                            <li role="option" id="format_ftp" data-target="/assets/models/windows/ftp">ftp.exe</li>
+                            <li role="option" id="format_icacls" data-target="/assets/models/windows/icacls">icacls.exe</li>
+                            <li role="option" id="format_ipconfig" data-target="/assets/models/windows/ipconfig">ipconfig.exe</li>
+                            <li role="option" id="format_jsc" data-target="/assets/models/windows/jsc">jsc.exe</li>
+                            <li role="option" id="format_makecab" data-target="/assets/models/windows/makecab">makecab.exe</li>
+                            <li role="option" id="format_msbuild" data-target="/assets/models/windows/msbuild">msbuild.exe</li>
+                            <li role="option" id="format_msiexec" data-target="/assets/models/windows/msiexec">msiexec.exe</li>
+                            <li role="option" id="format_nbtstat" data-target="/assets/models/windows/nbtstat">nbtstat.exe</li>
+                            <li role="option" id="format_net" data-target="/assets/models/windows/net">net.exe</li>
+                            <li role="option" id="format_netsh" data-target="/assets/models/windows/netsh">netsh.exe</li>
+                            <li role="option" id="format_netstat" data-target="/assets/models/windows/netstat">netstat.exe</li>
+                            <li role="option" id="format_nltest" data-target="/assets/models/windows/nltest">nltest.exe</li>
+                            <li role="option" id="format_nslookup" data-target="/assets/models/windows/nslookup">nslookup.exe</li>
+                            <li role="option" id="format_ping" data-target="/assets/models/windows/ping">ping.exe</li>
+                            <li role="option" id="format_pnputil" data-target="/assets/models/windows/pnputil">pnputil.exe</li>
+                            <li role="option" id="format_powershell" data-target="/assets/models/windows/powershell">powershell.exe</li>
+                            <li role="option" id="format_procdump" data-target="/assets/models/windows/procdump">procdump.exe</li>
+                            <li role="option" id="format_psexec" data-target="/assets/models/windows/psexec">psexec.exe</li>
+                            <li role="option" id="format_query" data-target="/assets/models/windows/query">query.exe</li>
+                            <li role="option" id="format_reg" data-target="/assets/models/windows/reg">reg.exe</li>
+                            <li role="option" id="format_regedit" data-target="/assets/models/windows/regedit">regedit.exe</li>
+                            <li role="option" id="format_regsvr32" data-target="/assets/models/windows/regsvr32">regsvr32.exe</li>
+                            <li role="option" id="format_robocopy" data-target="/assets/models/windows/robocopy">robocopy.exe</li>
+                            <li role="option" id="format_route" data-target="/assets/models/windows/route">route.exe</li>
+                            <li role="option" id="format_rpcping" data-target="/assets/models/windows/rpcping">rpcping.exe</li>
+                            <li role="option" id="format_runas" data-target="/assets/models/windows/runas">runas.exe</li>
+                            <li role="option" id="format_sc" data-target="/assets/models/windows/sc">sc.exe</li>
+                            <li role="option" id="format_schtasks" data-target="/assets/models/windows/schtasks">schtasks.exe</li>
+                            <li role="option" id="format_secedit" data-target="/assets/models/windows/secedit">secedit.exe</li>
+                            <li role="option" id="format_takeown" data-target="/assets/models/windows/takeown">takeown.exe</li>
+                            <li role="option" id="format_tar" data-target="/assets/models/windows/tar">tar.exe</li>
+                            <li role="option" id="format_taskkill" data-target="/assets/models/windows/taskkill">taskkill.exe</li>
+                            <li role="option" id="format_tasklist" data-target="/assets/models/windows/tasklist">tasklist.exe</li>
+                            <li role="option" id="format_vaultcmd" data-target="/assets/models/windows/vaultcmd">vaultcmd.exe</li>
+                            <li role="option" id="format_vbc" data-target="/assets/models/windows/vbc">vbc.exe</li>
+                            <li role="option" id="format_w32tm" data-target="/assets/models/windows/w32tm">w32tm.exe</li>
+                            <li role="option" id="format_wevtutil" data-target="/assets/models/windows/wevtutil">wevtutil.exe</li>
+                            <li role="option" id="format_where" data-target="/assets/models/windows/where">where.exe</li>
+                            <li role="option" id="format_whoami" data-target="/assets/models/windows/whoami">whoami.exe</li>
+                            <li role="option" id="format_winget" data-target="/assets/models/windows/winget">winget.exe</li>
+                            <li role="option" id="format_wmic" data-target="/assets/models/windows/wmic">wmic.exe</li>
+                            <li role="option" id="format_wscript" data-target="/assets/models/windows/wscript">wscript.exe</li>
+                            <li role="option" id="format_xcopy" data-target="/assets/models/windows/xcopy">xcopy.exe</li>
+                        </menu>
+                        <label for="json-file"><input type="file" id="json-file" accept=".json" /></label>
+                        <div class="button-selection">
+                            <a class="button" id="button-template" aria-haspopup="listbox" aria-expanded="false" role="combobox" tabindex="2" aria-controls="menu-templates"><strong>Selected template</strong>: <span id="template-selected">(none)</span></a>
+                            <a class="button" id="download-config" download="config-export.json" data-visit-click="JSON-Download" tabindex="3"><strong>Download config</strong></a>
+                            <a class="button" id="reset-form" tabindex="4"><strong>Reset</strong></a>
+                        </div>
+                    </div>
+                </div>
+                <div id="options-panel-options"></div>
+            </div>
+        </fieldset>
+
+    </section>
+
+</body>
+
+</html>

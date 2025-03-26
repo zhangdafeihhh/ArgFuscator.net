@@ -1,0 +1,10 @@
+argfuscator.net
+
+jekyll server -H 0.0.0.0
+
+ts编译
+tsc -w --project src/ --outfile gui/assets/js/main.js
+
+jekyll编译成静态网站，_site下执行python3 -m http.server就可以直接访问了
+jekyll build --destination _site
+

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<!--
+                               .:::..
+             .:::.        ::::..   .::.
+        .:::.-:::::          ..:::.  ::.
+       :-::::-=:::::        ... .:::  ::
+      ..=-::::-=-::::.     :::::  .:: .
+    .::::-=:::::=-:::::    .::::.  ::.
+    --::::-=-::::-=:::::.   :::::  .::
+     :=:::::=-::::-=-::::.  .:::::
+   :::-=-::::-=:::::--:::::  :::::.             Thanks for being interested in ArgFuscator's source code!
+   :::::=-::::-=-::::::::-=-:::::::             If you're interested in improving this project, check out
+    .::::-=:::::-:::::::=-::::::::::                   https://www.github.com/wietze/ArgFuscator.net
+     .::::-=-::::::::::=-::::::::::::
+       :::::-:::::::::-=:::::::::::::           @Wietze, (c) 2022-2025 - licensed under GPLv3
+  ::.   .:::::::::::::-=:::::::::::::.
+  .::     ::::::::::::-=:::::::::::::
+ . :::     ::::::::::::-=:::::::::::.
+::  :::.    .:::::::::::--:::::::::.
+.::  .::::.  .::::::::::::::::::::
+ .::.   ..::::  .::::::::::::::.
+   ..:::.          ...:::::..
+
+-->
+<head>
+    <title>Comparison of entries | ArgFuscator</title>
+
+    <link rel="canonical" href="http://0.0.0.0:4000/entries/comparison.html">
+    <link rel="icon" href="/assets/img/logo.svg" type="image/svg" sizes="any">
+    <link rel="shortcut icon" href="/assets/img/logo.svg" type="image/svg">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://visit.argfuscator.net/ ; connect-src https://lolbas-project.github.io/api/ https://visit.argfuscator.net/ 'self';img-src 'self' https://visit.argfuscator.net/ ;">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:description" content="" />
+    <meta property="og:image" content="http://0.0.0.0:4000/assets/img/logo.svg" />
+    <meta property="og:site_name" content="ArgFuscator" />
+    <meta property="og:title" content="Comparison of entries on ArgFuscator" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://0.0.0.0:4000/entries/comparison.html" />
+</head>
+
+<body>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/visit.js" async></script>
+    <div class="container">
+        <header>
+            <div class="top">
+                <div class="logo">
+                    <a href="/"><img src="/assets/img/logo.svg" class="site-logo" alt="Logo" /></a>
+                    <h1><a href="/">ArgFuscator</a></h1>
+                </div>
+                <div class="links">
+                    <a href="/about.html">What is this?</a>
+                    <a href="/entries/">All entries</a>
+                    <a href="https://www.github.com/wietze/Invoke-ArgFuscator" target="_blank">Offline version</a>
+                    <a href="https://www.github.com/wietze/ArgFuscator.net" target="_blank">GitHub</a>
+                    <a href="https://www.twitter.com/wietze" target="_blank" class="emphasis">@Wietze</a>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <section>
+<h2>All supported entries (68)</h2>
+
+<h3>Windows</h3>
+<div class="comparison-container">
+<table class="comparison">
+    <thead>
+        <tr>
+            <th>Executable</th>
+            <th title="The number of unique obfuscation types that apply to the executable.">Obfuscation types</th>
+            <th title="Some command-line arguments allow characters to be replaced with Unicode equivalents.">Character Substitution</th>
+            <th title="Some command-line arguments allow specific characters to be inserted without altering the meaning of the original command line.">Character Insertion</th>
+            <th title="Command-line option characters, such as those starting with a forward slash or hyphen, have (unicode) alternatives that are also accepted.">Option Character Substitution</th>
+            <th title="It is possible to add double quotes (in multiples of two) to some of the command-line options. This may obfuscate keywords used on the command line.">Quote Insertion</th>
+            <th title="It is possible to shorten or otherwise abbreviate certain command-line options.">Shorthands</th>
+            <th title="When file paths are supplied to the executable, it is possible to apply transformations to the file path that may obscure the real path.">File Path Transformations</th>
+            <th title="Any URLs passed on the command line can be transformed in ways that may obscure the true destination.">URL Transformations</th>
+            <th title="Part of the command line is case insensitive, meaning it is possible to use upper- and lowercase characters interchangably. This may frustrate case-sensitive detections.">RaNdOmCaSe</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr><td><a href="/entries/xcopy"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/wscript"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/wmic"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/winget"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/whoami"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/where"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/wevtutil"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/w32tm"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/vbc"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/vaultcmd"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/tasklist"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/taskkill"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/tar"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/takeown"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/secedit"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/schtasks"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/sc"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/runas"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/rpcping"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/route"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/robocopy"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/regsvr32"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/regedit"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/reg"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/query"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/psexec"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/procdump"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/powershell"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/pnputil"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/ping"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/nslookup"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/nltest"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/netstat"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/netsh"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/net"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/nbtstat"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/msiexec"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/msbuild"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/makecab"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/jsc"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/ipconfig"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/icacls"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/ftp"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/fsutil"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/forfiles"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/fltmc"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/findstr"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/extrac32"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/expand"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/driverquery"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/dism"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/curl"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/cscript"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/csc"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/cmstp"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/cmdkey"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/cipher"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/certutil"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/certreq"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/cacls"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/bitsadmin"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/bcdedit"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/auditpol"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/at"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/aspnet-compiler"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/arp"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/adfind"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+        <tr><td><a href="/entries/addinutil"></a></td><td>0</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+    </tbody>
+</table>
+</div>
+
+<h3>Linux</h3>
+Coming soon.
+
+<h3>MacOS</h3>
+Coming soon.
+
+    </section>
+
+</body>
+
+</html>

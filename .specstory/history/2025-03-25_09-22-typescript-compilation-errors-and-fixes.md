@@ -261,7 +261,6 @@ Read file: src/code.ts
 
 ---
 
-
 现在我已经修改了两个文件：
 
 1. 在 `Helper.ts` 中，将 `ariaExpanded` 属性改为使用 `setAttribute('aria-expanded', ...)` 方法
@@ -878,6 +877,76 @@ GET http://192.168.112.151:4000/assets/models/windows/at 404 (Not Found)
                               {%- endfor %}
                           </menu>
 ```
+
+---
+
+我发现问题了，我们不需要在路径中添加两次 `.json`。让我们修改正确的路径：
+
+---
+
+---
+
+```diff
+                              <li role="option" data-function="upload">⇡ Upload file…</li>
+                              {% for entry in site.entries %}
+-                             <li role="option" id="format_{{ entry.slug }}" data-target="{{ entry.url|replace:'entries/','assets/models/windows/'|replace:'.html', '.json'|append:'.json'|relative_url }}">{{ entry.slug | append:'.exe' }}</li>
++                             <li role="option" id="format_{{ entry.slug }}" data-target="{{ entry.url|replace:'entries/','assets/models/windows/'|replace:'.html', '.json'|relative_url }}">{{ entry.slug | append:'.exe' }}</li>
+                              {%- endfor %}
+                          </menu>
+```
+
+---
+
+让我们看看生成的 HTML 是什么样的。请重新启动 Jekyll 服务器：
+
+```bash
+cd gui
+bundle exec jekyll serve --host 0.0.0.0 --port 8000
+```
+
+然后在浏览器中查看源代码，看看生成的 `data-target` 属性值是什么。如果还有问题，我们可能需要：
+
+1. 检查生成的 HTML 中的实际路径
+2. 在 `FetchJsonFile2` 函数中添加调试日志
+3. 确保文件确实存在于正确的位置
+
+请告诉我重启后是否还有 404 错误，以及错误的具体 URL 是什么。
+
+---
+
+_**User**_
+
+这个命令怎么编译的，能否编译编译到_site目录
+
+---
+
+_**Assistant**_
+
+是的，我们可以使用 Jekyll 来编译到 `_site` 目录。让我修改一下编译命令：
+
+1. 首先确保我们在 gui 目录下：
+```bash
+cd gui
+```
+
+2. 然后使用 Jekyll 编译到 `_site` 目录：
+```bash
+bundle exec jekyll build --destination _site
+```
+
+或者使用 serve 命令，它会自动编译到 `_site` 目录：
+```bash
+bundle exec jekyll serve --host 0.0.0.0 --port 8000 --destination _site
+```
+
+让我们执行这个命令：
+
+---
+
+
+---
+
+Cancelled
 
 ---
 

@@ -5,11 +5,39 @@ function FetchJsonFile(this: HTMLSelectElement): void {
         document.getElementById("json-file").click()
     }
     else {
-        let name = this.value.replace('.exe', '.json');
-        fetch("assets/models/" + name, { headers: { "Content-Type": "application/json; charset=utf-8" } })
+        // 获取选中的选项元素
+        let selectedOption = this.options[this.selectedIndex];
+        // 使用 data-target 属性获取完整路径
+        let path = selectedOption.dataset.target;
+        
+        fetch(path, { headers: { "Content-Type": "application/json; charset=utf-8" } })
             .then(res => res.text())
             .then(response => {
-                ApplyTemplate(JSON.parse(response as string), false);
+                // 解析 JSON 响应
+                let jsonData = JSON.parse(response as string);
+                // 如果有命令示例，就填充到输入框
+                if (jsonData.command) {
+                    let commandStr = jsonData.command.map((token: any, index: number) => {
+                        let prefix = "";
+                        if(index > 0){
+                            let prevToken = Object.entries(jsonData.command[index-1]);
+                            let prevValue = prevToken[0][1] as string;
+                            if(!(prevToken[0][0] == 'argument' && Modifier.ValueChars.some(x => prevValue.endsWith(x.toString())))){
+                                prefix = Modifier.SeparationChar.toString();
+                            }
+                        }
+                        return prefix + Object.entries(token)[0][1];
+                    }).join("");
+                    
+                    let commandInput = document.getElementById("input-command") as HTMLTextAreaElement;
+                    if (commandInput) {
+                        commandInput.value = commandStr;
+                        // 触发输入事件以更新 UI
+                        commandInput.dispatchEvent(new Event('input'));
+                    }
+                }
+                // 应用模板配置
+                ApplyTemplate(jsonData, false);
             })
             .catch(err => {
                 throw err;
@@ -69,14 +97,14 @@ async function FetchJsonFile2(elem: HTMLLIElement): Promise<object | null> {
     }
     else {
         let name = elem.dataset.target;
-        if (!name.endsWith('.json')) {
-            name = name + '.json';
-        }
         return await FetchJsonFileContents(name, elem);
     }
 }
 
 async function FetchJsonFileContents(name: string, elem: HTMLLIElement | null){
+    if (name.indexOf(".") == -1) {
+        name = name + ".json";
+    }
     let response = await fetch(name, { headers: { "Content-Type": "application/json; charset=utf-8" } })
             .then(res => {
                 if (!res.ok)

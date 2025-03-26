@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<!--
+                               .:::..
+             .:::.        ::::..   .::.
+        .:::.-:::::          ..:::.  ::.
+       :-::::-=:::::        ... .:::  ::
+      ..=-::::-=-::::.     :::::  .:: .
+    .::::-=:::::=-:::::    .::::.  ::.
+    --::::-=-::::-=:::::.   :::::  .::
+     :=:::::=-::::-=-::::.  .:::::
+   :::-=-::::-=:::::--:::::  :::::.             Thanks for being interested in ArgFuscator's source code!
+   :::::=-::::-=-::::::::-=-:::::::             If you're interested in improving this project, check out
+    .::::-=:::::-:::::::=-::::::::::                   https://www.github.com/wietze/ArgFuscator.net
+     .::::-=-::::::::::=-::::::::::::
+       :::::-:::::::::-=:::::::::::::           @Wietze, (c) 2022-2025 - licensed under GPLv3
+  ::.   .:::::::::::::-=:::::::::::::.
+  .::     ::::::::::::-=:::::::::::::
+ . :::     ::::::::::::-=:::::::::::.
+::  :::.    .:::::::::::--:::::::::.
+.::  .::::.  .::::::::::::::::::::
+ .::.   ..::::  .::::::::::::::.
+   ..:::.          ...:::::..
+
+-->
+<head>
+    <title>ArgFuscator</title>
+
+    <link rel="canonical" href="http://0.0.0.0:4000/entries/jsc">
+    <link rel="icon" href="/assets/img/logo.svg" type="image/svg" sizes="any">
+    <link rel="shortcut icon" href="/assets/img/logo.svg" type="image/svg">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://visit.argfuscator.net/ ; connect-src https://lolbas-project.github.io/api/ https://visit.argfuscator.net/ 'self';img-src 'self' https://visit.argfuscator.net/ ;">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:description" content=" is vulnerable to various kinds of command-line obfuscation; create your own obfuscated command lines with ArgFuscator." />
+    <meta property="og:image" content="http://0.0.0.0:4000/assets/img/logo.svg" />
+    <meta property="og:site_name" content="ArgFuscator" />
+    <meta property="og:title" content="ArgFuscator" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://0.0.0.0:4000/entries/jsc" />
+</head>
+
+<body>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/visit.js" async></script>
+    <div class="container">
+        <header>
+            <div class="top">
+                <div class="logo">
+                    <a href="/"><img src="/assets/img/logo.svg" class="site-logo" alt="Logo" /></a>
+                    <h1><a href="/">ArgFuscator</a></h1>
+                </div>
+                <div class="links">
+                    <a href="/about.html">What is this?</a>
+                    <a href="/entries/">All entries</a>
+                    <a href="https://www.github.com/wietze/Invoke-ArgFuscator" target="_blank">Offline version</a>
+                    <a href="https://www.github.com/wietze/ArgFuscator.net" target="_blank">GitHub</a>
+                    <a href="https://www.twitter.com/wietze" target="_blank" class="emphasis">@Wietze</a>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <section>
+<h1></h1>
+    It was found that <code></code> command lines can be obfuscated with the following techniques:
+    <ul>
+        </ul>
+</section>
+<script src="/assets/js/lolbas.js" async></script>
+<section>
+    <h2>Obfuscate <code></code> commands</h2>
+
+    <menu class="context-menu">
+        <li data-type="disabled">Ignore</li>
+        <li data-type="command">Program Name</li>
+        <li data-type="argument">Regular Argument</li>
+        <li data-type="path">File Path</li>
+        <li data-type="url">URL</li>
+        <li data-type="value">Value</li>
+    </menu>
+    <div>
+        <div class="tools">
+            <textarea id="input-command" data-target="/assets/models/windows/jsc" data-program="" placeholder="Paste a valid  command here…" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
+            <div class="command-bar">
+                <div id="tokens"></div>
+                <div><a class="button button-primary button-toggle" data-target="obfuscation-options"><strong>Show options</strong></a> <a class="button button-inverted" id="obfuscation-run"><strong>Apply obfuscation</strong></a></div>
+            </div>
+            <div id="error-messages"></div>
+        </div>
+
+        <fieldset>
+            <legend>Output</legend>
+            <div id="output-command"></div>
+        </fieldset>
+
+        <fieldset class="collapsed" id="obfuscation-options">
+            <legend>Options</legend>
+            <div>
+                <div id="options-panel">
+                    <div class="picker">
+                        <div class="button-selection">
+                            <a class="button" id="download-config" download="config-export.json" data-visit-click="JSON-Download-entry"><strong>Download config</strong></a>
+                            <a class="button" id="reset-form"><strong>Reset</strong></a>
+                        </div>
+                    </div>
+                </div>
+                <div id="options-panel-options"></div>
+            </div>
+        </fieldset>
+    </div>
+</section>
+<section>
+    <h2>Related</h2>
+    <div id="related-links" class="button-selection"><a href="https://ss64.com/nt/.html" class="button" target="_blank">Documentation for </a><a href="/" class="button">More obfuscation techniques</a></div>
+</section>
+<section>
+    <h2>FAQs</h2>
+<h3>What is command-line obfuscation?</h3><p>Command-Line obfuscation is an attempt to masquerade or otherwise hide the true intention of a program execution. Particularly, in a cyber security context, this usually involves rewriting a process' arguments to something that is functionally equivalent to the original, but bypasses detection systems. This may enable an attacker to execute a malicious command with a lower chance of being detected.</p>
+<h3>Why would I need to obfuscate command lines?</h3>Typically used by threat actors and red teamers, obfuscating command-line arguments masquerades what the goal of the command is, and may bypass detection mechanisms and fool security analysts. As a security professional, you may therefore use this tool to test your resilience against command-line obfuscations, for example by validating whether your detections work when command-line arguments are obfuscated.
+<h3>The obfuscated command did not work, what do I do?</h3><p>Command lines generated by ArgFuscator sometimes may not work as expected; one reason for this may be that the targeted program may have been updated since the obfuscation options were originally determined. Another reason may be that the obfuscation model created for ArgFuscator was incorrect. Command lines are complicated as every program has their own way of parsing and interpreting the provided arguments; we may therefore get small things wrong. If you believe this is the case, please raise an issue on <a href="https://github.com/wietze/ArgFuscator.net/issues">ArgFuscator's GitHub repository</a> so this can be looked into.</p>
+
+
+    </section>
+
+</body>
+
+</html>

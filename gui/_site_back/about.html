@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!--
+                               .:::..
+             .:::.        ::::..   .::.
+        .:::.-:::::          ..:::.  ::.
+       :-::::-=:::::        ... .:::  ::
+      ..=-::::-=-::::.     :::::  .:: .
+    .::::-=:::::=-:::::    .::::.  ::.
+    --::::-=-::::-=:::::.   :::::  .::
+     :=:::::=-::::-=-::::.  .:::::
+   :::-=-::::-=:::::--:::::  :::::.             Thanks for being interested in ArgFuscator's source code!
+   :::::=-::::-=-::::::::-=-:::::::             If you're interested in improving this project, check out
+    .::::-=:::::-:::::::=-::::::::::                   https://www.github.com/wietze/ArgFuscator.net
+     .::::-=-::::::::::=-::::::::::::
+       :::::-:::::::::-=:::::::::::::           @Wietze, (c) 2022-2025 - licensed under GPLv3
+  ::.   .:::::::::::::-=:::::::::::::.
+  .::     ::::::::::::-=:::::::::::::
+ . :::     ::::::::::::-=:::::::::::.
+::  :::.    .:::::::::::--:::::::::.
+.::  .::::.  .::::::::::::::::::::
+ .::.   ..::::  .::::::::::::::.
+   ..:::.          ...:::::..
+
+-->
+<head>
+    <title>About | ArgFuscator</title>
+
+    <link rel="canonical" href="http://0.0.0.0:4000/about.html">
+    <link rel="icon" href="/assets/img/logo.svg" type="image/svg" sizes="any">
+    <link rel="shortcut icon" href="/assets/img/logo.svg" type="image/svg">
+    <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
+
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://visit.argfuscator.net/ ; connect-src https://lolbas-project.github.io/api/ https://visit.argfuscator.net/ 'self';img-src 'self' https://visit.argfuscator.net/ ;">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta property="og:description" content="Learn more about the background of ArgFuscator and how it may help you." />
+    <meta property="og:image" content="http://0.0.0.0:4000/assets/img/logo.svg" />
+    <meta property="og:site_name" content="ArgFuscator" />
+    <meta property="og:title" content="About on ArgFuscator" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="http://0.0.0.0:4000/about.html" />
+</head>
+
+<body>
+    <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/visit.js" async></script>
+    <div class="container">
+        <header>
+            <div class="top">
+                <div class="logo">
+                    <a href="/"><img src="/assets/img/logo.svg" class="site-logo" alt="Logo" /></a>
+                    <h1><a href="/">ArgFuscator</a></h1>
+                </div>
+                <div class="links">
+                    <a href="/about.html">What is this?</a>
+                    <a href="/entries/">All entries</a>
+                    <a href="https://www.github.com/wietze/Invoke-ArgFuscator" target="_blank">Offline version</a>
+                    <a href="https://www.github.com/wietze/ArgFuscator.net" target="_blank">GitHub</a>
+                    <a href="https://www.twitter.com/wietze" target="_blank" class="emphasis">@Wietze</a>
+                </div>
+            </div>
+        </header>
+    </div>
+
+    <section>
+<h2>What is ArgFuscator?</h2>
+<p><strong>ArgFuscator is an open-source, stand-alone web application that helps generate obfuscated command lines for common system-native executables.</strong></p>
+
+<p>Command-Line obfuscation (<a href="https://attack.mitre.org/techniques/T1027/010/" target="_blank">T1027.010</a>) is the masquerading of a command's true intention through the manipulation of a process' command line. Across <a href="https://www.wietzebeukema.nl/blog/windows-command-line-obfuscation" target="_blank">Windows</a>, Linux and MacOS, many applications parse passed command-line arguments in unexpected ways, leading to situations in which insertion, deletion and/or subsitution of certain characters does not change the program's execution flow. Successful command-line obfuscation is likely to frustrate defensive measures such as AV and EDR software, in some cases completely bypassing detection altogether.</p>
+
+<img src="/assets/img/example-optimised.svg" alt="A sample certutil command in normal and obfuscated form" class="pct80-width" />
+
+<p>Although previous research has highlighted the risks of command-line obfuscation, mostly with anecdotal examples of vulnerable (system-native) applications, there is an knowledge vacuum surrounding this technique. This project aims to overcome this by providing a centralised resource that documents and demonstrates various command-line obfuscation techniques, and records the subsceptability of popular applications for each.</p>
+
+<h2>Goal</h2>
+<p>The primary goal of this project is to document known command-line obfuscation techniques against applications commonly used in cyber attacks, and using this knowledge to allow users to generate obfuscated command lines. For cyber security defenders, this provides a powerful tool to test one's own defence systems. Since detecting or otherwise accommodating for command-line obfuscation does not have to be difficult, having access to a this resource allows for effective, real-world validation of defense mechanisms in one's environment.</p>
+
+<h2>Coming about</h2>
+<p>First, through literature review and our own research, command-line obfuscation techniques were gathered, analysed and classified. The identified techniques form the basis for the subsequent analysis.</p>
+
+<p>Following this, by assessing a wide variety of popular applications, both in <a href="https://github.com/wietze/windows-command-line-obfuscation" target="_blank">automated fashion</a> and through manual inspection, a mapping between the defined techniques and vulnerable applications was created. The resulting 'obfuscation models' are captured in <a href="https://github.com/wietze/ArgFuscator.net/tree/main/models/" target="_blank">machine-readable format</a>.</p>
+
+<p>Thirdly, a system was created that allows for the transformation of an arbitrary command line using a sequence of defined obfuscation technique in a provided configuration. To ensure ease of use, a  <a href="https://github.com/wietze/ArgFuscator.net/tree/main/src/" target="_blank">TypeScript implementation</a> was created that is supported by a user-friendly <a href="https://github.com/wietze/ArgFuscator.net/tree/main/gui/" target="_blank">web interface</a>, which can interpret the aforementioned model files - the result is the website you're currently visiting. Additionally, a <a href="https://www.github.com/wietze/Invoke-ArgFuscator">cross-platform PowerShell implementation</a> was created.</p>
+
+<p>Finally, the models were tested against the created implementation in order to validate their correctness, which allows for the further tuning of the findings. The result is this project, encompassing the results of all stages.</p>
+
+</section>
+<section>
+<h2>FAQs</h2>
+<h3>What is command-line obfuscation?</h3><p>Command-Line obfuscation is an attempt to masquerade or otherwise hide the true intention of a program execution. Particularly, in a cyber security context, this usually involves rewriting a process' arguments to something that is functionally equivalent to the original, but bypasses detection systems. This may enable an attacker to execute a malicious command with a lower chance of being detected.</p>
+<h3>Why would I need to obfuscate command lines?</h3>Typically used by threat actors and red teamers, obfuscating command-line arguments masquerades what the goal of the command is, and may bypass detection mechanisms and fool security analysts. As a security professional, you may therefore use this tool to test your resilience against command-line obfuscations, for example by validating whether your detections work when command-line arguments are obfuscated.
+<h3>The obfuscated command did not work, what do I do?</h3><p>Command lines generated by ArgFuscator sometimes may not work as expected; one reason for this may be that the targeted program may have been updated since the obfuscation options were originally determined. Another reason may be that the obfuscation model created for ArgFuscator was incorrect. Command lines are complicated as every program has their own way of parsing and interpreting the provided arguments; we may therefore get small things wrong. If you believe this is the case, please raise an issue on <a href="https://github.com/wietze/ArgFuscator.net/issues">ArgFuscator's GitHub repository</a> so this can be looked into.</p>
+
+
+    </section>
+
+</body>
+
+</html>
