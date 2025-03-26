@@ -1624,9 +1624,166 @@ _**Assistant**_
 
 ---
 
-Cancelled
+```diff
+  /* 渗透测试常用命令区域样式 */
+  .common-commands {
+-     margin-bottom: 15px;
+-     padding: 10px;
+-     background: rgba(255, 255, 255, 0.1);
++     margin-bottom: 20px;
++     background: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
++     padding: 15px;
+  }
+  
+  .command-group h3 {
+-     margin: 0 0 10px 0;
+      color: #fff;
+-     font-size: 1.1em;
++     font-size: 1.2em;
++     margin: 0 0 15px 0;
++     padding-bottom: 8px;
++     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .command-list {
+      display: flex;
+      flex-direction: column;
+-     gap: 10px;
++     gap: 15px;
+  }
+  
+  .command-category {
+-     background: rgba(255, 255, 255, 0.05);
+-     border-radius: 4px;
+-     padding: 8px;
++     background: rgba(255, 255, 255, 0.03);
++     border-radius: 6px;
++     padding: 12px;
+  }
+  
+  .command-category-title {
+-     color: #fff;
+-     font-weight: bold;
+-     margin-bottom: 8px;
+-     padding-bottom: 4px;
+-     border-bottom: 1px solid rgba(255, 255, 255, 0.2);
++     color: rgba(255, 255, 255, 0.9);
++     font-size: 1.1em;
++     font-weight: 500;
++     margin-bottom: 10px;
++     padding-bottom: 6px;
++     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .command-items {
+-     display: flex;
+-     flex-wrap: wrap;
++     display: grid;
++     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 8px;
+  }
+  
+  .command-item {
+-     background: rgba(255, 255, 255, 0.1);
+-     padding: 8px 12px;
++     background: rgba(0, 0, 0, 0.2);
++     border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
++     padding: 8px 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+-     align-items: center;
+-     gap: 8px;
+-     flex: 1;
+-     min-width: 200px;
++     flex-direction: column;
++     gap: 4px;
+  }
+  
+  .command-item:hover {
+-     background: rgba(255, 255, 255, 0.2);
++     background: rgba(255, 255, 255, 0.1);
++     border-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .command-item code {
+-     color: #fff;
+-     font-family: Monaco, Menlo, Consolas, monospace;
++     color: #64B5F6;
++     font-family: 'Consolas', monospace;
+      font-size: 0.9em;
+-     flex: 1;
++     word-break: break-all;
+  }
+  
+  .command-desc {
+-     color: rgba(255, 255, 255, 0.8);
+-     font-size: 0.9em;
++     color: rgba(255, 255, 255, 0.7);
++     font-size: 0.85em;
+  }
+  
++ /* 响应式调整 */
+  @media (max-width: 768px) {
++     .command-items {
++         grid-template-columns: 1fr;
++     }
++     
+      .command-item {
+-         width: 100%;
++         padding: 10px;
++     }
++     
++     .common-commands {
++         padding: 10px;
++         margin-bottom: 15px;
+      }
+  }
+```
 
 ---
+
+主要改进了以下几点:
+
+1. 整体布局:
+   - 使用更合适的间距和内边距
+   - 增加了分类之间的间隔
+   - 优化了边框和圆角
+
+2. 颜色和对比度:
+   - 降低了背景透明度,提高可读性
+   - 使用蓝色(#64B5F6)高亮命令代码
+   - 调整了文字颜色的透明度
+
+3. 命令卡片:
+   - 添加了边框效果
+   - 改进了悬停状态的视觉反馈
+   - 命令和描述改为垂直排列
+   - 添加了word-break防止长命令溢出
+
+4. 响应式设计:
+   - 使用CSS Grid自动调整卡片布局
+   - 优化了移动设备上的显示效果
+   - 调整了移动设备上的内边距
+
+5. 字体和排版:
+   - 统一使用Consolas作为代码字体
+   - 调整了字体大小和行高
+   - 优化了标题的样式
+
+这些改动应该会让命令展示区域看起来更专业、更易读,同时保持与整体设计风格的一致性。您可以刷新页面查看效果。如果还需要调整,请告诉我。
+
+---
+
+_**User**_
+
+git page部署为啥样式缺少呢
+
+---
+
+_**Assistant**_
 
 
 
