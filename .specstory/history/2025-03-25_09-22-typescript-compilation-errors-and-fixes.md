@@ -1085,6 +1085,32 @@ git push
 
 ---
 
+_**User**_
+
+Warning: Get Pages site failed. Error: Not Found - https://docs.github.com/rest/pages/pages#get-a-apiname-pages-site
+Error: Create Pages site failed. Error: Resource not accessible by integration - https://docs.github.com/rest/pages/pages#create-a-apiname-pages-site
+Error: HttpError: Resource not accessible by integration - https://docs.github.com/rest/pages/pages#create-a-apiname-pages-site 这又是什么原因呢
+
+---
+
+_**Assistant**_
+
+这个错误表示 GitHub Actions 没有足够的权限来创建和配置 GitHub Pages。让我们修改权限设置：
+
+---
+
+
+
+---
+
+Cancelled
+
+---
+
+
+
+---
+
 
 
 ---
