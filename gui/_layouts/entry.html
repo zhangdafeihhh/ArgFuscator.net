@@ -51,8 +51,9 @@ description: See all supported executables on __SITE__.
                 <div id="options-panel">
                     <div class="picker">
                         <div class="button-selection">
-                            <a class="button" id="download-config" download="config-export.json" data-visit-click="JSON-Download-entry"><strong>Download config</strong></a>
-                            <a class="button" id="reset-form"><strong>Reset</strong></a>
+                            <a class="button" id="button-template" aria-haspopup="listbox" aria-expanded="false" role="combobox" tabindex="2" aria-controls="menu-templates"><strong>Selected template</strong>: <span id="template-selected">{{ page.slug }}.exe</span></a>
+                            <a class="button" id="download-config" download="config-export.json"><strong>Download config</strong></a>
+                            <a class="button" id="reset-form" tabindex="4"><strong>Reset</strong></a>
                         </div>
                     </div>
                 </div>

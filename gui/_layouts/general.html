@@ -37,7 +37,7 @@ description:
     <link rel="stylesheet" type="text/css" href="{{ '/assets/css/style.css' | relative_url }}">
 
     <meta charset="utf-8">
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://visit.argfuscator.net/ ; connect-src https://lolbas-project.github.io/api/ https://visit.argfuscator.net/ 'self';img-src 'self' https://visit.argfuscator.net/ ;">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self'; img-src 'self'; script-src 'self' 'unsafe-inline';">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta property="og:description" content="{% if page.layout == 'entry'%}{{ title }} is vulnerable to various kinds of command-line obfuscation; create your own obfuscated command lines with {{ site.title }}.{%else%}{{ page.description | replace:'__SITE__',site.title }}{%endif%}" />
     <meta property="og:image" content="{{ logo | absolute_url }}" />
@@ -49,7 +49,6 @@ description:
 
 <body>
     <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
-    <script src="{{ '/assets/js/visit.js' | relative_url }}" async></script>
     <div class="container">
         <header>
             <div class="top">
@@ -74,6 +73,74 @@ description:
 {{ content }}
     </section>
 
+    <script>
+        function copyTextToClipboard(text) {
+            // 将命令填入输入框
+            const inputCommand = document.getElementById('input-command');
+            if (inputCommand) {
+                inputCommand.value = text;
+                inputCommand.focus();
+            }
+            
+            // 尝试复制到剪贴板
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).then(function() {
+                    showTooltip('已复制!');
+                }).catch(function(err) {
+                    console.error('复制失败:', err);
+                    fallbackCopyTextToClipboard(text);
+                });
+            } else {
+                fallbackCopyTextToClipboard(text);
+            }
+        }
+        
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            
+            // 设置不可见
+            textArea.style.position = "fixed";
+            textArea.style.top = "0";
+            textArea.style.left = "0";
+            textArea.style.width = "2em";
+            textArea.style.height = "2em";
+            textArea.style.padding = "0";
+            textArea.style.border = "none";
+            textArea.style.outline = "none";
+            textArea.style.boxShadow = "none";
+            textArea.style.background = "transparent";
+            
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                if (document.execCommand('copy')) {
+                    showTooltip('已复制!');
+                } else {
+                    showTooltip('复制失败');
+                }
+            } catch (err) {
+                console.error('复制出错:', err);
+                showTooltip('复制失败');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+        
+        function showTooltip(message) {
+            const tooltip = document.createElement('div');
+            tooltip.textContent = message;
+            tooltip.className = 'copy-tooltip';
+            
+            document.body.appendChild(tooltip);
+            
+            setTimeout(function() {
+                document.body.removeChild(tooltip);
+            }, 2000);
+        }
+    </script>
 </body>
 
 </html>
