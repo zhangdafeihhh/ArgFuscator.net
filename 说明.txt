@@ -8,3 +8,7 @@ tsc -w --project src/ --outfile gui/assets/js/main.js
 jekyll编译成静态网站，_site下执行python3 -m http.server就可以直接访问了
 jekyll build --destination _site
 
+放github上面需要域名部署，否则资源加载有问题
+具体就是你要的域名的a记录解析到github的ip即可
+https://arg.2020107.xyz/  
+
