@@ -794,3 +794,91 @@ img.pct80-width {
     margin: auto;
     width: 80%;
 }
+
+/* 渗透测试常用命令区域样式 */
+.common-commands {
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.command-group h3 {
+    color: #fff;
+    font-size: 1.2em;
+    margin: 0 0 15px 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.command-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.command-category {
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 6px;
+    padding: 12px;
+}
+
+.command-category-title {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.1em;
+    font-weight: 500;
+    margin-bottom: 10px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.command-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 8px;
+}
+
+.command-item {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.command-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.command-item code {
+    color: #64B5F6;
+    font-family: 'Consolas', monospace;
+    font-size: 0.9em;
+    word-break: break-all;
+}
+
+.command-desc {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.85em;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+    .command-items {
+        grid-template-columns: 1fr;
+    }
+    
+    .command-item {
+        padding: 10px;
+    }
+    
+    .common-commands {
+        padding: 10px;
+        margin-bottom: 15px;
+    }
+}

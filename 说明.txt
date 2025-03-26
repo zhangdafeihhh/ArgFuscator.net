@@ -12,3 +12,4 @@ jekyll build --destination _site
 具体就是你要的域名的a记录解析到github的ip即可
 https://arg.2020107.xyz/  
 
+https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site
